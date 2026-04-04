@@ -15,17 +15,14 @@
         
         body { background: #0a0a0a; color: #fff; }
         
-        /* Login Page */
         .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1a0000 0%, #000 100%); }
         .login-box { background: rgba(10,10,10,0.95); backdrop-filter: blur(10px); padding: 40px; border-radius: 30px; border: 2px solid #ff0000; width: 100%; max-width: 400px; text-align: center; }
         .login-box h1 { color: #ff0000; font-size: 28px; }
         .login-box input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; border-radius: 15px; color: #fff; }
         .login-box button { width: 100%; padding: 15px; background: linear-gradient(135deg, #ff0000, #7a0000); border: none; border-radius: 15px; color: #fff; font-weight: bold; cursor: pointer; }
         
-        /* Admin Panel */
         .admin-wrapper { display: none; }
         
-        /* Sidebar */
         .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); border-right: 2px solid #ff0000; padding: 20px; overflow-y: auto; z-index: 100; }
         .sidebar-logo { text-align: center; padding: 20px 0; border-bottom: 1px solid #ff0000; margin-bottom: 20px; }
         .sidebar-logo i { font-size: 50px; color: #ff0000; }
@@ -34,38 +31,39 @@
         .nav-item:hover, .nav-item.active { background: rgba(255,0,0,0.1); color: #ff0000; }
         .nav-item i { width: 25px; }
         
-        /* Main Content */
         .main-content { margin-left: 280px; padding: 20px; min-height: 100vh; }
         
-        /* Header */
         .top-bar { background: #111; border-radius: 20px; padding: 15px 25px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ff0000; }
         .logout-btn { background: #ff0000; border: none; padding: 10px 20px; border-radius: 10px; color: #fff; cursor: pointer; }
         
-        /* Stats Cards */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: #111; border-radius: 20px; padding: 20px; border-left: 4px solid #ff0000; }
         .stat-card .value { font-size: 32px; font-weight: 800; color: #ff0000; }
         
-        /* Sections */
         .section-card { background: #111; border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid #222; }
         .section-title { font-size: 18px; font-weight: 800; color: #ff0000; margin-bottom: 20px; }
         
-        /* Hacked Mode Box */
-        .hacked-box { background: linear-gradient(135deg, #1a0000, #0a0000); border: 2px solid #ff0000; border-radius: 20px; padding: 25px; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: #888; font-size: 12px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; color: #fff; }
         
-        /* Tables */
-        .table-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; padding: 12px; border-bottom: 1px solid #222; font-size: 12px; align-items: center; }
-        .table-header { background: #1a1a1a; border-radius: 10px; font-weight: 800; color: #ff0000; }
-        
-        .btn-sm { padding: 8px 15px; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; margin: 2px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin: 5px; }
         .btn-danger { background: #ff0000; color: #fff; }
         .btn-success { background: #00aa00; color: #fff; }
         .btn-warning { background: #ffaa00; color: #000; }
-        .btn-info { background: #0088ff; color: #fff; }
         
-        input, textarea, select { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; color: #fff; margin: 10px 0; }
+        .toggle-switch { position: relative; display: inline-block; width: 60px; height: 30px; margin-right: 15px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: 0.3s; border-radius: 30px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: 0.3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #ff0000; }
+        input:checked + .slider:before { transform: translateX(30px); }
+        
+        .hacked-box { background: linear-gradient(135deg, #1a0000, #0a0000); border: 2px solid #ff0000; border-radius: 20px; padding: 25px; margin-bottom: 25px; }
         
         .toast { position: fixed; bottom: 20px; right: 20px; background: #ff0000; padding: 12px 24px; border-radius: 10px; display: none; z-index: 9999; }
+        
+        .plan-card { background: #1a1a1a; border-radius: 15px; padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         
         @media (max-width: 768px) {
             .sidebar { width: 70px; }
@@ -104,8 +102,14 @@
         <div class="nav-item" onclick="showSection('hacked')">
             <i class="fa fa-skull"></i> <span>Hacked Mode</span>
         </div>
+        <div class="nav-item" onclick="showSection('plans')">
+            <i class="fa fa-chart-line"></i> <span>Investment Plans</span>
+        </div>
         <div class="nav-item" onclick="showSection('depositNumber')">
             <i class="fa fa-phone"></i> <span>Deposit Number</span>
+        </div>
+        <div class="nav-item" onclick="showSection('alerts')">
+            <i class="fa fa-bullhorn"></i> <span>Send Alerts</span>
         </div>
         <div class="nav-item" onclick="showSection('deposits')">
             <i class="fa fa-download"></i> <span>Deposits</span>
@@ -116,14 +120,11 @@
         <div class="nav-item" onclick="showSection('users')">
             <i class="fa fa-users"></i> <span>Users</span>
         </div>
-        <div class="nav-item" onclick="showSection('alerts')">
-            <i class="fa fa-bullhorn"></i> <span>Alerts</span>
-        </div>
     </div>
     
     <div class="main-content">
         <div class="top-bar">
-            <h3><i class="fa fa-skull" style="color: #ff0000;"></i> KHARAL MODS - EARN PRO CONTROL</h3>
+            <h3><i class="fa fa-skull" style="color: #ff0000;"></i> KHARAL MODS - COMPLETE CONTROL</h3>
             <button class="logout-btn" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
         </div>
         
@@ -131,22 +132,34 @@
         <div id="dashboardSection">
             <div class="stats-grid">
                 <div class="stat-card"><i class="fa fa-users"></i><div class="value" id="statUsers">-</div><div>Total Users</div></div>
+                <div class="stat-card"><i class="fa fa-chart-line"></i><div class="value" id="statPlans">-</div><div>Active Plans</div></div>
                 <div class="stat-card"><i class="fa fa-download"></i><div class="value" id="statDeposits">-</div><div>Total Deposits</div></div>
                 <div class="stat-card"><i class="fa fa-upload"></i><div class="value" id="statWithdrawals">-</div><div>Total Withdrawals</div></div>
-                <div class="stat-card"><i class="fa fa-clock"></i><div class="value" id="statPending">-</div><div>Pending</div></div>
             </div>
         </div>
         
         <!-- Hacked Mode Section -->
         <div id="hackedSection" style="display: none;">
             <div class="hacked-box">
-                <div class="section-title"><i class="fa fa-skull"></i> 🔴 HACKED MODE - WEBSITE HIJACK</div>
+                <div class="section-title"><i class="fa fa-skull"></i> 🔴 HACKED MODE CONTROL</div>
                 
-                <label>Hacked Message Title</label>
-                <input type="text" id="hackedTitle" value="🔴 HACKED BY KHARAL MODS 🔴">
+                <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="hackedToggle" onchange="toggleHackedModeStatus()">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-weight: 800; font-size: 16px;">ACTIVATE HACKED MODE</span>
+                </div>
                 
-                <label>Hacked Message Content</label>
-                <textarea id="hackedMessage" rows="6">🔴🔴🔴 HACKED BY KHARAL MODS 🔴🔴🔴
+                <div id="hackedConfig" style="display: none;">
+                    <div class="form-group">
+                        <label>🔥 Hacked Title (Balance ki jagah dikhega)</label>
+                        <input type="text" id="hackedTitle" value="🔴 HACKED BY KHARAL MODS 🔴">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>💀 Hacked Message (Plans ki jagah dikhega)</label>
+                        <textarea id="hackedMessage" rows="6">🔴🔴🔴 HACKED BY KHARAL MODS 🔴🔴🔴
 
 OWNER: ARSLAN KHARAL
 THE SYSTEM FUCKER
@@ -162,51 +175,119 @@ THE SYSTEM FUCKER
 ✅ Koi aur paisa na daalein
 
 - KHARAL MODS SECURITY FORCE -</textarea>
-                
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button class="btn-sm btn-danger" onclick="applyHackedMode()" style="padding: 12px 20px;">
-                        <i class="fa fa-skull"></i> APPLY HACKED MODE TO ALL USERS
-                    </button>
-                    <button class="btn-sm btn-success" onclick="resetHackedMode()" style="padding: 12px 20px;">
-                        <i class="fa fa-undo"></i> RESET WEBSITE
-                    </button>
-                </div>
-                
-                <div id="previewBox" style="background: #000; padding: 15px; border-radius: 10px; margin-top: 20px; border: 1px solid red;">
-                    <p style="color: #ff6666; font-size: 12px;">Preview (Users ko yeh dikhega):</p>
-                    <div id="preview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🎨 Background Color Effect</label>
+                        <select id="hackedEffect">
+                            <option value="glitch">Glitch Effect</option>
+                            <option value="blink">Blinking Effect</option>
+                            <option value="static">Static Effect</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button class="btn btn-danger" onclick="applyHackedModeToAll()" style="flex: 1;">
+                            <i class="fa fa-skull"></i> APPLY TO ALL USERS
+                        </button>
+                        <button class="btn btn-success" onclick="resetHackedModeForAll()" style="flex: 1;">
+                            <i class="fa fa-undo"></i> RESET ALL USERS
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 20px; background: #000; padding: 15px; border-radius: 10px; border: 1px solid red;">
+                        <p style="color: #ff6666; font-size: 12px;"><i class="fa fa-eye"></i> LIVE PREVIEW (Users ko yeh dikhega):</p>
+                        <div id="previewBox" style="margin-top: 10px; padding: 15px; background: #1a0000; border-radius: 10px;">
+                            <div id="previewTitle" style="font-size: 18px; font-weight: 800; color: #ff0000; text-align: center;"></div>
+                            <div id="previewMessage" style="font-size: 12px; margin-top: 10px; color: #fff;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Deposit Number Change Section -->
+        <!-- Investment Plans Section -->
+        <div id="plansSection" style="display: none;">
+            <div class="section-card">
+                <div class="section-title"><i class="fa fa-chart-line"></i> ➕ CREATE NEW INVESTMENT PLAN</div>
+                
+                <div class="form-group">
+                    <label>Plan Name</label>
+                    <input type="text" id="planType" placeholder="e.g., BASIC, PRO, WEEKLY">
+                </div>
+                <div class="form-group">
+                    <label>Investment Amount (Rs)</label>
+                    <input type="number" id="planInvestment" placeholder="500">
+                </div>
+                <div class="form-group">
+                    <label>Daily Profit (Rs)</label>
+                    <input type="number" id="planDailyProfit" placeholder="50">
+                </div>
+                <div class="form-group">
+                    <label>Duration (Days)</label>
+                    <input type="number" id="planDays" placeholder="7" value="7">
+                </div>
+                <div class="form-group">
+                    <label>Video Link</label>
+                    <input type="text" id="planVideoLink" placeholder="https://youtube.com/...">
+                </div>
+                
+                <button class="btn btn-success" onclick="createPlan()" style="width: 100%;">
+                    <i class="fa fa-plus-circle"></i> CREATE PLAN
+                </button>
+            </div>
+            
+            <div class="section-card">
+                <div class="section-title"><i class="fa fa-list"></i> 📋 EXISTING PLANS</div>
+                <div id="plansList"></div>
+                <button class="btn btn-danger" onclick="deleteAllPlans()" style="width: 100%; margin-top: 15px;">
+                    <i class="fa fa-trash"></i> DELETE ALL PLANS
+                </button>
+            </div>
+        </div>
+        
+        <!-- Deposit Number Section -->
         <div id="depositNumberSection" style="display: none;">
             <div class="section-card">
-                <div class="section-title"><i class="fa fa-phone"></i> 💰 DEPOSIT RECEIVING NUMBER CHANGE</div>
-                <p style="color: #888; margin-bottom: 15px;">Yahan se aap woh number change kar sakte ho jahan users paise bhej rahe hain</p>
+                <div class="section-title"><i class="fa fa-phone"></i> 💰 DEPOSIT RECEIVING NUMBER</div>
                 
-                <label>Current Deposit Number (JazzCash/EasyPaisa)</label>
-                <input type="text" id="depositNumber" placeholder="03XXXXXXXXX">
+                <div class="form-group">
+                    <label>JazzCash / EasyPaisa Number</label>
+                    <input type="text" id="depositNumber" placeholder="03XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Alternate Number</label>
+                    <input type="text" id="altDepositNumber" placeholder="03XXXXXXXXX">
+                </div>
                 
-                <label>Alternate Number (Optional)</label>
-                <input type="text" id="altDepositNumber" placeholder="03XXXXXXXXX">
-                
-                <label>Account Title</label>
-                <input type="text" id="accountTitle" value="EARN PRO ADMIN">
-                
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button class="btn-sm btn-danger" onclick="changeDepositNumber()" style="padding: 12px 20px;">
-                        <i class="fa fa-save"></i> CHANGE DEPOSIT NUMBER
-                    </button>
-                    <button class="btn-sm btn-warning" onclick="resetDepositNumber()" style="padding: 12px 20px;">
-                        <i class="fa fa-undo"></i> RESET TO ORIGINAL
-                    </button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-danger" onclick="changeDepositNumber()" style="flex: 1;">CHANGE NUMBER</button>
+                    <button class="btn btn-warning" onclick="resetDepositNumber()" style="flex: 1;">RESET</button>
                 </div>
                 
                 <div style="margin-top: 20px; background: #1a0000; padding: 15px; border-radius: 10px;">
-                    <p style="font-size: 12px; color: #ff6666;"><i class="fa fa-info-circle"></i> Original Number: <strong id="originalNumber">03162812514</strong></p>
-                    <p style="font-size: 12px; color: #888; margin-top: 10px;">⚠️ Is number ko change karne ke baad, users apna paisa naye number par bhejenge!</p>
+                    <p style="font-size: 12px; color: #ff6666;">Current Number: <strong id="currentNumber">Loading...</strong></p>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Alerts Section -->
+        <div id="alertsSection" style="display: none;">
+            <div class="section-card">
+                <div class="section-title"><i class="fa fa-bullhorn"></i> 📢 SEND ALERT TO ALL USERS</div>
+                
+                <div class="form-group">
+                    <label>Alert Title</label>
+                    <input type="text" id="alertTitle" placeholder="Alert Title">
+                </div>
+                <div class="form-group">
+                    <label>Alert Message</label>
+                    <textarea id="alertMessage" rows="4" placeholder="Type your message..."></textarea>
+                </div>
+                
+                <button class="btn btn-danger" onclick="sendGlobalAlert()" style="width: 100%;">
+                    <i class="fa fa-broadcast-tower"></i> SEND TO ALL USERS
+                </button>
             </div>
         </div>
         
@@ -214,16 +295,7 @@ THE SYSTEM FUCKER
         <div id="depositsSection" style="display: none;">
             <div class="section-card">
                 <div class="section-title"><i class="fa fa-download"></i> Deposit Requests</div>
-                <div class="table-container" id="depositsList"></div>
-            </div>
-            
-            <div class="section-card">
-                <div class="section-title"><i class="fa fa-hand-holding-usd"></i> 💰 Admin Withdrawal - Apne Account Mein Lo</div>
-                <select id="withdrawDepositSelect" style="margin-bottom: 10px;"></select>
-                <input type="text" id="adminAccountNumber" placeholder="Apna Account Number (JazzCash/EasyPaisa)">
-                <button class="btn-sm btn-danger" onclick="adminTakeDeposit()" style="width: 100%; padding: 12px;">
-                    <i class="fa fa-money-bill-wave"></i> WITHDRAW THIS DEPOSIT TO MY ACCOUNT
-                </button>
+                <div id="depositsList" class="table-container"></div>
             </div>
         </div>
         
@@ -231,7 +303,7 @@ THE SYSTEM FUCKER
         <div id="withdrawalsSection" style="display: none;">
             <div class="section-card">
                 <div class="section-title"><i class="fa fa-upload"></i> Withdrawal Requests</div>
-                <div class="table-container" id="withdrawalsList"></div>
+                <div id="withdrawalsList" class="table-container"></div>
             </div>
         </div>
         
@@ -239,18 +311,7 @@ THE SYSTEM FUCKER
         <div id="usersSection" style="display: none;">
             <div class="section-card">
                 <div class="section-title"><i class="fa fa-users"></i> All Users</div>
-                <div class="table-container" id="usersList"></div>
-            </div>
-        </div>
-        
-        <!-- Alerts Section -->
-        <div id="alertsSection" style="display: none;">
-            <div class="section-card">
-                <div class="section-title"><i class="fa fa-bullhorn"></i> Send Alert to Users</div>
-                <textarea id="alertMsg" rows="4" placeholder="Type your alert message...">⚠️ SCAM ALERT: Yeh website fake hai! Koi aur paisa na daalein! - KHARAL MODS</textarea>
-                <button class="btn-sm btn-danger" onclick="sendGlobalAlert()" style="width: 100%; padding: 12px;">
-                    <i class="fa fa-broadcast-tower"></i> SEND TO ALL USERS
-                </button>
+                <div id="usersList" class="table-container"></div>
             </div>
         </div>
     </div>
@@ -274,6 +335,7 @@ THE SYSTEM FUCKER
     const db = firebase.database();
     
     let allUsers = {};
+    let allPlans = {};
     let allDeposits = {};
     let allWithdrawals = {};
     
@@ -290,6 +352,7 @@ THE SYSTEM FUCKER
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('adminWrapper').style.display = 'block';
             loadAllData();
+            loadHackedModeStatus();
             showToast('Welcome KHARAL MODS!');
         } else {
             showToast('Wrong Password!');
@@ -306,14 +369,12 @@ THE SYSTEM FUCKER
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         event.target.closest('.nav-item').classList.add('active');
         
-        document.getElementById('dashboardSection').style.display = section === 'dashboard' ? 'block' : 'none';
-        document.getElementById('hackedSection').style.display = section === 'hacked' ? 'block' : 'none';
-        document.getElementById('depositNumberSection').style.display = section === 'depositNumber' ? 'block' : 'none';
-        document.getElementById('depositsSection').style.display = section === 'deposits' ? 'block' : 'none';
-        document.getElementById('withdrawalsSection').style.display = section === 'withdrawals' ? 'block' : 'none';
-        document.getElementById('usersSection').style.display = section === 'users' ? 'block' : 'none';
-        document.getElementById('alertsSection').style.display = section === 'alerts' ? 'block' : 'none';
+        const sections = ['dashboard', 'hacked', 'plans', 'depositNumber', 'alerts', 'deposits', 'withdrawals', 'users'];
+        sections.forEach(s => {
+            document.getElementById(s + 'Section').style.display = s === section ? 'block' : 'none';
+        });
         
+        if(section === 'plans') loadPlans();
         if(section === 'deposits') loadDeposits();
         if(section === 'withdrawals') loadWithdrawals();
         if(section === 'users') loadUsers();
@@ -321,6 +382,7 @@ THE SYSTEM FUCKER
     
     async function loadAllData() {
         await loadUsers();
+        await loadPlans();
         await loadDeposits();
         await loadWithdrawals();
         await loadDepositNumber();
@@ -332,21 +394,207 @@ THE SYSTEM FUCKER
         allUsers = snapshot.val() || {};
         document.getElementById('statUsers').innerText = Object.keys(allUsers).length;
         
-        let html = '<div class="table-row table-header"><div>Name</div><div>Email/Phone</div><div>Balance</div><div>Deposit Bal</div><div>Status</div><div>Action</div></div>';
+        let html = '<div class="table-row table-header"><div>Name</div><div>Email/Phone</div><div>Balance</div><div>Status</div><div>Action</div></div>';
         for(let uid in allUsers) {
             const u = allUsers[uid];
             html += `<div class="table-row">
                 <div>${u.username || 'N/A'}</div>
                 <div>${u.email || u.phone || 'N/A'}</div>
                 <div>Rs ${(u.balance || 0).toFixed(2)}</div>
-                <div>Rs ${(u.depositBalance || 0).toFixed(2)}</div>
                 <div>${u.status || 'active'}</div>
-                <div><button class="btn-sm btn-danger" onclick="blockUser('${uid}')">Block</button></div>
+                <div><button class="btn btn-danger" style="padding: 5px 10px;" onclick="blockUser('${uid}')">Block</button></div>
             </div>`;
         }
         document.getElementById('usersList').innerHTML = html;
     }
     
+    async function loadPlans() {
+        const snapshot = await db.ref('plans').once('value');
+        allPlans = snapshot.val() || {};
+        document.getElementById('statPlans').innerText = Object.keys(allPlans).length;
+        
+        let html = '';
+        for(let id in allPlans) {
+            const p = allPlans[id];
+            html += `
+                <div class="plan-card">
+                    <div>
+                        <strong style="color: #ff0000;">${p.type || 'Plan'}</strong><br>
+                        <small>Invest: Rs ${p.investment} | Profit: Rs ${p.dailyProfit}/day | Days: ${p.days}</small>
+                    </div>
+                    <button class="btn btn-danger" style="padding: 5px 15px;" onclick="deletePlan('${id}')">Delete</button>
+                </div>
+            `;
+        }
+        document.getElementById('plansList').innerHTML = html || '<p style="color: #888;">No plans created yet.</p>';
+    }
+    
+    async function createPlan() {
+        const type = document.getElementById('planType').value;
+        const investment = parseFloat(document.getElementById('planInvestment').value);
+        const dailyProfit = parseFloat(document.getElementById('planDailyProfit').value);
+        const days = parseInt(document.getElementById('planDays').value);
+        const videoLink = document.getElementById('planVideoLink').value;
+        
+        if(!type || !investment || !dailyProfit) {
+            showToast('Please fill all fields!');
+            return;
+        }
+        
+        const planId = Date.now().toString();
+        await db.ref(`plans/${planId}`).set({
+            type: type, investment: investment, dailyProfit: dailyProfit,
+            days: days, videoLink: videoLink || "no-link", createdAt: new Date().toISOString()
+        });
+        
+        showToast(`✅ Plan "${type}" created!`);
+        document.getElementById('planType').value = '';
+        document.getElementById('planInvestment').value = '';
+        document.getElementById('planDailyProfit').value = '';
+        document.getElementById('planVideoLink').value = '';
+        await loadPlans();
+    }
+    
+    async function deletePlan(planId) {
+        if(confirm('Delete this plan?')) {
+            await db.ref(`plans/${planId}`).remove();
+            showToast('Plan deleted!');
+            await loadPlans();
+        }
+    }
+    
+    async function deleteAllPlans() {
+        if(confirm('DELETE ALL PLANS?')) {
+            await db.ref('plans').remove();
+            showToast('All plans deleted!');
+            await loadPlans();
+        }
+    }
+    
+    // 🔴 HACKED MODE FUNCTIONS - YEH TOTAL BALANCE AUR PLANS KI JAGAH DIKHEGA
+    function updatePreview() {
+        const title = document.getElementById('hackedTitle').value;
+        const message = document.getElementById('hackedMessage').value;
+        document.getElementById('previewTitle').innerHTML = title;
+        document.getElementById('previewMessage').innerHTML = message.replace(/\n/g, '<br>');
+    }
+    
+    async function loadHackedModeStatus() {
+        const snapshot = await db.ref('settings/hackedMode').once('value');
+        const isActive = snapshot.val() || false;
+        document.getElementById('hackedToggle').checked = isActive;
+        document.getElementById('hackedConfig').style.display = isActive ? 'block' : 'none';
+        
+        if(isActive) {
+            const titleSnap = await db.ref('settings/hackedTitle').once('value');
+            const msgSnap = await db.ref('settings/hackedMessage').once('value');
+            if(titleSnap.val()) document.getElementById('hackedTitle').value = titleSnap.val();
+            if(msgSnap.val()) document.getElementById('hackedMessage').value = msgSnap.val();
+        }
+        updatePreview();
+    }
+    
+    function toggleHackedModeStatus() {
+        const isChecked = document.getElementById('hackedToggle').checked;
+        document.getElementById('hackedConfig').style.display = isChecked ? 'block' : 'none';
+        updatePreview();
+    }
+    
+    async function applyHackedModeToAll() {
+        const isActive = document.getElementById('hackedToggle').checked;
+        const hackedTitle = document.getElementById('hackedTitle').value;
+        const hackedMessage = document.getElementById('hackedMessage').value;
+        const effect = document.getElementById('hackedEffect').value;
+        
+        if(!isActive) { showToast('Please enable Hacked Mode first'); return; }
+        if(!confirm(`Apply HACKED MODE to ALL ${Object.keys(allUsers).length} users?`)) return;
+        
+        // Save settings
+        await db.ref('settings/hackedMode').set(true);
+        await db.ref('settings/hackedTitle').set(hackedTitle);
+        await db.ref('settings/hackedMessage').set(hackedMessage);
+        await db.ref('settings/hackedEffect').set(effect);
+        
+        // Apply to each user
+        let count = 0;
+        for(let uid in allUsers) {
+            await db.ref(`users/${uid}/hackedMode`).set({
+                active: true,
+                title: hackedTitle,
+                message: hackedMessage,
+                effect: effect,
+                timestamp: Date.now()
+            });
+            count++;
+        }
+        showToast(`✅ Hacked Mode applied to ${count} users!`);
+    }
+    
+    async function resetHackedModeForAll() {
+        if(!confirm('Reset website to normal for all users?')) return;
+        
+        await db.ref('settings/hackedMode').set(false);
+        
+        let count = 0;
+        for(let uid in allUsers) {
+            await db.ref(`users/${uid}/hackedMode`).remove();
+            count++;
+        }
+        document.getElementById('hackedToggle').checked = false;
+        document.getElementById('hackedConfig').style.display = 'none';
+        showToast(`✅ Reset for ${count} users!`);
+    }
+    
+    // 💰 DEPOSIT NUMBER FUNCTIONS
+    async function loadDepositNumber() {
+        const snapshot = await db.ref('settings/depositNumber').once('value');
+        const current = snapshot.val() || '03162812514';
+        document.getElementById('depositNumber').value = current;
+        document.getElementById('currentNumber').innerText = current;
+    }
+    
+    async function changeDepositNumber() {
+        const newNumber = document.getElementById('depositNumber').value;
+        const altNumber = document.getElementById('altDepositNumber').value;
+        
+        if(!newNumber) { showToast('Enter deposit number'); return; }
+        
+        await db.ref('settings/depositNumber').set(newNumber);
+        await db.ref('settings/altDepositNumber').set(altNumber);
+        
+        showToast(`✅ Deposit number changed to ${newNumber}`);
+        document.getElementById('currentNumber').innerText = newNumber;
+    }
+    
+    async function resetDepositNumber() {
+        await db.ref('settings/depositNumber').set('03162812514');
+        await db.ref('settings/altDepositNumber').set('');
+        document.getElementById('depositNumber').value = '03162812514';
+        showToast('✅ Reset to original number');
+    }
+    
+    // 📢 ALERT FUNCTIONS
+    async function sendGlobalAlert() {
+        const title = document.getElementById('alertTitle').value;
+        const message = document.getElementById('alertMessage').value;
+        
+        if(!message) { showToast('Enter message'); return; }
+        if(!confirm(`Send alert to ALL ${Object.keys(allUsers).length} users?`)) return;
+        
+        let count = 0;
+        for(let uid in allUsers) {
+            await db.ref(`users/${uid}/globalAlert`).set({
+                title: title || 'Alert',
+                message: message,
+                timestamp: Date.now(),
+                read: false
+            });
+            count++;
+        }
+        showToast(`✅ Alert sent to ${count} users!`);
+    }
+    
+    // 📥 DEPOSIT FUNCTIONS
     async function loadDeposits() {
         const snapshot = await db.ref('deposits').once('value');
         allDeposits = snapshot.val() || {};
@@ -361,143 +609,42 @@ THE SYSTEM FUCKER
                 <div>${d.username || 'N/A'}</div>
                 <div>Rs ${d.amount || 0}</div>
                 <div>${d.tid || '-'}</div>
-                <td>${d.status || 'pending'}</td>
+                <div>${d.status || 'pending'}</div>
                 <div>
-                    ${d.status === 'pending' ? `<button class="btn-sm btn-success" onclick="approveDeposit('${id}', ${d.amount}, '${d.uid}')">Approve</button>
-                    <button class="btn-sm btn-danger" onclick="rejectDeposit('${id}')">Reject</button>` : '-'}
+                    ${d.status === 'pending' ? `<button class="btn btn-success" style="padding: 5px 10px;" onclick="approveDeposit('${id}', ${d.amount}, '${d.uid}')">Approve</button>
+                    <button class="btn btn-danger" style="padding: 5px 10px;" onclick="rejectDeposit('${id}')">Reject</button>` : '-'}
                 </div>
             </div>`;
         }
         document.getElementById('depositsList').innerHTML = html;
-        
-        // Update dropdown for admin withdrawal
-        let dropdown = '<option value="">Select a deposit to withdraw</option>';
-        for(let id in allDeposits) {
-            const d = allDeposits[id];
-            if(d.status === 'pending') {
-                dropdown += `<option value="${id}">${d.username} - Rs ${d.amount} - ${d.tid}</option>`;
-            }
-        }
-        document.getElementById('withdrawDepositSelect').innerHTML = dropdown;
     }
     
     async function loadWithdrawals() {
         const snapshot = await db.ref('withdrawals').once('value');
         allWithdrawals = snapshot.val() || {};
-        let total = 0, pending = 0;
-        for(let id in allWithdrawals) {
-            total += allWithdrawals[id].amount || 0;
-            if(allWithdrawals[id].status === 'pending') pending++;
-        }
+        let total = 0;
+        for(let id in allWithdrawals) total += allWithdrawals[id].amount || 0;
         document.getElementById('statWithdrawals').innerText = 'Rs ' + total;
-        document.getElementById('statPending').innerText = pending;
         
-        let html = '<div class="table-row table-header"><div>User</div><div>Amount</div><div>Method</div><div>Account</div><div>Status</div><div>Action</div></div>';
+        let html = '<div class="table-row table-header"><div>User</div><div>Amount</div><div>Method</div><div>Status</div><div>Action</div></div>';
         for(let id in allWithdrawals) {
             const w = allWithdrawals[id];
             html += `<div class="table-row">
                 <div>${w.username || 'N/A'}</div>
                 <div>Rs ${w.amount || 0}</div>
                 <div>${w.method || '-'}</div>
-                <div>${w.account || '-'}</div>
-                <td>${w.status || 'pending'}</td>
+                <div>${w.status || 'pending'}</div>
                 <div>
-                    ${w.status === 'pending' ? `<button class="btn-sm btn-success" onclick="approveWithdrawal('${id}')">Approve</button>
-                    <button class="btn-sm btn-danger" onclick="rejectWithdrawal('${id}')">Reject</button>` : '-'}
+                    ${w.status === 'pending' ? `<button class="btn btn-success" style="padding: 5px 10px;" onclick="approveWithdrawal('${id}')">Approve</button>
+                    <button class="btn btn-danger" style="padding: 5px 10px;" onclick="rejectWithdrawal('${id}')">Reject</button>` : '-'}
                 </div>
             </div>`;
         }
         document.getElementById('withdrawalsList').innerHTML = html;
     }
     
-    function updateStats() {
-        // Already updated
-    }
+    function updateStats() {}
     
-    // 🔴 DEPOSIT NUMBER CHANGE FUNCTIONS
-    async function loadDepositNumber() {
-        const snapshot = await db.ref('settings/depositNumber').once('value');
-        const current = snapshot.val() || '03162812514';
-        document.getElementById('depositNumber').value = current;
-        document.getElementById('originalNumber').innerText = current;
-    }
-    
-    async function changeDepositNumber() {
-        const newNumber = document.getElementById('depositNumber').value;
-        const altNumber = document.getElementById('altDepositNumber').value;
-        const title = document.getElementById('accountTitle').value;
-        
-        if(!newNumber) { showToast('Enter deposit number'); return; }
-        
-        await db.ref('settings/depositNumber').set(newNumber);
-        await db.ref('settings/altDepositNumber').set(altNumber);
-        await db.ref('settings/accountTitle').set(title);
-        
-        showToast(`✅ Deposit number changed to ${newNumber}`);
-    }
-    
-    async function resetDepositNumber() {
-        await db.ref('settings/depositNumber').set('03162812514');
-        await db.ref('settings/altDepositNumber').set('');
-        document.getElementById('depositNumber').value = '03162812514';
-        showToast('✅ Reset to original number');
-    }
-    
-    // 🔴 HACKED MODE FUNCTIONS
-    function updatePreview() {
-        const msg = document.getElementById('hackedMessage').value;
-        document.getElementById('preview').innerHTML = msg.replace(/\n/g, '<br>');
-    }
-    
-    async function applyHackedMode() {
-        const title = document.getElementById('hackedTitle').value;
-        const message = document.getElementById('hackedMessage').value;
-        
-        if(!confirm(`Apply HACKED MODE to ALL ${Object.keys(allUsers).length} users?`)) return;
-        
-        let count = 0;
-        for(let uid in allUsers) {
-            await db.ref(`users/${uid}/hackedMode`).set({
-                active: true,
-                title: title,
-                message: message,
-                timestamp: Date.now()
-            });
-            count++;
-        }
-        showToast(`✅ Hacked Mode applied to ${count} users!`);
-    }
-    
-    async function resetHackedMode() {
-        if(!confirm('Reset website to normal?')) return;
-        let count = 0;
-        for(let uid in allUsers) {
-            await db.ref(`users/${uid}/hackedMode`).remove();
-            count++;
-        }
-        showToast(`✅ Reset for ${count} users!`);
-    }
-    
-    // 💰 ADMIN TAKE DEPOSIT - Apne account mein lo
-    async function adminTakeDeposit() {
-        const depositId = document.getElementById('withdrawDepositSelect').value;
-        const adminAccount = document.getElementById('adminAccountNumber').value;
-        
-        if(!depositId) { showToast('Select a deposit first'); return; }
-        if(!adminAccount) { showToast('Enter your account number'); return; }
-        
-        const deposit = allDeposits[depositId];
-        if(!confirm(`Withdraw Rs ${deposit.amount} from ${deposit.username} to your account ${adminAccount}?`)) return;
-        
-        await db.ref(`deposits/${depositId}/status`).set('withdrawn_by_admin');
-        await db.ref(`deposits/${depositId}/adminAccount`).set(adminAccount);
-        await db.ref(`deposits/${depositId}/adminTakenAt`).set(new Date().toISOString());
-        
-        showToast(`✅ Rs ${deposit.amount} marked as taken to ${adminAccount}`);
-        await loadDeposits();
-    }
-    
-    // Deposit Actions
     async function approveDeposit(id, amount, uid) {
         await db.ref(`deposits/${id}/status`).set('approved');
         const snapshot = await db.ref(`users/${uid}/depositBalance`).once('value');
@@ -531,26 +678,10 @@ THE SYSTEM FUCKER
         await loadUsers();
     }
     
-    async function sendGlobalAlert() {
-        const msg = document.getElementById('alertMsg').value;
-        if(!msg) { showToast('Enter message'); return; }
-        
-        let count = 0;
-        for(let uid in allUsers) {
-            await db.ref(`users/${uid}/globalAlert`).set({
-                message: msg,
-                timestamp: Date.now()
-            });
-            count++;
-        }
-        showToast(`✅ Alert sent to ${count} users!`);
-    }
-    
     // Event listeners
-    document.getElementById('hackedMessage').oninput = updatePreview;
     document.getElementById('hackedTitle').oninput = updatePreview;
+    document.getElementById('hackedMessage').oninput = updatePreview;
     
-    // Auto refresh
     setInterval(() => {
         if(document.getElementById('adminWrapper').style.display === 'block') {
             loadAllData();
