@@ -1,589 +1,393 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>KHARAL-MD - Video & Audio Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 ADMIN PANEL - EARN PRO CONTROL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Unhi Ki Firebase Config -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: #0a0a0a; color: #fff; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            padding: 16px;
-            padding-bottom: 80px;
-        }
+        .login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a0505, #000); }
+        .login-card { background: rgba(20,20,20,0.95); padding: 40px; border-radius: 30px; border: 1px solid #ff0000; width: 100%; max-width: 400px; text-align: center; }
+        .login-card h1 { color: #ff0000; margin-bottom: 10px; }
+        .login-card input { width: 100%; padding: 15px; margin: 10px 0; background: #1a1a1a; border: 1px solid #333; border-radius: 15px; color: #fff; }
+        .login-card button { width: 100%; padding: 15px; background: linear-gradient(135deg, #ff0000, #7a0000); border: none; border-radius: 15px; color: #fff; font-weight: bold; cursor: pointer; }
         
-        .top-bar {
-            background: #ffffff;
-            border-radius: 30px;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f0f0;
-        }
+        .admin-container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
+        .admin-header { background: #111; padding: 15px 20px; border-radius: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ff0000; }
         
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: #111; padding: 20px; border-radius: 20px; border-left: 4px solid #ff0000; }
+        .stat-number { font-size: 32px; font-weight: 800; color: #ff0000; }
         
-        .logo-img {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ff6b6b;
-        }
+        .section { background: #111; border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; }
+        .section h2 { margin-bottom: 15px; color: #ff0000; font-size: 18px; }
         
-        .brand-text {
-            font-size: 20px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff6b6b, #feca57);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
+        .alert-box { background: #1a1a1a; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 2px solid #ff0000; }
+        .alert-box textarea { width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid #333; border-radius: 10px; color: #fff; margin: 10px 0; font-size: 14px; }
+        .alert-box select { width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #333; border-radius: 10px; color: #fff; margin: 10px 0; }
         
-        .whatsapp-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #25D366;
-            padding: 8px 14px;
-            border-radius: 30px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            font-size: 12px;
-        }
+        .user-table { overflow-x: auto; max-height: 500px; overflow-y: auto; }
+        .user-row { display: grid; grid-template-columns: 180px 150px 130px 100px 80px 120px 140px; gap: 10px; padding: 12px; border-bottom: 1px solid #222; font-size: 12px; align-items: center; }
+        .user-header { background: #1a1a1a; border-radius: 10px; font-weight: 800; color: #ff0000; position: sticky; top: 0; }
         
-        .main-card {
-            background: #ffffff;
-            border-radius: 32px;
-            padding: 24px 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f0f0;
-        }
+        button.small { padding: 6px 10px; font-size: 10px; margin: 2px; background: #ff0000; border: none; border-radius: 6px; color: #fff; cursor: pointer; }
+        button.green { background: #00aa00; }
+        button.yellow { background: #ffaa00; color: #000; }
         
-        h1 {
-            text-align: center;
-            font-size: 26px;
-            margin-bottom: 6px;
-            color: #1a1a2e;
-        }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #ff0000; padding: 12px 24px; border-radius: 10px; display: none; z-index: 9999; }
         
-        .subtitle {
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 24px;
-        }
+        .tab-btn { padding: 10px 20px; background: #1a1a1a; border: none; color: #fff; cursor: pointer; margin-right: 10px; border-radius: 10px; }
+        .tab-btn.active { background: #ff0000; }
         
-        .platform-selector {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-        }
-        
-        .platform-btn {
-            background: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            padding: 12px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            white-space: nowrap;
-            color: #333;
-        }
-        
-        .platform-btn.active {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border-color: transparent;
-            color: white;
-        }
-        
-        .url-input-wrapper {
-            background: #f5f5f5;
-            border-radius: 60px;
-            padding: 4px;
-            margin-bottom: 16px;
-            display: flex;
-            gap: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .url-input {
-            flex: 1;
-            padding: 16px 20px;
-            border: none;
-            border-radius: 60px;
-            background: transparent;
-            font-size: 14px;
-            outline: none;
-        }
-        
-        .fetch-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border: none;
-            border-radius: 60px;
-            padding: 0 24px;
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        
-        .fetch-btn:disabled {
-            opacity: 0.6;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            display: none;
-        }
-        
-        .spinner {
-            width: 45px;
-            height: 45px;
-            border: 4px solid #f0f0f0;
-            border-top: 4px solid #ff6b6b;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 12px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .result-box {
-            display: none;
-            margin-top: 24px;
-        }
-        
-        .video-card {
-            background: #f8f9fa;
-            border-radius: 24px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .thumbnail {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-        }
-        
-        .video-title {
-            padding: 14px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a1a2e;
-            word-break: break-word;
-        }
-        
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #333;
-        }
-        
-        .quality-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .quality-option {
-            background: #f8f9fa;
-            border-radius: 60px;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .quality-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .quality-name {
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-        }
-        
-        .quality-size {
-            font-size: 11px;
-            color: #999;
-        }
-        
-        .download-item-btn {
-            background: #25D366;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 20px;
-            color: white;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        
-        .error-msg, .success-msg {
-            padding: 14px;
-            border-radius: 60px;
-            text-align: center;
-            font-size: 13px;
-            margin-top: 16px;
-            display: none;
-        }
-        
-        .error-msg {
-            background: #fee;
-            color: #c00;
-            border: 1px solid #fcc;
-        }
-        
-        .success-msg {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-        
-        .powered {
-            text-align: center;
-            font-size: 11px;
-            margin-top: 20px;
-            color: #999;
-        }
-        
-        .bottom-info {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            padding: 10px;
-            text-align: center;
-            font-size: 11px;
-            color: #666;
-            border-top: 1px solid #e0e0e0;
-        }
+        .loading { text-align: center; padding: 40px; }
     </style>
 </head>
 <body>
-    <div class="top-bar">
-        <div class="logo-area">
-            <img src="https://i.postimg.cc/NfJxTRWy/1775276938074-1.jpg" class="logo-img" onerror="this.src='https://via.placeholder.com/42'">
-            <span class="brand-text">KHARAL-MD</span>
-        </div>
-        <a href="https://wa.me/923292359957" target="_blank" class="whatsapp-btn">💬 WhatsApp</a>
+
+<div id="loginPage" class="login-page">
+    <div class="login-card">
+        <i class="fa fa-shield-alt" style="font-size: 50px; color: #ff0000; margin-bottom: 20px;"></i>
+        <h1>ADMIN PANEL</h1>
+        <p style="color: #666; margin-bottom: 20px;">EARN PRO - Control Center</p>
+        <input type="password" id="adminPass" placeholder="Enter Admin Password">
+        <button onclick="checkLogin()">ACCESS PANEL</button>
+        <p style="margin-top: 15px; font-size: 12px; color: #444;">Authorized Access Only</p>
     </div>
+</div>
 
-    <div class="main-card">
-        <h1>📥 Video Downloader</h1>
-        <div class="subtitle">YouTube · Facebook · TikTok · Audio & Video</div>
+<div id="adminPanel" class="admin-container">
+    <div class="admin-header">
+        <div><i class="fa fa-fire" style="color: #ff0000;"></i> <strong>EARN PRO ADMIN</strong></div>
+        <div>🔥 Total Control Active</div>
+        <button onclick="logout()" style="background: #333; border: none; padding: 8px 15px; border-radius: 10px; color: #fff; cursor: pointer;">Logout</button>
+    </div>
+    
+    <div class="stats" id="stats">
+        <div class="stat-card"><div>👥 Total Users</div><div class="stat-number" id="totalUsers">-</div></div>
+        <div class="stat-card"><div>💰 Total Deposits</div><div class="stat-number" id="totalDeposits">-</div></div>
+        <div class="stat-card"><div>💸 Total Withdrawals</div><div class="stat-number" id="totalWithdrawals">-</div></div>
+        <div class="stat-card"><div>📊 Pending Requests</div><div class="stat-number" id="pendingRequests">-</div></div>
+    </div>
+    
+    <div class="section">
+        <h2><i class="fa fa-bullhorn"></i> 🔴 GLOBAL ALERT - Sab Users Ko Warning</h2>
+        <div class="alert-box">
+            <textarea id="globalAlertMsg" rows="4" placeholder="Type your alert message here...">⚠️⚠️⚠️ SCAM ALERT ⚠️⚠️⚠️
 
-        <div class="platform-selector">
-            <div class="platform-btn active" data-platform="youtube">▶️ YouTube</div>
-            <div class="platform-btn" data-platform="facebook">📘 Facebook</div>
-            <div class="platform-btn" data-platform="tiktok">🎵 TikTok</div>
+Yeh website BILKUL FAKE hai! Aapka paisa kabhi withdraw nahi hoga.
+Ye log sirf naye users se paisa le rahe hain.
+
+Koi aur deposit na karein!
+Apne dosto ko batao aur is scam se bacho!
+
+- System Alert</textarea>
+            <button class="btn" style="width: auto; padding: 12px 30px;" onclick="sendGlobalAlert()">
+                <i class="fa fa-broadcast-tower"></i> SEND TO ALL USERS
+            </button>
+            <p style="font-size: 11px; color: #666; margin-top: 10px;">⚠️ Ye alert har user ke dashboard mein dikhega jab woh app kholega</p>
         </div>
-
-        <div class="url-input-wrapper">
-            <input type="text" id="videoUrl" class="url-input" placeholder="Paste video link here...">
-            <button class="fetch-btn" onclick="fetchVideo()">Get</button>
-        </div>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Fetching video...</p>
-        </div>
-
-        <div class="result-box" id="resultBox">
-            <div class="video-card">
-                <img id="thumbnail" class="thumbnail" src="">
-                <div class="video-title" id="videoTitle"></div>
+    </div>
+    
+    <div>
+        <button class="tab-btn active" onclick="showTab('users')">👥 All Users</button>
+        <button class="tab-btn" onclick="showTab('deposits')">📥 Deposits</button>
+        <button class="tab-btn" onclick="showTab('withdrawals')">📤 Withdrawals</button>
+    </div>
+    
+    <div id="usersTab" class="section">
+        <h2>👥 All Users (<span id="userCount">0</span>)</h2>
+        <div class="user-table">
+            <div class="user-row user-header">
+                <div>Name</div><div>Email/Phone</div><div>Balance</div><div>Deposit Bal</div><div>Status</div><div>Referred By</div><div>Actions</div>
             </div>
-            <div class="section-title">📥 Download Options</div>
-            <div class="quality-grid" id="qualityList"></div>
+            <div id="usersList"></div>
         </div>
-
-        <div class="error-msg" id="errorMsg"></div>
-        <div class="success-msg" id="successMsg"></div>
-        <div class="powered">Powered by Kharal ❤️ By Love is taha</div>
     </div>
+    
+    <div id="depositsTab" class="section" style="display: none;">
+        <h2>📥 Deposit Requests</h2>
+        <div id="depositsList"></div>
+    </div>
+    
+    <div id="withdrawalsTab" class="section" style="display: none;">
+        <h2>📤 Withdrawal Requests</h2>
+        <div id="withdrawalsList"></div>
+    </div>
+</div>
 
-    <div class="bottom-info">⚡ Direct download | Save to mobile storage</div>
+<div id="toast" class="toast"></div>
 
-    <script>
-        let currentFormats = [];
-        let currentPlatform = 'youtube';
-
-        document.querySelectorAll('.platform-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentPlatform = this.dataset.platform;
-                document.getElementById('resultBox').style.display = 'none';
-                currentFormats = [];
+<script>
+    // 🔥 UNHI KI FIREBASE CONFIG (JO APP MEIN HAI)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBiYWuQsaevjcZzQ42lEQiiTXReMtiLi70",
+        authDomain: "mkmodz-official.firebaseapp.com",
+        databaseURL: "https://mkmodz-official-default-rtdb.firebaseio.com",
+        projectId: "mkmodz-official",
+        storageBucket: "mkmodz-official.firebasestorage.app",
+        messagingSenderId: "606278455356",
+        appId: "1:606278455356:web:7d3f0b1204017c5f1d3339"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    let currentUserData = {};
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 3000);
+    }
+    
+    function checkLogin() {
+        const pass = document.getElementById('adminPass').value;
+        // Simple password protection - aap apna password set kar sakte ho
+        if(pass === 'admin123' || pass === 'EARNPRO@2024') {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAllData();
+        } else {
+            showToast('Wrong Password!');
+        }
+    }
+    
+    function logout() {
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('adminPass').value = '';
+    }
+    
+    function showTab(tab) {
+        document.getElementById('usersTab').style.display = tab === 'users' ? 'block' : 'none';
+        document.getElementById('depositsTab').style.display = tab === 'deposits' ? 'block' : 'none';
+        document.getElementById('withdrawalsTab').style.display = tab === 'withdrawals' ? 'block' : 'none';
+        
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        if(tab === 'deposits') loadDeposits();
+        if(tab === 'withdrawals') loadWithdrawals();
+    }
+    
+    async function loadAllData() {
+        showToast('Loading data from Firebase...');
+        await loadUsers();
+        await loadDeposits();
+        await loadWithdrawals();
+        updateStats();
+    }
+    
+    async function loadUsers() {
+        const snapshot = await db.ref('users').once('value');
+        currentUserData = snapshot.val() || {};
+        const userCount = Object.keys(currentUserData).length;
+        document.getElementById('totalUsers').innerText = userCount;
+        document.getElementById('userCount').innerText = userCount;
+        
+        let html = '';
+        for(let uid in currentUserData) {
+            const u = currentUserData[uid];
+            html += `
+                <div class="user-row">
+                    <div>${u.username || 'N/A'}</div>
+                    <div>${u.email || u.phone || 'N/A'}</div>
+                    <div>Rs ${(u.balance || 0).toFixed(2)}</div>
+                    <div>Rs ${(u.depositBalance || 0).toFixed(2)}</div>
+                    <div><span class="badge ${u.status === 'blocked' ? 'badge-blocked' : 'badge-active'}">${u.status || 'active'}</span></div>
+                    <div style="font-size:10px;">${u.referredBy || '-'}</div>
+                    <div>
+                        <button class="small green" onclick="sendIndividualAlert('${uid}', '${u.username}')"><i class="fa fa-bell"></i></button>
+                        <button class="small" onclick="blockUser('${uid}')"><i class="fa fa-ban"></i></button>
+                        <button class="small yellow" onclick="addBalance('${uid}')"><i class="fa fa-plus-circle"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+        document.getElementById('usersList').innerHTML = html || '<div style="padding:20px; text-align:center;">No users found</div>';
+    }
+    
+    async function loadDeposits() {
+        const snapshot = await db.ref('deposits').once('value');
+        const deposits = snapshot.val() || {};
+        let total = 0;
+        let pending = 0;
+        let html = '<div class="user-table"><div class="user-row user-header"><div>User</div><div>Amount</div><div>Transaction ID</div><div>Date</div><div>Status</div><div>Action</div></div>';
+        
+        for(let id in deposits) {
+            const d = deposits[id];
+            total += d.amount || 0;
+            if(d.status === 'pending') pending++;
+            html += `
+                <div class="user-row">
+                    <div>${d.username || 'N/A'}</div>
+                    <div>Rs ${d.amount || 0}</div>
+                    <div style="font-size:10px;">${d.tid || '-'}</div>
+                    <div style="font-size:10px;">${d.date || '-'}</div>
+                    <div><span class="badge ${d.status === 'approved' ? 'badge-active' : (d.status === 'pending' ? 'badge-active' : 'badge-blocked')}">${d.status || 'pending'}</span></div>
+                    <div>
+                        ${d.status === 'pending' ? `<button class="small green" onclick="approveDeposit('${id}', ${d.amount}, '${d.uid}')">Approve</button>
+                        <button class="small" onclick="rejectDeposit('${id}')">Reject</button>` : '-'}
+                    </div>
+                </div>
+            `;
+        }
+        html += '</div>';
+        document.getElementById('depositsList').innerHTML = html;
+        document.getElementById('totalDeposits').innerText = 'Rs ' + total;
+        document.getElementById('pendingRequests').innerText = pending;
+    }
+    
+    async function loadWithdrawals() {
+        const snapshot = await db.ref('withdrawals').once('value');
+        const withdrawals = snapshot.val() || {};
+        let total = 0;
+        let html = '<div class="user-table"><div class="user-row user-header"><div>User</div><div>Amount</div><div>Method</div><div>Account</div><div>Status</div><div>Action</div></div>';
+        
+        for(let id in withdrawals) {
+            const w = withdrawals[id];
+            total += w.amount || 0;
+            html += `
+                <div class="user-row">
+                    <div>${w.username || 'N/A'}</div>
+                    <div>Rs ${w.amount || 0}</div>
+                    <div>${w.method || '-'}</div>
+                    <div style="font-size:10px;">${w.account || '-'}</div>
+                    <div><span class="badge ${w.status === 'approved' ? 'badge-active' : 'badge-blocked'}">${w.status || 'pending'}</span></div>
+                    <div>
+                        ${w.status === 'pending' ? `<button class="small green" onclick="approveWithdrawal('${id}', ${w.amount}, '${w.uid}')">Approve</button>
+                        <button class="small" onclick="rejectWithdrawal('${id}')">Reject</button>` : '-'}
+                    </div>
+                </div>
+            `;
+        }
+        html += '</div>';
+        document.getElementById('withdrawalsList').innerHTML = html;
+        document.getElementById('totalWithdrawals').innerText = 'Rs ' + total;
+    }
+    
+    function updateStats() {
+        // Stats already updated in individual functions
+    }
+    
+    // 🔴 GLOBAL ALERT - Sab users ko ek saath
+    async function sendGlobalAlert() {
+        const msg = document.getElementById('globalAlertMsg').value;
+        if(!msg) { showToast('Please enter message'); return; }
+        
+        if(!confirm(`Are you sure? This will send alert to ALL ${Object.keys(currentUserData).length} users!`)) return;
+        
+        let count = 0;
+        for(let uid in currentUserData) {
+            await db.ref(`users/${uid}/globalAlert`).set({
+                message: msg,
+                timestamp: new Date().toISOString(),
+                read: false,
+                type: 'SCAM_WARNING'
             });
+            count++;
+            // Show progress
+            if(count % 10 === 0) showToast(`Sent to ${count} users...`);
+        }
+        showToast(`✅ Alert sent to ${count} users successfully!`);
+    }
+    
+    // 📢 Individual Alert
+    async function sendIndividualAlert(uid, name) {
+        const msg = prompt(`Send alert to ${name}:`, "⚠️ SCAM ALERT: Yeh website fake hai! Koi aur paisa na daalein!");
+        if(!msg) return;
+        
+        await db.ref(`users/${uid}/alert`).set({
+            message: msg,
+            timestamp: new Date().toISOString(),
+            read: false
         });
-
-        async function fetchVideo() {
-            const url = document.getElementById('videoUrl').value.trim();
-            
-            if(!url) {
-                showError('Please enter a video link');
-                return;
-            }
-
-            showLoading(true);
-            hideError();
-            document.getElementById('resultBox').style.display = 'none';
-
-            try {
-                let data = null;
-                
-                if(currentPlatform === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
-                    data = await fetchYouTube(url);
-                }
-                else if(currentPlatform === 'facebook' || url.includes('facebook.com')) {
-                    data = await fetchFacebook(url);
-                }
-                else if(currentPlatform === 'tiktok' || url.includes('tiktok.com')) {
-                    data = await fetchTikTok(url);
-                }
-                
-                if(data && data.formats && data.formats.length > 0) {
-                    currentFormats = data.formats;
-                    displayVideoInfo(data);
-                    showLoading(false);
-                } else {
-                    throw new Error('No download links found');
-                }
-                
-            } catch(error) {
-                showLoading(false);
-                showError(error.message);
-            }
+        showToast(`Alert sent to ${name}`);
+    }
+    
+    // 🚫 Block User
+    async function blockUser(uid) {
+        if(!confirm('Block this user?')) return;
+        await db.ref(`users/${uid}/status`).set('blocked');
+        showToast('User blocked!');
+        loadUsers();
+    }
+    
+    // 💰 Add Balance
+    async function addBalance(uid) {
+        const amount = prompt('Enter amount to add (in Rs):');
+        if(!amount || isNaN(amount)) return;
+        
+        const snapshot = await db.ref(`users/${uid}/balance`).once('value');
+        const currentBal = snapshot.val() || 0;
+        await db.ref(`users/${uid}/balance`).set(currentBal + parseFloat(amount));
+        showToast(`Added Rs ${amount} to user balance`);
+        loadUsers();
+    }
+    
+    // ✅ Approve Deposit
+    async function approveDeposit(depositId, amount, uid) {
+        if(!confirm(`Approve deposit of Rs ${amount}?`)) return;
+        
+        // Update deposit status
+        await db.ref(`deposits/${depositId}/status`).set('approved');
+        
+        // Add to user's deposit balance
+        const snapshot = await db.ref(`users/${uid}/depositBalance`).once('value');
+        const currentBal = snapshot.val() || 0;
+        await db.ref(`users/${uid}/depositBalance`).set(currentBal + amount);
+        
+        // Mark that user has deposited
+        await db.ref(`users/${uid}/hasDeposited`).set(true);
+        
+        showToast('Deposit approved!');
+        loadDeposits();
+        loadUsers();
+    }
+    
+    // ❌ Reject Deposit
+    async function rejectDeposit(depositId) {
+        if(!confirm('Reject this deposit?')) return;
+        await db.ref(`deposits/${depositId}/status`).set('rejected');
+        showToast('Deposit rejected');
+        loadDeposits();
+    }
+    
+    // ✅ Approve Withdrawal
+    async function approveWithdrawal(withdrawalId, amount, uid) {
+        if(!confirm(`Approve withdrawal of Rs ${amount}?`)) return;
+        await db.ref(`withdrawals/${withdrawalId}/status`).set('approved');
+        showToast('Withdrawal approved!');
+        loadWithdrawals();
+    }
+    
+    // ❌ Reject Withdrawal
+    async function rejectWithdrawal(withdrawalId) {
+        if(!confirm('Reject this withdrawal?')) return;
+        await db.ref(`withdrawals/${withdrawalId}/status`).set('rejected');
+        showToast('Withdrawal rejected');
+        loadWithdrawals();
+    }
+    
+    // Auto refresh every 30 seconds
+    setInterval(() => {
+        if(document.getElementById('adminPanel').style.display === 'block') {
+            loadUsers();
+            loadDeposits();
+            loadWithdrawals();
         }
+    }, 30000);
+</script>
 
-        // YouTube Direct Download
-        async function fetchYouTube(url) {
-            try {
-                // Extract video ID
-                let videoId = '';
-                if(url.includes('youtu.be/')) {
-                    videoId = url.split('youtu.be/')[1].split('?')[0];
-                } else if(url.includes('watch?v=')) {
-                    videoId = url.split('watch?v=')[1].split('&')[0];
-                } else if(url.includes('shorts/')) {
-                    videoId = url.split('shorts/')[1].split('?')[0];
-                }
-                
-                // Using yt5s.com API for direct download
-                const apiUrl = `https://yt5s.com/api/ajaxSearch`;
-                
-                const formData = new FormData();
-                formData.append('q', url);
-                formData.append('vt', 'mp4');
-                
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if(data && data.links) {
-                    return {
-                        title: data.title || 'YouTube Video',
-                        thumbnail: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-                        formats: [
-                            { quality: '🎬 1080p Video', url: data.links.mp4['1080'] || data.links.mp4['720'], type: 'video', size: '~15MB' },
-                            { quality: '🎬 720p Video', url: data.links.mp4['720'] || data.links.mp4['360'], type: 'video', size: '~10MB' },
-                            { quality: '🎵 Audio (MP3)', url: data.links.mp3, type: 'audio', size: '~4MB' }
-                        ]
-                    };
-                }
-                
-                throw new Error('No download links');
-                
-            } catch(error) {
-                // Fallback: Use alternative API
-                try {
-                    const altApi = `https://api.ryzendesu.vip/api/download/ytdl?url=${encodeURIComponent(url)}`;
-                    const response = await fetch(altApi);
-                    const data = await response.json();
-                    
-                    if(data.result && data.result.video) {
-                        return {
-                            title: data.result.title || 'YouTube Video',
-                            thumbnail: data.result.thumbnail,
-                            formats: [
-                                { quality: '🎬 Video', url: data.result.video['720p'] || data.result.video['480p'], type: 'video', size: '~10MB' },
-                                { quality: '🎵 Audio', url: data.result.audio, type: 'audio', size: '~4MB' }
-                            ]
-                        };
-                    }
-                } catch(e) {}
-                
-                throw new Error('YouTube: Please try another video');
-            }
-        }
-
-        // Facebook Direct Download
-        async function fetchFacebook(url) {
-            try {
-                const response = await fetch(`https://getvideo.cc/api/video-info?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                
-                const formats = [];
-                if(data.hd_url) {
-                    formats.push({ quality: '🎬 HD Video (1080p)', url: data.hd_url, type: 'video', size: '~15MB' });
-                }
-                if(data.sd_url) {
-                    formats.push({ quality: '🎬 SD Video (480p)', url: data.sd_url, type: 'video', size: '~6MB' });
-                }
-                
-                return {
-                    title: data.title || 'Facebook Video',
-                    thumbnail: data.thumbnail || 'https://via.placeholder.com/400x225',
-                    formats: formats
-                };
-                
-            } catch(error) {
-                throw new Error('Facebook: Make sure video is public');
-            }
-        }
-
-        // TikTok Direct Download (100% Working)
-        async function fetchTikTok(url) {
-            try {
-                const response = await fetch(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
-                
-                if(data.code === 0 && data.data) {
-                    const formats = [];
-                    
-                    if(data.data.play) {
-                        formats.push({ quality: '🎬 No Watermark (HD)', url: data.data.play, type: 'video', size: '~8MB' });
-                    }
-                    if(data.data.wmplay) {
-                        formats.push({ quality: '🎬 With Watermark', url: data.data.wmplay, type: 'video', size: '~8MB' });
-                    }
-                    if(data.data.music) {
-                        formats.push({ quality: '🎵 Audio Only (MP3)', url: data.data.music, type: 'audio', size: '~3MB' });
-                    }
-                    
-                    return {
-                        title: data.data.title || 'TikTok Video',
-                        thumbnail: data.data.cover || 'https://via.placeholder.com/400x225',
-                        formats: formats
-                    };
-                }
-                
-                throw new Error('No video found');
-                
-            } catch(error) {
-                throw new Error('TikTok: Try a different video');
-            }
-        }
-
-        function displayVideoInfo(data) {
-            document.getElementById('videoTitle').textContent = data.title;
-            document.getElementById('thumbnail').src = data.thumbnail;
-            
-            const qualityList = document.getElementById('qualityList');
-            qualityList.innerHTML = '';
-            
-            currentFormats.forEach((format, index) => {
-                if(format.url && format.url !== '#') {
-                    const div = document.createElement('div');
-                    div.className = 'quality-option';
-                    div.innerHTML = `
-                        <div class="quality-info">
-                            <span>${format.type === 'video' ? '🎬' : '🎵'}</span>
-                            <div>
-                                <div class="quality-name">${format.quality}</div>
-                                <div class="quality-size">${format.size || '~5MB'}</div>
-                            </div>
-                        </div>
-                        <button class="download-item-btn" onclick="downloadFormat(${index})">Download</button>
-                    `;
-                    qualityList.appendChild(div);
-                }
-            });
-            
-            document.getElementById('resultBox').style.display = 'block';
-        }
-
-        function downloadFormat(index) {
-            const format = currentFormats[index];
-            
-            if(!format || !format.url) {
-                showError('Download link not available');
-                return;
-            }
-            
-            // Direct download without redirect
-            const link = document.createElement('a');
-            link.href = format.url;
-            link.download = `kharal_${Date.now()}.${format.type === 'video' ? 'mp4' : 'mp3'}`;
-            link.setAttribute('download', '');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showSuccess(`✅ Download started! Video saving to your device...`);
-        }
-
-        function showLoading(show) {
-            document.getElementById('loading').style.display = show ? 'block' : 'none';
-            document.querySelector('.fetch-btn').disabled = show;
-        }
-
-        function showError(msg) {
-            const el = document.getElementById('errorMsg');
-            el.textContent = msg;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
-        }
-
-        function hideError() {
-            document.getElementById('errorMsg').style.display = 'none';
-        }
-
-        function showSuccess(msg) {
-            const el = document.getElementById('successMsg');
-            el.textContent = msg;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 4000);
-        }
-    </script>
 </body>
 </html>
