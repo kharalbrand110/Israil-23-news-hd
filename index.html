@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PAK GAME - Play & Earn</title>
+    <title>92GO - Play & Earn</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -23,11 +23,12 @@
             color: white;
         }
 
-        /* Header Logo */
+        /* Header */
         .main-header {
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             padding: 15px 20px;
             text-align: center;
+            position: relative;
         }
 
         .main-header h1 {
@@ -37,11 +38,6 @@
 
         .main-header h1 i {
             margin-right: 10px;
-        }
-
-        .main-header p {
-            font-size: 12px;
-            opacity: 0.9;
         }
 
         /* Auth Container */
@@ -56,17 +52,82 @@
         .auth-card {
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            padding: 40px;
+            padding: 35px;
             border-radius: 30px;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
         .auth-card h2 {
             color: #ff4757;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .auth-card > p {
+            text-align: center;
+            color: #8b92a8;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        /* Toggle Buttons */
+        .auth-toggle {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50px;
+            padding: 5px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #8b92a8;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: #ff4757;
+            color: white;
+        }
+
+        /* Phone Input Group */
+        .phone-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .country-code {
+            width: 100px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .phone-input {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
         }
 
         .auth-card input {
@@ -80,6 +141,34 @@
             font-size: 16px;
         }
 
+        .auth-card input::placeholder {
+            color: #8b92a8;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 12px;
+            color: #8b92a8;
+        }
+
+        .checkbox-group a {
+            color: #ff4757;
+            text-decoration: none;
+        }
+
         .auth-card button {
             width: 100%;
             padding: 15px;
@@ -91,22 +180,47 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s;
+            margin-top: 10px;
         }
 
         .auth-card button:hover {
             transform: scale(1.02);
         }
 
-        .switch-text {
+        .auth-footer {
             text-align: center;
             margin-top: 20px;
             font-size: 14px;
             color: #8b92a8;
         }
 
-        .switch-text span {
+        .auth-footer span {
             color: #ff4757;
             cursor: pointer;
+        }
+
+        .forgot-link {
+            text-align: right;
+            margin: 10px 0;
+        }
+
+        .forgot-link a {
+            color: #ff4757;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .customer-service {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .customer-service a {
+            color: #ff4757;
+            text-decoration: none;
+            font-size: 14px;
         }
 
         .error-msg {
@@ -120,7 +234,7 @@
             display: none;
         }
 
-        /* Main App Container */
+        /* Main App */
         .app-container {
             display: none;
             min-height: calc(100vh - 70px);
@@ -158,6 +272,12 @@
         .user-name {
             font-size: 18px;
             font-weight: bold;
+        }
+
+        .user-phone {
+            font-size: 12px;
+            color: #8b92a8;
+            margin-top: 5px;
         }
 
         .user-balance {
@@ -287,7 +407,7 @@
             cursor: pointer;
         }
 
-        /* Color Prediction Game */
+        /* Game Styles */
         .color-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -329,50 +449,6 @@
             font-weight: bold;
         }
 
-        /* Spin Wheel */
-        .wheel-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 20px auto;
-        }
-
-        .wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        .wheel-segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: 100% 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .spin-btn {
-            width: 100%;
-            padding: 15px;
-            background: #ff4757;
-            border: none;
-            border-radius: 15px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        /* Dice Game */
         .dice-container {
             text-align: center;
         }
@@ -389,7 +465,6 @@
             font-size: 48px;
             font-weight: bold;
             color: #1a1a2e;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .dice-buttons {
@@ -406,40 +481,8 @@
             border-radius: 10px;
             color: white;
             cursor: pointer;
-            font-weight: bold;
         }
 
-        /* Card Match Game */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .card {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .card.flipped {
-            background: #2ed573;
-        }
-
-        .card.matched {
-            background: #00a859;
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        /* Forms */
         .form-group {
             margin-bottom: 15px;
         }
@@ -451,7 +494,7 @@
             color: #8b92a8;
         }
 
-        .form-group input, .form-group select {
+        .form-group input {
             width: 100%;
             padding: 12px;
             background: rgba(255,255,255,0.1);
@@ -533,48 +576,92 @@
 
 <!-- Header -->
 <div class="main-header">
-    <h1><i class="fas fa-dice-d6"></i> PAK GAME</h1>
-    <p>Play, Predict, Win Big!</p>
+    <h1><i class="fas fa-dice-d6"></i> 92GO</h1>
 </div>
 
-<!-- Login/Register Section -->
+<!-- Auth Section -->
 <div id="authSection" class="auth-container">
-    <!-- Login Box -->
-    <div id="loginBox" class="auth-card">
-        <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
-        <div id="loginError" class="error-msg"></div>
-        <input type="email" id="loginEmail" placeholder="Email Address">
-        <input type="password" id="loginPassword" placeholder="Password">
-        <button onclick="handleLogin()">LOGIN</button>
-        <div class="switch-text">
-            Don't have an account? <span onclick="showRegister()">Create Account</span>
+    <div class="auth-card">
+        <div class="auth-toggle">
+            <button class="toggle-btn active" onclick="switchAuthTab('login')">Log in</button>
+            <button class="toggle-btn" onclick="switchAuthTab('register')">Register</button>
         </div>
-    </div>
 
-    <!-- Register Box -->
-    <div id="registerBox" class="auth-card" style="display:none;">
-        <h2><i class="fas fa-user-plus"></i> Create Account</h2>
-        <div id="registerError" class="error-msg"></div>
-        <input type="text" id="regName" placeholder="Full Name">
-        <input type="email" id="regEmail" placeholder="Email Address">
-        <input type="tel" id="regPhone" placeholder="Phone Number">
-        <input type="text" id="regRef" placeholder="Referral Code (Optional)">
-        <input type="password" id="regPassword" placeholder="Password (min 6 chars)">
-        <input type="password" id="regConfirm" placeholder="Confirm Password">
-        <button onclick="handleRegister()">REGISTER</button>
-        <div class="switch-text">
-            Already have an account? <span onclick="showLogin()">Login</span>
+        <!-- Login Form -->
+        <div id="loginForm">
+            <p>Please log in with your phone number or email</p>
+            
+            <div class="phone-group">
+                <select class="country-code" id="loginCountryCode">
+                    <option value="+92">+92</option>
+                    <option value="+91">+91</option>
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                </select>
+                <input type="tel" id="loginPhone" class="phone-input" placeholder="Phone number">
+            </div>
+            
+            <input type="password" id="loginPassword" placeholder="Password">
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="rememberPassword">
+                <label>Remember password</label>
+            </div>
+            
+            <button onclick="handleLogin()">Log in</button>
+            
+            <div class="forgot-link">
+                <a href="#" onclick="showForgotPassword()">Forgot password</a>
+            </div>
+            
+            <div class="customer-service">
+                <a href="#" onclick="openCustomerService()"><i class="fas fa-headset"></i> Customer Service</a>
+            </div>
         </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" style="display:none;">
+            <p>Please register by phone number</p>
+            
+            <div class="phone-group">
+                <select class="country-code" id="registerCountryCode">
+                    <option value="+92">+92</option>
+                    <option value="+91">+91</option>
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                </select>
+                <input type="tel" id="registerPhone" class="phone-input" placeholder="Please enter the phone number">
+            </div>
+            <p style="font-size: 11px; color: #ff4757; margin-top: -10px; margin-bottom: 15px;">The phone number cannot start with 0 when registering! Example: 3292359957</p>
+            
+            <input type="password" id="registerPassword" placeholder="Set password">
+            <input type="password" id="registerConfirm" placeholder="Confirm password">
+            <input type="text" id="inviteCode" placeholder="Invite code">
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="agreeTerms">
+                <label>I have read and agree <a href="#">Privacy Agreement</a></label>
+            </div>
+            
+            <button onclick="handleRegister()">Register</button>
+            
+            <div class="customer-service">
+                <a href="#" onclick="openCustomerService()"><i class="fas fa-headset"></i> Customer Service</a>
+            </div>
+        </div>
+
+        <div id="authError" class="error-msg"></div>
     </div>
 </div>
 
-<!-- Main App Section -->
+<!-- Main App -->
 <div id="appSection" class="app-container">
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="user-profile">
             <div class="user-avatar" id="userAvatar">U</div>
             <div class="user-name" id="userName">User</div>
+            <div class="user-phone" id="userPhone">-</div>
             <div class="user-balance">
                 <div class="label">Total Balance</div>
                 <div class="amount" id="userBalance">0</div>
@@ -601,7 +688,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Dashboard - Games Grid -->
+        <!-- Dashboard -->
         <div id="dashboardView">
             <h2 style="margin-bottom: 20px;"><i class="fas fa-gamepad"></i> Popular Games</h2>
             <div class="games-grid">
@@ -610,29 +697,19 @@
                     <h3>Color Prediction</h3>
                     <p>Predict Red, Green or Violet • Win up to 4.5x</p>
                 </div>
-                <div class="game-card" onclick="openGame('wheel')">
-                    <div class="game-icon"><i class="fas fa-cog"></i></div>
-                    <h3>Spin Wheel</h3>
-                    <p>Spin and win exciting prizes • 1x to 10x</p>
-                </div>
                 <div class="game-card" onclick="openGame('dice')">
                     <div class="game-icon"><i class="fas fa-cube"></i></div>
                     <h3>Dice Roll</h3>
                     <p>Predict dice number • Win up to 6x</p>
                 </div>
-                <div class="game-card" onclick="openGame('cards')">
-                    <div class="game-icon"><i class="fas fa-club"></i></div>
-                    <h3>Card Match</h3>
-                    <p>Match pairs to win • Memory game</p>
-                </div>
             </div>
         </div>
 
-        <!-- Wallet View -->
+        <!-- Wallet -->
         <div id="walletView" style="display:none;">
             <h2 style="margin-bottom: 20px;"><i class="fas fa-wallet"></i> My Wallet</h2>
             <div style="background: linear-gradient(135deg, #2ed573, #00a859); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 14px; opacity: 0.9;">Available Balance</div>
+                <div style="font-size: 14px;">Available Balance</div>
                 <div style="font-size: 48px; font-weight: bold;">Rs <span id="walletBalance">0</span></div>
             </div>
             
@@ -641,13 +718,12 @@
                 <button onclick="showWithdrawForm()" style="padding: 15px; background: #ff4757; border: none; border-radius: 15px; color: white; font-weight: bold;">💸 Withdraw</button>
             </div>
 
-            <!-- Deposit Form -->
             <div id="depositForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 20px;">
-                <h3 style="margin-bottom: 15px;">Deposit Funds</h3>
+                <h3>Deposit Funds</h3>
                 <img src="https://i.postimg.cc/C1dk468X/IMG-20260406-WA0034.jpg" class="qr-img">
                 <div class="upload-box" onclick="document.getElementById('depositFile').click()">
                     <input type="file" id="depositFile" accept="image/*" hidden onchange="previewDeposit(this)">
-                    <i class="fas fa-camera" style="font-size: 30px;"></i>
+                    <i class="fas fa-camera"></i>
                     <div>Upload Payment Screenshot</div>
                     <img id="depositPreview" style="width: 100%; max-height: 100px; border-radius: 10px; display: none; margin-top: 10px;">
                 </div>
@@ -659,12 +735,11 @@
                     <label>Transaction ID</label>
                     <input type="text" id="depositTxn" placeholder="Enter transaction ID">
                 </div>
-                <button onclick="submitDeposit()" style="width: 100%; padding: 12px; background: #2ed573; border: none; border-radius: 10px;">Submit Request</button>
+                <button onclick="submitDeposit()" style="background: #2ed573;">Submit Request</button>
             </div>
 
-            <!-- Withdraw Form -->
             <div id="withdrawForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; display: none;">
-                <h3 style="margin-bottom: 15px;">Withdraw Funds</h3>
+                <h3>Withdraw Funds</h3>
                 <div class="form-group">
                     <label>Select Method</label>
                     <select id="withdrawMethod">
@@ -684,11 +759,11 @@
                     <label>Amount (Min 1000)</label>
                     <input type="number" id="withdrawAmount" placeholder="Enter amount">
                 </div>
-                <button onclick="submitWithdraw()" style="width: 100%; padding: 12px; background: #ff4757; border: none; border-radius: 10px;">Submit Request</button>
+                <button onclick="submitWithdraw()" style="background: #ff4757;">Submit Request</button>
             </div>
         </div>
 
-        <!-- History View -->
+        <!-- History -->
         <div id="historyView" style="display:none;">
             <h2 style="margin-bottom: 20px;"><i class="fas fa-history"></i> Game History</h2>
             <div class="history-list" id="gameHistoryList">
@@ -696,18 +771,18 @@
             </div>
         </div>
 
-        <!-- Referral View -->
+        <!-- Referral -->
         <div id="referralView" style="display:none;">
             <h2 style="margin-bottom: 20px;"><i class="fas fa-users"></i> Referral Program</h2>
             <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 25px; text-align: center;">
                 <i class="fas fa-gift" style="font-size: 50px; color: #ff4757;"></i>
-                <h3 style="margin: 15px 0;">Invite Friends & Earn</h3>
-                <p style="font-size: 14px; opacity: 0.8;">Get 5% commission on every deposit from your referrals</p>
+                <h3>Invite Friends & Earn</h3>
+                <p style="font-size: 14px;">Get 5% commission on every deposit from your referrals</p>
                 <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin: 20px 0;">
                     <div style="font-size: 12px;">Your Referral Code</div>
                     <div id="referralCode" style="font-size: 24px; font-weight: bold; color: #ff4757;">LOADING</div>
                 </div>
-                <button onclick="copyReferral()" style="width: 100%; padding: 12px; background: #ff4757; border: none; border-radius: 10px;">Copy Referral Link</button>
+                <button onclick="copyReferral()" style="background: #ff4757;">Copy Referral Link</button>
                 
                 <h4 style="margin: 20px 0 10px;">Commission History</h4>
                 <div id="commissionList" class="history-list" style="max-height: 200px;">
@@ -750,9 +825,7 @@
     let currentUser = null;
     let userData = null;
     let depositFile = null;
-    let currentGame = null;
     
-    // Colors for prediction game
     const multipliers = { red: 2, green: 2, violet: 4.5 };
     
     function showToast(msg) {
@@ -763,30 +836,46 @@
         setTimeout(() => toast.remove(), 3000);
     }
     
-    function showLogin() {
-        document.getElementById('loginBox').style.display = 'block';
-        document.getElementById('registerBox').style.display = 'none';
-        document.getElementById('loginError').style.display = 'none';
-        document.getElementById('registerError').style.display = 'none';
+    function switchAuthTab(tab) {
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const btns = document.querySelectorAll('.toggle-btn');
+        
+        if(tab === 'login') {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            btns[0].classList.add('active');
+            btns[1].classList.remove('active');
+        } else {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            btns[0].classList.remove('active');
+            btns[1].classList.add('active');
+        }
+        document.getElementById('authError').style.display = 'none';
     }
     
-    function showRegister() {
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('registerBox').style.display = 'block';
-        document.getElementById('loginError').style.display = 'none';
-        document.getElementById('registerError').style.display = 'none';
+    function showForgotPassword() {
+        showToast("Contact customer service to reset password: +92 3292359957");
+    }
+    
+    function openCustomerService() {
+        window.open("https://wa.me/923292359957", "_blank");
     }
     
     async function handleRegister() {
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const phone = document.getElementById('regPhone').value;
-        const refCode = document.getElementById('regRef').value;
-        const password = document.getElementById('regPassword').value;
-        const confirm = document.getElementById('regConfirm').value;
-        const errorDiv = document.getElementById('registerError');
+        const countryCode = document.getElementById('registerCountryCode').value;
+        let phone = document.getElementById('registerPhone').value;
+        const password = document.getElementById('registerPassword').value;
+        const confirm = document.getElementById('registerConfirm').value;
+        const inviteCode = document.getElementById('inviteCode').value;
+        const agree = document.getElementById('agreeTerms').checked;
+        const errorDiv = document.getElementById('authError');
         
-        if(!name || !email || !phone || !password) {
+        // Remove leading zero
+        phone = phone.replace(/^0+/, '');
+        
+        if(!phone || !password) {
             errorDiv.style.display = 'block';
             errorDiv.innerHTML = 'Please fill all fields';
             return;
@@ -801,67 +890,66 @@
             errorDiv.innerHTML = 'Password must be at least 6 characters';
             return;
         }
+        if(!agree) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = 'Please agree to the Privacy Agreement';
+            return;
+        }
+        
+        const fullPhone = countryCode + phone;
+        const email = phone + '@92go.com';
         
         errorDiv.style.display = 'none';
         
         try {
             const userCred = await auth.createUserWithEmailAndPassword(email, password);
             await db.ref('users/' + userCred.user.uid).set({
-                username: name,
+                username: 'User_' + phone,
+                phone: fullPhone,
                 email: email,
-                phone: phone,
-                balance: 100, // Welcome bonus
+                balance: 100,
                 uid: userCred.user.uid,
                 status: 'active',
                 joinedDate: new Date().toLocaleString(),
-                referredBy: refCode || 'none',
+                referredBy: inviteCode || 'none',
                 pendingCommission: 0
             });
             
-            // Add bonus to referrer
-            if(refCode && refCode !== 'none') {
-                const refSnap = await db.ref('users').orderByChild('uid').equalTo(refCode).once('value');
+            if(inviteCode && inviteCode !== 'none') {
+                const refSnap = await db.ref('users').orderByChild('uid').equalTo(inviteCode).once('value');
                 if(refSnap.exists()) {
                     const referrer = Object.values(refSnap.val())[0];
-                    await db.ref('users/' + refCode).update({
+                    await db.ref('users/' + inviteCode).update({
                         balance: (referrer.balance || 0) + 50,
                         pendingCommission: (referrer.pendingCommission || 0) + 50
-                    });
-                    await db.ref('commissionHistory').push({
-                        referrerUID: refCode,
-                        fromUID: userCred.user.uid,
-                        fromUsername: name,
-                        amount: 50,
-                        date: new Date().toLocaleString()
                     });
                 }
             }
             
-            showToast("Account created successfully! Welcome bonus: Rs 100");
-            showLogin();
+            showToast("Account created! Welcome bonus: Rs 100");
+            switchAuthTab('login');
+            document.getElementById('loginPhone').value = phone;
         } catch(err) {
             errorDiv.style.display = 'block';
-            if(err.code === 'auth/email-already-in-use') {
-                errorDiv.innerHTML = 'Email already registered. Please login.';
-            } else if(err.code === 'auth/weak-password') {
-                errorDiv.innerHTML = 'Password is too weak. Use at least 6 characters.';
-            } else {
-                errorDiv.innerHTML = err.message;
-            }
+            errorDiv.innerHTML = err.message;
         }
     }
     
     async function handleLogin() {
-        const email = document.getElementById('loginEmail').value;
+        const countryCode = document.getElementById('loginCountryCode').value;
+        let phone = document.getElementById('loginPhone').value;
         const password = document.getElementById('loginPassword').value;
-        const errorDiv = document.getElementById('loginError');
+        const errorDiv = document.getElementById('authError');
         
-        if(!email || !password) {
+        phone = phone.replace(/^0+/, '');
+        
+        if(!phone || !password) {
             errorDiv.style.display = 'block';
-            errorDiv.innerHTML = 'Please enter email and password';
+            errorDiv.innerHTML = 'Please enter phone and password';
             return;
         }
         
+        const email = phone + '@92go.com';
         errorDiv.style.display = 'none';
         
         try {
@@ -871,11 +959,9 @@
         } catch(err) {
             errorDiv.style.display = 'block';
             if(err.code === 'auth/user-not-found') {
-                errorDiv.innerHTML = 'No account found with this email. Please register first.';
+                errorDiv.innerHTML = 'Account not found. Please register first.';
             } else if(err.code === 'auth/wrong-password') {
-                errorDiv.innerHTML = 'Incorrect password. Please try again.';
-            } else if(err.code === 'auth/invalid-email') {
-                errorDiv.innerHTML = 'Invalid email format.';
+                errorDiv.innerHTML = 'Incorrect password.';
             } else {
                 errorDiv.innerHTML = err.message;
             }
@@ -887,6 +973,7 @@
             userData = snap.val();
             if(userData) {
                 document.getElementById('userName').innerText = userData.username;
+                document.getElementById('userPhone').innerText = userData.phone;
                 document.getElementById('userAvatar').innerText = userData.username.charAt(0).toUpperCase();
                 document.getElementById('userBalance').innerText = (userData.balance || 0).toFixed(2);
                 document.getElementById('walletBalance').innerText = (userData.balance || 0).toFixed(2);
@@ -905,7 +992,7 @@
         auth.signOut();
         document.getElementById('authSection').style.display = 'flex';
         document.getElementById('appSection').style.display = 'none';
-        showLogin();
+        switchAuthTab('login');
     }
     
     function showDashboard() {
@@ -997,7 +1084,7 @@
         const txn = document.getElementById('depositTxn').value;
         
         if(!depositFile) { showToast("Upload screenshot"); return; }
-        if(amount < 300) { showToast("Minimum deposit amount is Rs 300"); return; }
+        if(amount < 300) { showToast("Min deposit Rs 300"); return; }
         if(!txn) { showToast("Enter transaction ID"); return; }
         
         compressImage(depositFile, async (compressed) => {
@@ -1011,7 +1098,7 @@
                 date: new Date().toLocaleString(),
                 referredBy: userData.referredBy || 'none'
             });
-            showToast("Deposit request submitted! Will be approved within 12 hours.");
+            showToast("Deposit request submitted!");
             document.getElementById('depositAmount').value = '';
             document.getElementById('depositTxn').value = '';
             document.getElementById('depositPreview').style.display = 'none';
@@ -1026,8 +1113,8 @@
         const amount = parseFloat(document.getElementById('withdrawAmount').value);
         
         if(!account || !name) { showToast("Enter account details"); return; }
-        if(amount < 1000) { showToast("Minimum withdrawal amount is Rs 1000"); return; }
-        if(amount > (userData?.balance || 0)) { showToast("Insufficient balance!"); return; }
+        if(amount < 1000) { showToast("Min withdrawal Rs 1000"); return; }
+        if(amount > (userData?.balance || 0)) { showToast("Insufficient balance"); return; }
         
         await db.ref('users/' + currentUser.uid).update({
             balance: (userData.balance || 0) - amount
@@ -1058,15 +1145,14 @@
         
         const items = Object.values(history).reverse();
         if(items.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:40px;">No game history yet. Play a game to get started!</div>';
+            container.innerHTML = '<div style="text-align:center; padding:40px;">No game history yet</div>';
             return;
         }
         
         items.forEach(item => {
-            const resultClass = item.isWin ? 'win' : 'loss';
             container.innerHTML += `
                 <div class="history-item">
-                    <div><i class="fas fa-gamepad"></i> ${item.game || 'Game'}</div>
+                    <div><i class="fas fa-gamepad"></i> ${item.game}</div>
                     <div>Bet: Rs ${item.amount}</div>
                     <div style="color: ${item.isWin ? '#2ed573' : '#ff4757'}">${item.isWin ? `+Rs ${item.winAmount}` : `-Rs ${item.amount}`}</div>
                     <div style="font-size: 11px;">${item.date || ''}</div>
@@ -1083,7 +1169,7 @@
         
         const items = Object.values(commissions).reverse();
         if(items.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px;">No commissions yet. Invite friends to earn!</div>';
+            container.innerHTML = '<div style="text-align:center; padding:20px;">No commissions yet</div>';
             return;
         }
         
@@ -1101,12 +1187,11 @@
     function copyReferral() {
         const link = window.location.origin + window.location.pathname + "?ref=" + currentUser.uid;
         navigator.clipboard.writeText(link);
-        showToast("Referral link copied! Share with friends.");
+        showToast("Referral link copied!");
     }
     
     // Game Functions
     function openGame(game) {
-        currentGame = game;
         const modal = document.getElementById('gameModal');
         const content = document.getElementById('gameContent');
         const title = document.getElementById('gameTitle');
@@ -1116,29 +1201,21 @@
         if(game === 'color') {
             title.innerHTML = '<i class="fas fa-chart-line"></i> Color Prediction';
             content.innerHTML = getColorGameHTML();
-        } else if(game === 'wheel') {
-            title.innerHTML = '<i class="fas fa-cog"></i> Spin Wheel';
-            content.innerHTML = getWheelGameHTML();
         } else if(game === 'dice') {
             title.innerHTML = '<i class="fas fa-cube"></i> Dice Roll';
             content.innerHTML = getDiceGameHTML();
-        } else if(game === 'cards') {
-            title.innerHTML = '<i class="fas fa-club"></i> Card Match';
-            content.innerHTML = getCardGameHTML();
-            setTimeout(() => initCardGame(), 100);
         }
     }
     
     function closeGame() {
         document.getElementById('gameModal').style.display = 'none';
-        currentGame = null;
     }
     
     function getColorGameHTML() {
         return `
             <div class="result-display">
                 <div class="result-circle" id="colorResult">?</div>
-                <div id="colorTimer" style="font-size: 24px; font-weight: bold;">Click to play</div>
+                <div id="colorTimer" style="font-size: 24px;">Click to play</div>
             </div>
             <div class="color-buttons">
                 <button class="color-btn red" onclick="playColorGame('red')">RED<br><small>2x</small></button>
@@ -1163,7 +1240,6 @@
             return;
         }
         
-        // Random result
         const random = Math.random();
         let result;
         if(random < 0.4) result = 'red';
@@ -1172,9 +1248,8 @@
         
         const isWin = (color === result);
         let winAmount = 0;
-        
-        // Update balance
         let newBalance = (userData.balance || 0) - amount;
+        
         if(isWin) {
             winAmount = amount * multipliers[color];
             newBalance += winAmount;
@@ -1182,12 +1257,10 @@
         
         await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
         
-        // Show result
         const resultDiv = document.getElementById('colorResult');
         resultDiv.style.background = result === 'red' ? '#ff4757' : (result === 'green' ? '#2ed573' : '#9b59b6');
         resultDiv.innerHTML = result.toUpperCase();
         
-        // Save bet
         await db.ref('bets/' + currentUser.uid).push({
             game: 'Color Prediction',
             color: color,
@@ -1202,7 +1275,7 @@
         if(isWin) {
             showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
         } else {
-            showToast(`😞 You lost Rs ${amount.toFixed(2)}! Result was ${result.toUpperCase()}`);
+            showToast(`😞 You lost! Result was ${result.toUpperCase()}`);
         }
         
         loadGameHistory();
@@ -1210,70 +1283,6 @@
             resultDiv.innerHTML = '?';
             resultDiv.style.background = '';
         }, 2000);
-    }
-    
-    function getWheelGameHTML() {
-        const segments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const colors = ['#ff4757', '#2ed573', '#3498db', '#f39c12', '#9b59b6', '#e74c3c', '#1abc9c', '#e67e22', '#2c3e50', '#16a085'];
-        let wheelHtml = '';
-        const angle = 360 / segments.length;
-        for(let i = 0; i < segments.length; i++) {
-            wheelHtml += `<div class="wheel-segment" style="transform: rotate(${i * angle}deg); background: ${colors[i]}; width: 50%; height: 50%; border-radius: 0 100% 0 0; transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center; padding-left: 30px; font-size: 14px;">${segments[i]}x</div>`;
-        }
-        
-        return `
-            <div class="wheel-container">
-                <div class="wheel" id="wheel" style="transform: rotate(0deg);">
-                    ${wheelHtml}
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Bet Amount</label>
-                <input type="number" id="wheelBetAmount" placeholder="Enter amount" value="100">
-            </div>
-            <button class="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
-            <div id="wheelResult" style="text-align: center; margin-top: 15px;"></div>
-        `;
-    }
-    
-    async function spinWheel() {
-        const amount = parseFloat(document.getElementById('wheelBetAmount')?.value);
-        if(isNaN(amount) || amount <= 0) {
-            showToast("Enter valid amount");
-            return;
-        }
-        if(amount > (userData?.balance || 0)) {
-            showToast("Insufficient balance!");
-            return;
-        }
-        
-        const wheel = document.getElementById('wheel');
-        const spinDegree = 360 * 5 + Math.random() * 360;
-        wheel.style.transform = `rotate(${spinDegree}deg)`;
-        
-        // Calculate result (simplified)
-        const multiplier = Math.floor(Math.random() * 10) + 1;
-        const winAmount = amount * multiplier;
-        
-        setTimeout(async () => {
-            let newBalance = (userData.balance || 0) - amount + winAmount;
-            await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
-            
-            document.getElementById('wheelResult').innerHTML = `<div style="color: #2ed573;">🎉 You won ${multiplier}x = Rs ${winAmount.toFixed(2)}!</div>`;
-            
-            await db.ref('bets/' + currentUser.uid).push({
-                game: 'Spin Wheel',
-                amount: amount,
-                multiplier: multiplier,
-                winAmount: winAmount,
-                isWin: true,
-                date: new Date().toLocaleString(),
-                timestamp: Date.now()
-            });
-            
-            showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
-            loadGameHistory();
-        }, 4000);
     }
     
     function getDiceGameHTML() {
@@ -1311,7 +1320,6 @@
         const dice = document.getElementById('dice');
         const result = Math.floor(Math.random() * 6) + 1;
         
-        // Animation
         let rolls = 0;
         const interval = setInterval(() => {
             dice.innerHTML = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)];
@@ -1327,9 +1335,9 @@
                 if(isWin) {
                     winAmount = amount * 6;
                     newBalance += winAmount;
-                    document.getElementById('diceResult').innerHTML = `<div style="color: #2ed573;">🎉 You won! Number ${result} came! +Rs ${winAmount}</div>`;
+                    document.getElementById('diceResult').innerHTML = `<div style="color: #2ed573;">🎉 You won! Number ${result} came!</div>`;
                 } else {
-                    document.getElementById('diceResult').innerHTML = `<div style="color: #ff4757;">😞 You lost! Number ${result} came, you bet on ${prediction}</div>`;
+                    document.getElementById('diceResult').innerHTML = `<div style="color: #ff4757;">😞 You lost! Number ${result} came</div>`;
                 }
                 
                 await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
@@ -1346,104 +1354,20 @@
                 });
                 
                 if(isWin) showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
-                else showToast(`😞 You lost Rs ${amount.toFixed(2)}!`);
+                else showToast(`😞 You lost! Number ${result} came`);
                 loadGameHistory();
+                setTimeout(() => {
+                    document.getElementById('diceResult').innerHTML = '';
+                }, 3000);
             }
         }, 100);
-    }
-    
-    function getCardGameHTML() {
-        return `
-            <div class="cards-grid" id="cardsGrid"></div>
-            <div class="form-group">
-                <label>Bet Amount</label>
-                <input type="number" id="cardBetAmount" placeholder="Enter amount" value="100">
-            </div>
-            <div id="cardResult"></div>
-        `;
-    }
-    
-    function initCardGame() {
-        const icons = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼'];
-        let cards = [...icons, ...icons];
-        for (let i = cards.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [cards[i], cards[j]] = [cards[j], cards[i]];
-        }
-        
-        const grid = document.getElementById('cardsGrid');
-        grid.innerHTML = '';
-        let flipped = [];
-        let matched = [];
-        
-        cards.forEach((icon, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.dataset.icon = icon;
-            card.dataset.index = index;
-            card.innerHTML = '?';
-            card.onclick = () => flipCard(card, icon, index, cards, flipped, matched);
-            grid.appendChild(card);
-        });
-        
-        window.cardGameData = { cards, flipped, matched };
-    }
-    
-    async function flipCard(card, icon, index, cards, flipped, matched) {
-        if(card.classList.contains('flipped') || card.classList.contains('matched')) return;
-        if(flipped.length >= 2) return;
-        
-        card.classList.add('flipped');
-        card.innerHTML = icon;
-        flipped.push({ card, icon, index });
-        
-        if(flipped.length === 2) {
-            const [first, second] = flipped;
-            if(first.icon === second.icon && first.index !== second.index) {
-                first.card.classList.add('matched');
-                second.card.classList.add('matched');
-                matched.push(first.index, second.index);
-                
-                const amount = parseFloat(document.getElementById('cardBetAmount')?.value);
-                if(!isNaN(amount) && amount > 0 && amount <= (userData?.balance || 0)) {
-                    const winAmount = amount * 2;
-                    let newBalance = (userData.balance || 0) - amount + winAmount;
-                    await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
-                    
-                    await db.ref('bets/' + currentUser.uid).push({
-                        game: 'Card Match',
-                        amount: amount,
-                        winAmount: winAmount,
-                        isWin: true,
-                        date: new Date().toLocaleString(),
-                        timestamp: Date.now()
-                    });
-                    
-                    document.getElementById('cardResult').innerHTML = `<div style="color: #2ed573;">🎉 Match found! You won Rs ${winAmount.toFixed(2)}!</div>`;
-                    showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
-                    loadGameHistory();
-                    setTimeout(() => {
-                        document.getElementById('cardResult').innerHTML = '';
-                    }, 3000);
-                }
-            } else {
-                setTimeout(() => {
-                    first.card.classList.remove('flipped');
-                    second.card.classList.remove('flipped');
-                    first.card.innerHTML = '?';
-                    second.card.innerHTML = '?';
-                }, 1000);
-            }
-            flipped = [];
-        }
     }
     
     // Check referral in URL
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
     if(refCode) {
-        const refInput = document.getElementById('regRef');
-        if(refInput) refInput.value = refCode;
+        document.getElementById('inviteCode').value = refCode;
     }
     
     auth.onAuthStateChanged(user => {
