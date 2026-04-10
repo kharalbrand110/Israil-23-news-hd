@@ -28,7 +28,6 @@
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             padding: 15px 20px;
             text-align: center;
-            position: relative;
         }
 
         .main-header h1 {
@@ -589,7 +588,7 @@
 
         <!-- Login Form -->
         <div id="loginForm">
-            <p>Please log in with your phone number or email</p>
+            <p>Please log in with your phone number</p>
             
             <div class="phone-group">
                 <select class="country-code" id="loginCountryCode">
@@ -630,13 +629,13 @@
                     <option value="+1">+1</option>
                     <option value="+44">+44</option>
                 </select>
-                <input type="tel" id="registerPhone" class="phone-input" placeholder="Please enter the phone number">
+                <input type="tel" id="registerPhone" class="phone-input" placeholder="Phone number">
             </div>
-            <p style="font-size: 11px; color: #ff4757; margin-top: -10px; margin-bottom: 15px;">The phone number cannot start with 0 when registering! Example: 3292359957</p>
+            <p style="font-size: 11px; color: #ff4757; margin-top: -10px; margin-bottom: 15px;">Phone number cannot start with 0! Example: 3292359957</p>
             
             <input type="password" id="registerPassword" placeholder="Set password">
             <input type="password" id="registerConfirm" placeholder="Confirm password">
-            <input type="text" id="inviteCode" placeholder="Invite code">
+            <input type="text" id="inviteCode" placeholder="Invite code (optional)">
             
             <div class="checkbox-group">
                 <input type="checkbox" id="agreeTerms">
@@ -714,8 +713,8 @@
             </div>
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
-                <button onclick="showDepositForm()" style="padding: 15px; background: #2ed573; border: none; border-radius: 15px; color: white; font-weight: bold;">💰 Deposit</button>
-                <button onclick="showWithdrawForm()" style="padding: 15px; background: #ff4757; border: none; border-radius: 15px; color: white; font-weight: bold;">💸 Withdraw</button>
+                <button onclick="showDepositForm()" style="padding: 15px; background: #2ed573; border: none; border-radius: 15px; color: white; font-weight: bold; cursor:pointer;">💰 Deposit</button>
+                <button onclick="showWithdrawForm()" style="padding: 15px; background: #ff4757; border: none; border-radius: 15px; color: white; font-weight: bold; cursor:pointer;">💸 Withdraw</button>
             </div>
 
             <div id="depositForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 20px;">
@@ -735,7 +734,7 @@
                     <label>Transaction ID</label>
                     <input type="text" id="depositTxn" placeholder="Enter transaction ID">
                 </div>
-                <button onclick="submitDeposit()" style="background: #2ed573;">Submit Request</button>
+                <button onclick="submitDeposit()" style="background: #2ed573; cursor:pointer;">Submit Request</button>
             </div>
 
             <div id="withdrawForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; display: none;">
@@ -759,7 +758,7 @@
                     <label>Amount (Min 1000)</label>
                     <input type="number" id="withdrawAmount" placeholder="Enter amount">
                 </div>
-                <button onclick="submitWithdraw()" style="background: #ff4757;">Submit Request</button>
+                <button onclick="submitWithdraw()" style="background: #ff4757; cursor:pointer;">Submit Request</button>
             </div>
         </div>
 
@@ -782,7 +781,7 @@
                     <div style="font-size: 12px;">Your Referral Code</div>
                     <div id="referralCode" style="font-size: 24px; font-weight: bold; color: #ff4757;">LOADING</div>
                 </div>
-                <button onclick="copyReferral()" style="background: #ff4757;">Copy Referral Link</button>
+                <button onclick="copyReferral()" style="background: #ff4757; cursor:pointer;">Copy Referral Link</button>
                 
                 <h4 style="margin: 20px 0 10px;">Commission History</h4>
                 <div id="commissionList" class="history-list" style="max-height: 200px;">
@@ -805,6 +804,7 @@
 </div>
 
 <script>
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyD5DvpTiKztjQ_RivjOHqEsNh9K6MMFQJI",
         authDomain: "kharal-b47b6.firebaseapp.com",
@@ -1367,7 +1367,10 @@
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
     if(refCode) {
-        document.getElementById('inviteCode').value = refCode;
+        setTimeout(() => {
+            const inviteInput = document.getElementById('inviteCode');
+            if(inviteInput) inviteInput.value = refCode;
+        }, 500);
     }
     
     auth.onAuthStateChanged(user => {
