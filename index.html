@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PAK GAME - Color Prediction</title>
+    <title>PAK GAME - Play & Earn</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -23,17 +23,38 @@
             color: white;
         }
 
-        /* Login Page */
-        .login-container {
-            min-height: 100vh;
+        /* Header Logo */
+        .main-header {
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            padding: 15px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+
+        .main-header h1 i {
+            margin-right: 10px;
+        }
+
+        .main-header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Login/Register Page */
+        .auth-container {
+            min-height: calc(100vh - 70px);
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0a0f1e, #1a1a2e);
             padding: 20px;
         }
 
-        .login-card {
+        .auth-card {
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             padding: 40px;
@@ -43,14 +64,13 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .login-card h2 {
+        .auth-card h2 {
             color: #ff4757;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 28px;
         }
 
-        .login-card input {
+        .auth-card input {
             width: 100%;
             padding: 15px;
             margin-bottom: 15px;
@@ -61,7 +81,7 @@
             font-size: 16px;
         }
 
-        .login-card button {
+        .auth-card button {
             width: 100%;
             padding: 15px;
             background: linear-gradient(135deg, #ff4757, #ff6b81);
@@ -74,203 +94,369 @@
             transition: transform 0.3s;
         }
 
-        .login-card button:hover {
+        .auth-card button:hover {
             transform: scale(1.02);
         }
 
-        .message {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 10px;
+        .switch-text {
             text-align: center;
-            display: none;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #8b92a8;
         }
 
-        .error { background: rgba(231,76,60,0.2); color: #e74c3c; }
-        .success { background: rgba(46,204,113,0.2); color: #2ecc71; }
-
-        /* Main Game UI */
-        .game-container {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+        .switch-text span {
+            color: #ff4757;
+            cursor: pointer;
         }
 
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+        /* Main App Container */
+        .app-container {
+            display: none;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
             background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-            margin-bottom: 20px;
+            position: fixed;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .user-profile {
+            padding: 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .avatar {
-            width: 50px;
-            height: 50px;
+        .user-avatar {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background: linear-gradient(135deg, #ff4757, #ff6b81);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            margin: 0 auto 15px;
+            font-size: 32px;
             font-weight: bold;
         }
 
-        .balance-card {
-            background: linear-gradient(135deg, #2ed573, #00a859);
-            padding: 15px 25px;
-            border-radius: 20px;
-            text-align: center;
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
         }
 
-        .balance-card .label {
+        .user-balance {
+            background: linear-gradient(135deg, #2ed573, #00a859);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        .user-balance .label {
             font-size: 12px;
             opacity: 0.8;
         }
 
-        .balance-card .amount {
+        .user-balance .amount {
             font-size: 24px;
             font-weight: bold;
         }
 
-        /* Game Area */
-        .game-area {
-            background: rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 20px;
-            text-align: center;
+        .sidebar-menu {
+            padding: 20px 0;
         }
 
-        .result-circle {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin: 0 auto 30px;
+        .menu-item {
+            padding: 15px 25px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: bold;
-            transition: all 0.5s;
-            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #8b92a8;
         }
 
-        .result-circle.red {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            box-shadow: 0 0 30px rgba(255,71,87,0.5);
-        }
-
-        .result-circle.green {
-            background: linear-gradient(135deg, #2ed573, #00a859);
-            box-shadow: 0 0 30px rgba(46,213,115,0.5);
-        }
-
-        .result-circle.violet {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            box-shadow: 0 0 30px rgba(155,89,182,0.5);
-        }
-
-        .timer {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 20px 0;
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,71,87,0.1);
             color: #ff4757;
+            border-left: 3px solid #ff4757;
         }
 
-        /* Bet Buttons */
-        .bet-buttons {
+        .menu-item i {
+            width: 24px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 20px;
+        }
+
+        /* Games Grid */
+        .games-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
             margin-bottom: 30px;
         }
 
-        .bet-btn {
+        .game-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,71,87,0.1);
+            border-color: #ff4757;
+        }
+
+        .game-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .game-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .game-card p {
+            font-size: 12px;
+            color: #8b92a8;
+        }
+
+        /* Game Modal */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-modal-content {
+            background: linear-gradient(135deg, #0f1422, #1a1a2e);
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            border: 1px solid rgba(255,71,87,0.3);
+        }
+
+        .game-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Color Prediction Game */
+        .color-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-btn {
             padding: 20px;
             border: none;
-            border-radius: 20px;
-            font-size: 20px;
+            border-radius: 15px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s;
         }
 
-        .bet-btn.red {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: white;
-        }
+        .color-btn.red { background: linear-gradient(135deg, #ff4757, #ff6b81); }
+        .color-btn.green { background: linear-gradient(135deg, #2ed573, #00a859); }
+        .color-btn.violet { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
 
-        .bet-btn.green {
-            background: linear-gradient(135deg, #2ed573, #00a859);
-            color: white;
-        }
-
-        .bet-btn.violet {
-            background: linear-gradient(135deg, #9b59b6, #8e44ad);
-            color: white;
-        }
-
-        .bet-btn:hover {
-            transform: scale(1.05);
-        }
-
-        .bet-btn:disabled {
-            opacity: 0.5;
-            transform: none;
-            cursor: not-allowed;
-        }
-
-        /* Bet Input */
-        .bet-input-area {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .bet-input-area input {
-            flex: 1;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 15px;
-            color: white;
-            font-size: 16px;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 12px;
+        .result-display {
+            text-align: center;
+            padding: 30px;
             background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .result-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Spin Wheel */
+        .wheel-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 20px auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .spin-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff4757;
             border: none;
             border-radius: 15px;
             color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Dice Game */
+        .dice-container {
+            text-align: center;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 20px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #1a1a2e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .dice-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .dice-buttons button {
+            flex: 1;
+            padding: 12px;
+            background: #ff4757;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Card Match Game */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff4757, #ff6b81);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
-        .tab.active {
-            background: #ff4757;
+        .card.flipped {
+            background: #2ed573;
         }
 
-        /* History List */
+        .card.matched {
+            background: #00a859;
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        /* Deposit/Withdraw Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #8b92a8;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .upload-box {
+            border: 2px dashed #ff4757;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
         .history-list {
             max-height: 300px;
             overflow-y: auto;
@@ -279,121 +465,21 @@
         .history-item {
             background: rgba(255,255,255,0.05);
             padding: 12px;
-            border-radius: 15px;
+            border-radius: 10px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .history-color {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-        }
-
-        .history-color.red { background: #ff4757; }
-        .history-color.green { background: #2ed573; }
-        .history-color.violet { background: #9b59b6; }
-
-        .win { color: #2ed573; }
-        .loss { color: #ff4757; }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .nav-item {
-            text-align: center;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-
-        .nav-item.active {
-            background: #ff4757;
-        }
-
-        .nav-item i {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .nav-item span {
-            font-size: 11px;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #1a1a2e;
-            padding: 25px;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .modal-content h3 {
-            margin-bottom: 20px;
-            color: #ff4757;
-        }
-
-        .modal-content input, .modal-content select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            color: white;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #ff4757;
-            border-radius: 10px;
-        }
-
         .toast {
             position: fixed;
-            bottom: 80px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: #ff4757;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 50px;
             z-index: 10001;
             animation: fadeOut 3s ease forwards;
@@ -404,182 +490,227 @@
             70% { opacity: 1; }
             100% { opacity: 0; visibility: hidden; }
         }
+
+        .qr-img {
+            width: 200px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar .user-profile h3, .sidebar .menu-item span {
+                display: none;
+            }
+            .user-balance .amount {
+                font-size: 16px;
+            }
+            .main-content {
+                margin-left: 80px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- Login Page -->
-<div id="loginPage" class="login-container">
-    <div class="login-card">
-        <h2><i class="fas fa-dice"></i> PAK GAME</h2>
-        <div id="autoCreateBox" style="display:none; background:rgba(46,204,113,0.1); border:1px solid #2ecc71; border-radius:10px; padding:15px; margin-bottom:20px; text-align:center;">
-            <p>No account? Create one:</p>
-            <button onclick="autoCreateDemoUser()" style="background:#2ecc71; margin-top:10px;">Create Demo Account</button>
-        </div>
-        <input type="email" id="loginEmail" placeholder="Email">
+<!-- Header -->
+<div class="main-header">
+    <h1><i class="fas fa-dice-d6"></i> PAK GAME</h1>
+    <p>Play, Predict, Win Big!</p>
+</div>
+
+<!-- Login/Register Section -->
+<div id="authSection" class="auth-container">
+    <div id="loginBox" class="auth-card">
+        <h2><i class="fas fa-sign-in-alt"></i> Welcome Back</h2>
+        <input type="email" id="loginEmail" placeholder="Email Address">
         <input type="password" id="loginPassword" placeholder="Password">
-        <button onclick="handleLogin()"><i class="fas fa-sign-in-alt"></i> LOGIN</button>
-        <div id="loginMessage" class="message"></div>
-        <div style="text-align:center; margin-top:20px; font-size:12px; color:#8b92a8;">
-            Demo: demo@pakgame.com / demo123
+        <button onclick="handleLogin()">LOGIN</button>
+        <div class="switch-text">
+            New to PAK GAME? <span onclick="showRegister()">Create Account</span>
+        </div>
+    </div>
+
+    <div id="registerBox" class="auth-card" style="display:none;">
+        <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+        <input type="text" id="regName" placeholder="Full Name">
+        <input type="email" id="regEmail" placeholder="Email Address">
+        <input type="tel" id="regPhone" placeholder="Phone Number">
+        <input type="text" id="regRef" placeholder="Referral Code (Optional)">
+        <input type="password" id="regPassword" placeholder="Password (min 6 chars)">
+        <input type="password" id="regConfirm" placeholder="Confirm Password">
+        <button onclick="handleRegister()">REGISTER</button>
+        <div class="switch-text">
+            Already have account? <span onclick="showLogin()">Login</span>
         </div>
     </div>
 </div>
 
-<!-- Main Game Container -->
-<div id="gameContainer" class="game-container">
-    <!-- Header -->
-    <div class="header">
-        <div class="user-info">
-            <div class="avatar" id="userAvatar">U</div>
-            <div>
-                <div id="userName" style="font-weight:bold">Loading...</div>
-                <div style="font-size:11px; opacity:0.7">ID: <span id="userId">-</span></div>
+<!-- Main App Section -->
+<div id="appSection" class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-name" id="userName">User</div>
+            <div class="user-balance">
+                <div class="label">Total Balance</div>
+                <div class="amount" id="userBalance">0</div>
             </div>
         </div>
-        <div class="balance-card">
-            <div class="label">Balance</div>
-            <div class="amount" id="balanceAmount">0</div>
-        </div>
-    </div>
-
-    <!-- Game Area -->
-    <div class="game-area">
-        <div class="result-circle" id="resultCircle">
-            <i class="fas fa-dice"></i>
-        </div>
-        <div class="timer" id="timer">5</div>
-        
-        <div class="bet-buttons">
-            <button class="bet-btn red" onclick="placeBet('red')">
-                <i class="fas fa-fire"></i> RED<br>
-                <small>2x</small>
-            </button>
-            <button class="bet-btn green" onclick="placeBet('green')">
-                <i class="fas fa-leaf"></i> GREEN<br>
-                <small>2x</small>
-            </button>
-            <button class="bet-btn violet" onclick="placeBet('violet')">
-                <i class="fas fa-gem"></i> VIOLET<br>
-                <small>4.5x</small>
-            </button>
-        </div>
-
-        <div class="bet-input-area">
-            <input type="number" id="betAmount" placeholder="Enter amount" value="100">
-        </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab active" onclick="showTab('history')">📜 History</button>
-        <button class="tab" onclick="showTab('deposit')">💰 Deposit</button>
-        <button class="tab" onclick="showTab('withdraw')">💸 Withdraw</button>
-        <button class="tab" onclick="showTab('referral')">👥 Referral</button>
-    </div>
-
-    <!-- History Tab -->
-    <div id="historyTab" class="tab-content">
-        <div class="history-list" id="historyList">
-            <div style="text-align:center; padding:20px;">No bets placed yet</div>
-        </div>
-    </div>
-
-    <!-- Deposit Tab -->
-    <div id="depositTab" class="tab-content" style="display:none;">
-        <div style="background:rgba(255,255,255,0.05); border-radius:20px; padding:20px;">
-            <div style="text-align:center; margin-bottom:20px;">
-                <img src="https://i.postimg.cc/C1dk468X/IMG-20260406-WA0034.jpg" style="width:200px; border-radius:20px;">
-                <p style="margin-top:10px; font-size:12px;">Scan QR to send payment</p>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="showDashboard()">
+                <i class="fas fa-home"></i><span> Dashboard</span>
             </div>
-            <div class="upload-box" style="border:1px dashed #ff4757; border-radius:15px; padding:20px; text-align:center; cursor:pointer;" onclick="document.getElementById('depositFile').click()">
-                <input type="file" id="depositFile" accept="image/*" hidden onchange="previewDeposit(this)">
-                <i class="fas fa-camera" style="font-size:30px; color:#ff4757;"></i>
-                <div style="font-size:12px; margin-top:5px;">Upload Screenshot</div>
-                <img id="depositPreview" style="width:100%; max-height:100px; border-radius:10px; display:none; margin-top:10px;">
+            <div class="menu-item" onclick="showWallet()">
+                <i class="fas fa-wallet"></i><span> Wallet</span>
             </div>
-            <input type="number" id="depositAmount" placeholder="Amount (Min 300)" style="width:100%; padding:12px; margin:15px 0; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-            <input type="text" id="depositTxn" placeholder="Transaction ID" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-            <button onclick="submitDeposit()" style="width:100%; padding:15px; background:#ff4757; border:none; border-radius:15px; color:white; font-weight:bold;">Submit Request</button>
+            <div class="menu-item" onclick="showHistory()">
+                <i class="fas fa-history"></i><span> History</span>
+            </div>
+            <div class="menu-item" onclick="showReferral()">
+                <i class="fas fa-users"></i><span> Referral</span>
+            </div>
+            <div class="menu-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i><span> Logout</span>
+            </div>
         </div>
     </div>
 
-    <!-- Withdraw Tab -->
-    <div id="withdrawTab" class="tab-content" style="display:none;">
-        <div style="background:rgba(255,255,255,0.05); border-radius:20px; padding:20px;">
-            <div style="background:linear-gradient(135deg, #2ed573, #00a859); padding:20px; border-radius:15px; text-align:center; margin-bottom:20px;">
-                <div style="font-size:12px;">Available Balance</div>
-                <div style="font-size:28px; font-weight:bold;" id="withdrawBalance">0</div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard - Games Grid -->
+        <div id="dashboardView">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-gamepad"></i> Popular Games</h2>
+            <div class="games-grid">
+                <div class="game-card" onclick="openGame('color')">
+                    <div class="game-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Color Prediction</h3>
+                    <p>Predict Red, Green or Violet • Win up to 4.5x</p>
+                </div>
+                <div class="game-card" onclick="openGame('wheel')">
+                    <div class="game-icon"><i class="fas fa-cog"></i></div>
+                    <h3>Spin Wheel</h3>
+                    <p>Spin and win exciting prizes • 1x to 10x</p>
+                </div>
+                <div class="game-card" onclick="openGame('dice')">
+                    <div class="game-icon"><i class="fas fa-cube"></i></div>
+                    <h3>Dice Roll</h3>
+                    <p>Predict dice number • Win up to 6x</p>
+                </div>
+                <div class="game-card" onclick="openGame('cards')">
+                    <div class="game-icon"><i class="fas fa-club"></i></div>
+                    <h3>Card Match</h3>
+                    <p>Match pairs to win • Memory game</p>
+                </div>
             </div>
-            <select id="withdrawMethod" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-                <option value="EasyPaisa">EasyPaisa</option>
-                <option value="JazzCash">JazzCash</option>
-            </select>
-            <input type="text" id="withdrawAccount" placeholder="Account Number" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-            <input type="text" id="withdrawName" placeholder="Account Holder Name" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-            <input type="number" id="withdrawAmount" placeholder="Amount (Min 1000)" style="width:100%; padding:12px; margin-bottom:15px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:10px; color:white;">
-            <button onclick="submitWithdraw()" style="width:100%; padding:15px; background:#ff4757; border:none; border-radius:15px; color:white; font-weight:bold;">Submit Request</button>
         </div>
-    </div>
 
-    <!-- Referral Tab -->
-    <div id="referralTab" class="tab-content" style="display:none;">
-        <div style="background:rgba(255,255,255,0.05); border-radius:20px; padding:20px; text-align:center;">
-            <i class="fas fa-gift" style="font-size:50px; color:#ff4757;"></i>
-            <h3 style="margin:15px 0;">Refer & Earn</h3>
-            <p style="font-size:12px; opacity:0.8;">Get 5% commission on every deposit from your referrals</p>
-            <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:15px; margin:20px 0;">
-                <div style="font-size:11px;">Your Referral Code</div>
-                <div id="referralCode" style="font-size:20px; font-weight:bold; color:#ff4757;">LOADING</div>
+        <!-- Wallet View -->
+        <div id="walletView" style="display:none;">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-wallet"></i> My Wallet</h2>
+            <div style="background: linear-gradient(135deg, #2ed573, #00a859); padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 14px; opacity: 0.9;">Available Balance</div>
+                <div style="font-size: 48px; font-weight: bold;">Rs <span id="walletBalance">0</span></div>
             </div>
-            <button onclick="copyReferral()" style="width:100%; padding:12px; background:#ff4757; border:none; border-radius:15px; color:white; font-weight:bold;">
-                <i class="fas fa-copy"></i> Copy Referral Link
-            </button>
-            <div style="margin-top:20px;">
-                <div style="font-size:14px; font-weight:bold;">Commission History</div>
-                <div id="commissionHistory" style="margin-top:10px; max-height:200px; overflow-y:auto;">
-                    <div style="text-align:center; padding:10px;">No commissions yet</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+                <button onclick="showDepositForm()" style="padding: 15px; background: #2ed573; border: none; border-radius: 15px; color: white; font-weight: bold;">💰 Deposit</button>
+                <button onclick="showWithdrawForm()" style="padding: 15px; background: #ff4757; border: none; border-radius: 15px; color: white; font-weight: bold;">💸 Withdraw</button>
+            </div>
+
+            <!-- Deposit Form -->
+            <div id="depositForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">Deposit Funds</h3>
+                <img src="https://i.postimg.cc/C1dk468X/IMG-20260406-WA0034.jpg" class="qr-img">
+                <div class="upload-box" onclick="document.getElementById('depositFile').click()">
+                    <input type="file" id="depositFile" accept="image/*" hidden onchange="previewDeposit(this)">
+                    <i class="fas fa-camera" style="font-size: 30px;"></i>
+                    <div>Upload Payment Screenshot</div>
+                    <img id="depositPreview" style="width: 100%; max-height: 100px; border-radius: 10px; display: none; margin-top: 10px;">
+                </div>
+                <div class="form-group">
+                    <label>Amount (Min 300)</label>
+                    <input type="number" id="depositAmount" placeholder="Enter amount">
+                </div>
+                <div class="form-group">
+                    <label>Transaction ID</label>
+                    <input type="text" id="depositTxn" placeholder="Enter transaction ID">
+                </div>
+                <button onclick="submitDeposit()" style="width: 100%; padding: 12px; background: #2ed573; border: none; border-radius: 10px;">Submit Request</button>
+            </div>
+
+            <!-- Withdraw Form -->
+            <div id="withdrawForm" style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 20px; display: none;">
+                <h3 style="margin-bottom: 15px;">Withdraw Funds</h3>
+                <div class="form-group">
+                    <label>Select Method</label>
+                    <select id="withdrawMethod">
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="JazzCash">JazzCash</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Account Number</label>
+                    <input type="text" id="withdrawAccount" placeholder="03XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Account Holder Name</label>
+                    <input type="text" id="withdrawName" placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label>Amount (Min 1000)</label>
+                    <input type="number" id="withdrawAmount" placeholder="Enter amount">
+                </div>
+                <button onclick="submitWithdraw()" style="width: 100%; padding: 12px; background: #ff4757; border: none; border-radius: 10px;">Submit Request</button>
+            </div>
+        </div>
+
+        <!-- History View -->
+        <div id="historyView" style="display:none;">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-history"></i> Game History</h2>
+            <div class="history-list" id="gameHistoryList">
+                <div style="text-align: center; padding: 40px;">No history yet</div>
+            </div>
+        </div>
+
+        <!-- Referral View -->
+        <div id="referralView" style="display:none;">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-users"></i> Referral Program</h2>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 25px; text-align: center;">
+                <i class="fas fa-gift" style="font-size: 50px; color: #ff4757;"></i>
+                <h3 style="margin: 15px 0;">Invite Friends & Earn</h3>
+                <p style="font-size: 14px; opacity: 0.8;">Get 5% commission on every deposit from your referrals</p>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin: 20px 0;">
+                    <div style="font-size: 12px;">Your Referral Code</div>
+                    <div id="referralCode" style="font-size: 24px; font-weight: bold; color: #ff4757;">LOADING</div>
+                </div>
+                <button onclick="copyReferral()" style="width: 100%; padding: 12px; background: #ff4757; border: none; border-radius: 10px;">Copy Referral Link</button>
+                
+                <h4 style="margin: 20px 0 10px;">Commission History</h4>
+                <div id="commissionList" class="history-list" style="max-height: 200px;">
+                    <div style="text-align: center; padding: 20px;">No commissions yet</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchNav('game')">
-            <i class="fas fa-gamepad"></i>
-            <span>Game</span>
-        </div>
-        <div class="nav-item" onclick="switchNav('history')">
-            <i class="fas fa-history"></i>
-            <span>History</span>
-        </div>
-        <div class="nav-item" onclick="switchNav('wallet')">
-            <i class="fas fa-wallet"></i>
-            <span>Wallet</span>
-        </div>
-        <div class="nav-item" onclick="switchNav('profile')">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </div>
-    </div>
 </div>
 
-<!-- Profile Modal (Hidden) -->
-<div id="profileModal" class="modal">
-    <div class="modal-content">
-        <h3><i class="fas fa-user"></i> Profile</h3>
-        <p><strong>Name:</strong> <span id="profileName"></span></p>
-        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-        <p><strong>Phone:</strong> <span id="profilePhone"></span></p>
-        <p><strong>Joined:</strong> <span id="profileJoined"></span></p>
-        <button onclick="closeProfileModal()" style="width:100%; margin-top:20px;">Close</button>
-        <button onclick="logout()" style="width:100%; margin-top:10px; background:#e74c3c;">Logout</button>
+<!-- Game Modal -->
+<div id="gameModal" class="game-modal">
+    <div class="game-modal-content">
+        <div class="game-modal-header">
+            <h2 id="gameTitle">Game</h2>
+            <button class="close-modal" onclick="closeGame()">&times;</button>
+        </div>
+        <div id="gameContent"></div>
     </div>
 </div>
 
 <script>
-    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyD5DvpTiKztjQ_RivjOHqEsNh9K6MMFQJI",
         authDomain: "kharal-b47b6.firebaseapp.com",
@@ -599,14 +730,10 @@
     
     let currentUser = null;
     let userData = null;
-    let gameInterval = null;
-    let currentResult = null;
-    let timer = 5;
-    let isGameActive = true;
     let depositFile = null;
+    let currentGame = null;
     
-    // Colors and multipliers
-    const colors = ['red', 'green', 'violet'];
+    // Colors for prediction game
     const multipliers = { red: 2, green: 2, violet: 4.5 };
     
     function showToast(msg) {
@@ -617,39 +744,67 @@
         setTimeout(() => toast.remove(), 3000);
     }
     
-    function showMessage(msg, type) {
-        const msgDiv = document.getElementById('loginMessage');
-        msgDiv.innerHTML = msg;
-        msgDiv.className = 'message ' + type;
-        msgDiv.style.display = 'block';
-        setTimeout(() => msgDiv.style.display = 'none', 3000);
+    function showLogin() {
+        document.getElementById('loginBox').style.display = 'block';
+        document.getElementById('registerBox').style.display = 'none';
     }
     
-    // Auto create demo user
-    async function autoCreateDemoUser() {
+    function showRegister() {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('registerBox').style.display = 'block';
+    }
+    
+    async function handleRegister() {
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const phone = document.getElementById('regPhone').value;
+        const refCode = document.getElementById('regRef').value;
+        const password = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('regConfirm').value;
+        
+        if(!name || !email || !phone || !password) {
+            showToast("Fill all fields");
+            return;
+        }
+        if(password !== confirm) {
+            showToast("Passwords don't match");
+            return;
+        }
+        if(password.length < 6) {
+            showToast("Password min 6 characters");
+            return;
+        }
+        
         try {
-            const userCred = await auth.createUserWithEmailAndPassword('demo@pakgame.com', 'demo123');
+            const userCred = await auth.createUserWithEmailAndPassword(email, password);
             await db.ref('users/' + userCred.user.uid).set({
-                username: 'Demo User',
-                email: 'demo@pakgame.com',
-                phone: '03000000000',
-                balance: 5000,
-                depositBalance: 0,
+                username: name,
+                email: email,
+                phone: phone,
+                balance: 100, // Welcome bonus
                 uid: userCred.user.uid,
                 status: 'active',
                 joinedDate: new Date().toLocaleString(),
-                referredBy: 'none',
+                referredBy: refCode || 'none',
                 pendingCommission: 0
             });
-            showMessage("Demo account created! Login with: demo@pakgame.com / demo123", "success");
-            document.getElementById('autoCreateBox').style.display = 'none';
-        } catch(err) {
-            if(err.code === 'auth/email-already-in-use') {
-                showMessage("Demo account already exists! Just login.", "success");
-                document.getElementById('autoCreateBox').style.display = 'none';
-            } else {
-                showMessage("Error: " + err.message, "error");
+            
+            // Add bonus to referrer
+            if(refCode && refCode !== 'none') {
+                const refSnap = await db.ref('users').orderByChild('uid').equalTo(refCode).once('value');
+                if(refSnap.exists()) {
+                    const referrer = Object.values(refSnap.val())[0];
+                    await db.ref('users/' + refCode).update({
+                        balance: (referrer.balance || 0) + 50,
+                        pendingCommission: (referrer.pendingCommission || 0) + 50
+                    });
+                }
             }
+            
+            showToast("Account created! Welcome bonus: Rs 100");
+            showLogin();
+        } catch(err) {
+            showToast(err.message);
         }
     }
     
@@ -658,221 +813,91 @@
         const password = document.getElementById('loginPassword').value;
         
         if(!email || !password) {
-            showMessage("Enter email and password", "error");
+            showToast("Enter email and password");
             return;
         }
         
         try {
             const userCred = await auth.signInWithEmailAndPassword(email, password);
             currentUser = userCred.user;
-            startGame();
+            loadUserData();
         } catch(err) {
-            if(err.code === 'auth/user-not-found') {
-                showMessage("Account not found! Create demo account or register.", "error");
-                document.getElementById('autoCreateBox').style.display = 'block';
-            } else {
-                showMessage("Login failed: " + err.message, "error");
-            }
+            showToast("Login failed: " + err.message);
         }
+    }
+    
+    async function loadUserData() {
+        db.ref('users/' + currentUser.uid).on('value', snap => {
+            userData = snap.val();
+            if(userData) {
+                document.getElementById('userName').innerText = userData.username;
+                document.getElementById('userAvatar').innerText = userData.username.charAt(0).toUpperCase();
+                document.getElementById('userBalance').innerText = (userData.balance || 0).toFixed(2);
+                document.getElementById('walletBalance').innerText = (userData.balance || 0).toFixed(2);
+                document.getElementById('referralCode').innerText = currentUser.uid;
+            }
+        });
+        
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('appSection').style.display = 'block';
+        showDashboard();
+        loadGameHistory();
+        loadCommissionHistory();
     }
     
     function logout() {
         auth.signOut();
-        if(gameInterval) clearInterval(gameInterval);
-        document.getElementById('gameContainer').style.display = 'none';
-        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('authSection').style.display = 'flex';
+        document.getElementById('appSection').style.display = 'none';
+        showLogin();
     }
     
-    async function startGame() {
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('gameContainer').style.display = 'block';
-        
-        // Load user data
-        db.ref('users/' + currentUser.uid).on('value', snap => {
-            userData = snap.val();
-            if(userData) {
-                document.getElementById('balanceAmount').innerText = (userData.balance || 0).toFixed(2);
-                document.getElementById('withdrawBalance').innerText = (userData.balance || 0).toFixed(2);
-                document.getElementById('userName').innerText = userData.username || 'User';
-                document.getElementById('userId').innerText = currentUser.uid.substring(0, 8);
-                document.getElementById('userAvatar').innerText = (userData.username || 'U').charAt(0).toUpperCase();
-                document.getElementById('referralCode').innerText = currentUser.uid;
-                
-                // Profile data
-                document.getElementById('profileName').innerText = userData.username || 'N/A';
-                document.getElementById('profileEmail').innerText = userData.email || 'N/A';
-                document.getElementById('profilePhone').innerText = userData.phone || 'N/A';
-                document.getElementById('profileJoined').innerText = userData.joinedDate || 'N/A';
-            }
-        });
-        
-        // Load history
-        loadBetHistory();
+    function showDashboard() {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        event.target.closest('.menu-item').classList.add('active');
+        document.getElementById('dashboardView').style.display = 'block';
+        document.getElementById('walletView').style.display = 'none';
+        document.getElementById('historyView').style.display = 'none';
+        document.getElementById('referralView').style.display = 'none';
+    }
+    
+    function showWallet() {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        event.target.closest('.menu-item').classList.add('active');
+        document.getElementById('dashboardView').style.display = 'none';
+        document.getElementById('walletView').style.display = 'block';
+        document.getElementById('historyView').style.display = 'none';
+        document.getElementById('referralView').style.display = 'none';
+    }
+    
+    function showHistory() {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        event.target.closest('.menu-item').classList.add('active');
+        document.getElementById('dashboardView').style.display = 'none';
+        document.getElementById('walletView').style.display = 'none';
+        document.getElementById('historyView').style.display = 'block';
+        document.getElementById('referralView').style.display = 'none';
+        loadGameHistory();
+    }
+    
+    function showReferral() {
+        document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+        event.target.closest('.menu-item').classList.add('active');
+        document.getElementById('dashboardView').style.display = 'none';
+        document.getElementById('walletView').style.display = 'none';
+        document.getElementById('historyView').style.display = 'none';
+        document.getElementById('referralView').style.display = 'block';
         loadCommissionHistory();
-        
-        // Start game timer
-        startGameTimer();
     }
     
-    function startGameTimer() {
-        if(gameInterval) clearInterval(gameInterval);
-        timer = 5;
-        isGameActive = true;
-        enableBetButtons(true);
-        
-        gameInterval = setInterval(() => {
-            if(timer > 0) {
-                timer--;
-                document.getElementById('timer').innerText = timer;
-            } else {
-                // Generate result
-                const random = Math.random();
-                let result;
-                if(random < 0.4) result = 'red';
-                else if(random < 0.8) result = 'green';
-                else result = 'violet';
-                
-                currentResult = result;
-                
-                // Animate result
-                const circle = document.getElementById('resultCircle');
-                circle.className = 'result-circle ' + result;
-                
-                if(result === 'red') circle.innerHTML = '<i class="fas fa-fire"></i> RED';
-                else if(result === 'green') circle.innerHTML = '<i class="fas fa-leaf"></i> GREEN';
-                else circle.innerHTML = '<i class="fas fa-gem"></i> VIOLET';
-                
-                // Save result to history
-                db.ref('gameResults').push({
-                    result: result,
-                    timestamp: Date.now(),
-                    time: new Date().toLocaleTimeString()
-                });
-                
-                // Load last 10 results
-                loadLastResults();
-                
-                timer = 5;
-                document.getElementById('timer').innerText = timer;
-                enableBetButtons(true);
-            }
-        }, 1000);
+    function showDepositForm() {
+        document.getElementById('depositForm').style.display = 'block';
+        document.getElementById('withdrawForm').style.display = 'none';
     }
     
-    function enableBetButtons(enable) {
-        const btns = document.querySelectorAll('.bet-btn');
-        btns.forEach(btn => {
-            if(enable) btn.disabled = false;
-            else btn.disabled = true;
-        });
-    }
-    
-    async function placeBet(color) {
-        if(!isGameActive || timer > 0) {
-            showToast("Wait for next round!");
-            return;
-        }
-        
-        const amount = parseFloat(document.getElementById('betAmount').value);
-        if(isNaN(amount) || amount <= 0) {
-            showToast("Enter valid amount");
-            return;
-        }
-        
-        if(amount > (userData?.balance || 0)) {
-            showToast("Insufficient balance!");
-            return;
-        }
-        
-        // Deduct amount
-        const newBalance = (userData.balance || 0) - amount;
-        await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
-        
-        // Check if won
-        const isWin = (color === currentResult);
-        let winAmount = 0;
-        
-        if(isWin) {
-            winAmount = amount * multipliers[color];
-            const finalBalance = newBalance + winAmount;
-            await db.ref('users/' + currentUser.uid).update({ balance: finalBalance });
-            showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
-        } else {
-            showToast(`😞 You lost Rs ${amount.toFixed(2)}! Result was ${currentResult.toUpperCase()}`);
-        }
-        
-        // Save bet history
-        await db.ref('bets/' + currentUser.uid).push({
-            color: color,
-            amount: amount,
-            result: currentResult,
-            isWin: isWin,
-            winAmount: winAmount,
-            timestamp: Date.now(),
-            date: new Date().toLocaleString()
-        });
-        
-        // Disable betting for this round
-        enableBetButtons(false);
-        loadBetHistory();
-    }
-    
-    async function loadBetHistory() {
-        const betsSnap = await db.ref('bets/' + currentUser.uid).limitToLast(20).once('value');
-        const bets = betsSnap.val() || {};
-        const container = document.getElementById('historyList');
-        container.innerHTML = '';
-        
-        const betsArray = Object.values(bets).reverse();
-        
-        if(betsArray.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:20px;">No bets placed yet</div>';
-            return;
-        }
-        
-        betsArray.forEach(bet => {
-            const colorClass = bet.color;
-            const resultClass = bet.isWin ? 'win' : 'loss';
-            container.innerHTML += `
-                <div class="history-item">
-                    <div class="history-color ${colorClass}"></div>
-                    <div><strong>${bet.color.toUpperCase()}</strong><br><small>Rs ${bet.amount}</small></div>
-                    <div>→</div>
-                    <div>${bet.result?.toUpperCase() || '?'}</div>
-                    <div class="${resultClass}">${bet.isWin ? `+Rs ${bet.winAmount}` : `-Rs ${bet.amount}`}</div>
-                </div>
-            `;
-        });
-    }
-    
-    async function loadLastResults() {
-        const resultsSnap = await db.ref('gameResults').limitToLast(10).once('value');
-        const results = resultsSnap.val() || {};
-        // Just for display, we don't need to show anywhere
-    }
-    
-    async function loadCommissionHistory() {
-        const commSnap = await db.ref('commissionHistory').orderByChild('referrerUID').equalTo(currentUser.uid).limitToLast(10).once('value');
-        const commissions = commSnap.val() || {};
-        const container = document.getElementById('commissionHistory');
-        container.innerHTML = '';
-        
-        const commArray = Object.values(commissions).reverse();
-        
-        if(commArray.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:10px;">No commissions yet</div>';
-            return;
-        }
-        
-        commArray.forEach(comm => {
-            container.innerHTML += `
-                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:10px; margin-bottom:5px;">
-                    <div><strong>${comm.fromUsername}</strong> deposited</div>
-                    <div style="color:#2ed573;">+Rs ${comm.amount.toFixed(2)} commission</div>
-                    <div style="font-size:10px; opacity:0.7;">${comm.date}</div>
-                </div>
-            `;
-        });
+    function showWithdrawForm() {
+        document.getElementById('depositForm').style.display = 'none';
+        document.getElementById('withdrawForm').style.display = 'block';
     }
     
     function previewDeposit(input) {
@@ -917,7 +942,7 @@
         
         if(!depositFile) { showToast("Upload screenshot"); return; }
         if(amount < 300) { showToast("Min deposit 300"); return; }
-        if(!txn) { showToast("Enter Transaction ID"); return; }
+        if(!txn) { showToast("Enter transaction ID"); return; }
         
         compressImage(depositFile, async (compressed) => {
             await db.ref('deposits').push({
@@ -969,71 +994,336 @@
         document.getElementById('withdrawAmount').value = '';
     }
     
+    async function loadGameHistory() {
+        const historySnap = await db.ref('bets/' + currentUser.uid).limitToLast(20).once('value');
+        const history = historySnap.val() || {};
+        const container = document.getElementById('gameHistoryList');
+        container.innerHTML = '';
+        
+        const items = Object.values(history).reverse();
+        if(items.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:40px;">No game history yet</div>';
+            return;
+        }
+        
+        items.forEach(item => {
+            const resultClass = item.isWin ? 'win' : 'loss';
+            container.innerHTML += `
+                <div class="history-item">
+                    <div><i class="fas fa-gamepad"></i> ${item.game || 'Game'}</div>
+                    <div>Bet: Rs ${item.amount}</div>
+                    <div class="${resultClass}">${item.isWin ? `+Rs ${item.winAmount}` : `-Rs ${item.amount}`}</div>
+                    <div style="font-size: 11px;">${item.date || ''}</div>
+                </div>
+            `;
+        });
+    }
+    
+    async function loadCommissionHistory() {
+        const commSnap = await db.ref('commissionHistory').orderByChild('referrerUID').equalTo(currentUser.uid).limitToLast(10).once('value');
+        const commissions = commSnap.val() || {};
+        const container = document.getElementById('commissionList');
+        container.innerHTML = '';
+        
+        const items = Object.values(commissions).reverse();
+        if(items.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px;">No commissions yet</div>';
+            return;
+        }
+        
+        items.forEach(comm => {
+            container.innerHTML += `
+                <div class="history-item">
+                    <div>${comm.fromUsername}</div>
+                    <div style="color: #2ed573;">+Rs ${comm.amount}</div>
+                    <div style="font-size: 11px;">${comm.date}</div>
+                </div>
+            `;
+        });
+    }
+    
     function copyReferral() {
         const link = window.location.origin + window.location.pathname + "?ref=" + currentUser.uid;
         navigator.clipboard.writeText(link);
         showToast("Referral link copied!");
     }
     
-    function showTab(tab) {
-        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-        document.getElementById(tab + 'Tab').style.display = 'block';
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
-    }
-    
-    function switchNav(nav) {
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        event.target.closest('.nav-item').classList.add('active');
+    // Game Functions
+    function openGame(game) {
+        currentGame = game;
+        const modal = document.getElementById('gameModal');
+        const content = document.getElementById('gameContent');
+        const title = document.getElementById('gameTitle');
         
-        if(nav === 'game') {
-            document.querySelector('.game-area').style.display = 'block';
-            document.querySelector('.tabs').style.display = 'flex';
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById('historyTab').style.display = 'block';
-        } else if(nav === 'history') {
-            document.querySelector('.game-area').style.display = 'none';
-            document.querySelector('.tabs').style.display = 'none';
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById('historyTab').style.display = 'block';
-            loadBetHistory();
-        } else if(nav === 'wallet') {
-            document.querySelector('.game-area').style.display = 'none';
-            document.querySelector('.tabs').style.display = 'flex';
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-            document.getElementById('depositTab').style.display = 'block';
-        } else if(nav === 'profile') {
-            document.getElementById('profileModal').style.display = 'flex';
+        modal.style.display = 'flex';
+        
+        if(game === 'color') {
+            title.innerHTML = '<i class="fas fa-chart-line"></i> Color Prediction';
+            content.innerHTML = getColorGameHTML();
+        } else if(game === 'wheel') {
+            title.innerHTML = '<i class="fas fa-cog"></i> Spin Wheel';
+            content.innerHTML = getWheelGameHTML();
+        } else if(game === 'dice') {
+            title.innerHTML = '<i class="fas fa-cube"></i> Dice Roll';
+            content.innerHTML = getDiceGameHTML();
+        } else if(game === 'cards') {
+            title.innerHTML = '<i class="fas fa-club"></i> Card Match';
+            content.innerHTML = getCardGameHTML();
         }
     }
     
-    function closeProfileModal() {
-        document.getElementById('profileModal').style.display = 'none';
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.querySelector('.nav-item').classList.add('active');
+    function closeGame() {
+        document.getElementById('gameModal').style.display = 'none';
+        currentGame = null;
     }
     
-    // Check for referral in URL
+    function getColorGameHTML() {
+        return `
+            <div class="result-display">
+                <div class="result-circle" id="colorResult">?</div>
+                <div id="colorTimer" style="font-size: 24px; font-weight: bold;">Click to play</div>
+            </div>
+            <div class="color-buttons">
+                <button class="color-btn red" onclick="playColorGame('red')">RED<br><small>2x</small></button>
+                <button class="color-btn green" onclick="playColorGame('green')">GREEN<br><small>2x</small></button>
+                <button class="color-btn violet" onclick="playColorGame('violet')">VIOLET<br><small>4.5x</small></button>
+            </div>
+            <div class="form-group">
+                <label>Bet Amount</label>
+                <input type="number" id="colorBetAmount" placeholder="Enter amount" value="100">
+            </div>
+        `;
+    }
+    
+    async function playColorGame(color) {
+        const amount = parseFloat(document.getElementById('colorBetAmount')?.value);
+        if(isNaN(amount) || amount <= 0) {
+            showToast("Enter valid amount");
+            return;
+        }
+        if(amount > (userData?.balance || 0)) {
+            showToast("Insufficient balance!");
+            return;
+        }
+        
+        // Random result
+        const random = Math.random();
+        let result;
+        if(random < 0.4) result = 'red';
+        else if(random < 0.8) result = 'green';
+        else result = 'violet';
+        
+        const isWin = (color === result);
+        let winAmount = 0;
+        
+        // Update balance
+        let newBalance = (userData.balance || 0) - amount;
+        if(isWin) {
+            winAmount = amount * multipliers[color];
+            newBalance += winAmount;
+        }
+        
+        await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
+        
+        // Show result
+        const resultDiv = document.getElementById('colorResult');
+        resultDiv.style.background = result === 'red' ? '#ff4757' : (result === 'green' ? '#2ed573' : '#9b59b6');
+        resultDiv.innerHTML = result.toUpperCase();
+        
+        // Save bet
+        await db.ref('bets/' + currentUser.uid).push({
+            game: 'Color Prediction',
+            color: color,
+            amount: amount,
+            result: result,
+            isWin: isWin,
+            winAmount: winAmount,
+            date: new Date().toLocaleString(),
+            timestamp: Date.now()
+        });
+        
+        if(isWin) {
+            showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
+        } else {
+            showToast(`😞 You lost Rs ${amount.toFixed(2)}! Result was ${result.toUpperCase()}`);
+        }
+        
+        loadGameHistory();
+        setTimeout(() => {
+            resultDiv.innerHTML = '?';
+            resultDiv.style.background = '';
+        }, 2000);
+    }
+    
+    function getWheelGameHTML() {
+        return `
+            <div class="wheel-container">
+                <div class="wheel" id="wheel" style="transform: rotate(0deg);">
+                    ${getWheelSegments()}
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Bet Amount</label>
+                <input type="number" id="wheelBetAmount" placeholder="Enter amount" value="100">
+            </div>
+            <button class="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
+            <div id="wheelResult" style="text-align: center; margin-top: 15px;"></div>
+        `;
+    }
+    
+    function getWheelSegments() {
+        const segments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const colors = ['#ff4757', '#2ed573', '#3498db', '#f39c12', '#9b59b6', '#e74c3c', '#1abc9c', '#e67e22', '#2c3e50', '#16a085'];
+        let html = '';
+        const angle = 360 / segments.length;
+        for(let i = 0; i < segments.length; i++) {
+            html += `<div class="wheel-segment" style="transform: rotate(${i * angle}deg); background: ${colors[i]}; width: 50%; height: 50%; border-radius: 0 100% 0 0; transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center; padding-left: 30px;">${segments[i]}x</div>`;
+        }
+        return html;
+    }
+    
+    async function spinWheel() {
+        const amount = parseFloat(document.getElementById('wheelBetAmount')?.value);
+        if(isNaN(amount) || amount <= 0) {
+            showToast("Enter valid amount");
+            return;
+        }
+        if(amount > (userData?.balance || 0)) {
+            showToast("Insufficient balance!");
+            return;
+        }
+        
+        const wheel = document.getElementById('wheel');
+        const spinDegree = 360 * 5 + Math.random() * 360;
+        wheel.style.transform = `rotate(${spinDegree}deg)`;
+        
+        // Calculate result (simplified)
+        const multiplier = Math.floor(Math.random() * 10) + 1;
+        const winAmount = amount * multiplier;
+        
+        setTimeout(async () => {
+            let newBalance = (userData.balance || 0) - amount + winAmount;
+            await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
+            
+            document.getElementById('wheelResult').innerHTML = `🎉 You won ${multiplier}x = Rs ${winAmount.toFixed(2)}!`;
+            
+            await db.ref('bets/' + currentUser.uid).push({
+                game: 'Spin Wheel',
+                amount: amount,
+                multiplier: multiplier,
+                winAmount: winAmount,
+                isWin: true,
+                date: new Date().toLocaleString(),
+                timestamp: Date.now()
+            });
+            
+            showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
+            loadGameHistory();
+        }, 4000);
+    }
+    
+    function getDiceGameHTML() {
+        return `
+            <div class="dice-container">
+                <div class="dice" id="dice">🎲</div>
+                <div class="dice-buttons">
+                    <button onclick="rollDice(1)">1</button>
+                    <button onclick="rollDice(2)">2</button>
+                    <button onclick="rollDice(3)">3</button>
+                    <button onclick="rollDice(4)">4</button>
+                    <button onclick="rollDice(5)">5</button>
+                    <button onclick="rollDice(6)">6</button>
+                </div>
+                <div class="form-group">
+                    <label>Bet Amount</label>
+                    <input type="number" id="diceBetAmount" placeholder="Enter amount" value="100">
+                </div>
+                <div id="diceResult"></div>
+            </div>
+        `;
+    }
+    
+    async function rollDice(prediction) {
+        const amount = parseFloat(document.getElementById('diceBetAmount')?.value);
+        if(isNaN(amount) || amount <= 0) {
+            showToast("Enter valid amount");
+            return;
+        }
+        if(amount > (userData?.balance || 0)) {
+            showToast("Insufficient balance!");
+            return;
+        }
+        
+        const dice = document.getElementById('dice');
+        const result = Math.floor(Math.random() * 6) + 1;
+        
+        // Animation
+        let rolls = 0;
+        const interval = setInterval(() => {
+            dice.innerHTML = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][Math.floor(Math.random() * 6)];
+            rolls++;
+            if(rolls > 10) {
+                clearInterval(interval);
+                dice.innerHTML = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'][result - 1];
+                
+                const isWin = (prediction === result);
+                let winAmount = 0;
+                let newBalance = (userData.balance || 0) - amount;
+                
+                if(isWin) {
+                    winAmount = amount * 6;
+                    newBalance += winAmount;
+                    document.getElementById('diceResult').innerHTML = `<div style="color: #2ed573;">🎉 You won! Number ${result} came! +Rs ${winAmount}</div>`;
+                } else {
+                    document.getElementById('diceResult').innerHTML = `<div style="color: #ff4757;">😞 You lost! Number ${result} came, you bet on ${prediction}</div>`;
+                }
+                
+                await db.ref('users/' + currentUser.uid).update({ balance: newBalance });
+                
+                await db.ref('bets/' + currentUser.uid).push({
+                    game: 'Dice Roll',
+                    prediction: prediction,
+                    result: result,
+                    amount: amount,
+                    isWin: isWin,
+                    winAmount: winAmount,
+                    date: new Date().toLocaleString(),
+                    timestamp: Date.now()
+                });
+                
+                if(isWin) showToast(`🎉 You won Rs ${winAmount.toFixed(2)}!`);
+                else showToast(`😞 You lost Rs ${amount.toFixed(2)}!`);
+                loadGameHistory();
+            }
+        }, 100);
+    }
+    
+    function getCardGameHTML() {
+        return `
+            <div class="cards-grid" id="cardsGrid"></div>
+            <div class="form-group">
+                <label>Bet Amount</label>
+                <input type="number" id="cardBetAmount" placeholder="Enter amount" value="100">
+            </div>
+            <div id="cardResult"></div>
+        `;
+    }
+    
+    // Check referral in URL
     const urlParams = new URLSearchParams(window.location.search);
     const refCode = urlParams.get('ref');
     if(refCode) {
         localStorage.setItem('referredBy', refCode);
+        const refInput = document.getElementById('regRef');
+        if(refInput) refInput.value = refCode;
     }
     
     auth.onAuthStateChanged(user => {
         if(user) {
-            startGame();
+            currentUser = user;
+            loadUserData();
         }
     });
-    
-    // Check if demo account exists
-    async function checkDemo() {
-        const usersSnap = await db.ref('users').once('value');
-        if(!usersSnap.exists()) {
-            document.getElementById('autoCreateBox').style.display = 'block';
-        }
-    }
-    checkDemo();
 </script>
 </body>
 </html>
