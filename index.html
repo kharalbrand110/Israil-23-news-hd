@@ -3,1191 +3,1221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PAK EARN - Earn in Pakistan</title>
+    <title>PAK EARN - Premium Earning Platform</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { 
-            --bg: #f5f7fb; 
-            --bg-card: #ffffff; 
-            --fg: #1a1a2e; 
-            --muted: #6c757d; 
-            --accent: #F0B90B; 
-            --accent-glow: rgba(240, 185, 11, 0.3); 
-            --border: #e9ecef; 
-            --success: #2ecc71; 
-            --warning: #ffa500; 
-            --error: #e74c3c;
-            --pak-green: #0b0e11;
-            --pak-white: #ffffff;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-text-size-adjust: none; outline: none; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--fg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; overflow-x: hidden; }
 
-        .page { display: none; flex-direction: column; height: 100vh; width: 100%; position: absolute; top: 0; left: 0; background: var(--bg); }
-        .page.active { display: flex; animation: pageIn 0.35s ease-out; }
-        @keyframes pageIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0c15;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-        .header { padding: 15px 18px; background: var(--pak-white); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); z-index: 100; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .header-title { font-weight: 900; font-size: 16px; letter-spacing: 0.5px; color: var(--pak-green); }
-        .back-btn { font-size: 20px; color: var(--accent); cursor: pointer; transition: transform 0.2s; }
-        
-        /* Notification Bell Styles */
-        .notification-icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-            color: var(--pak-green);
+        /* Premium Gradient Backgrounds */
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        .notification-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--error);
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 50%;
-            min-width: 18px;
-            text-align: center;
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
-        .notification-sidebar {
-            position: fixed;
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+        .bg-gradient-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Page Transitions */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .page.active {
+            display: block;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Header Styles */
+        .premium-header {
+            background: rgba(10, 12, 21, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
             top: 0;
-            right: -100%;
-            width: 85%;
-            max-width: 350px;
-            height: 100%;
-            background: white;
-            z-index: 10000;
-            transition: right 0.3s ease;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
-            border-radius: 20px 0 0 20px;
-            overflow-y: auto;
+            z-index: 100;
+            padding: 15px 20px;
         }
-        .notification-sidebar.open {
-            right: 0;
-        }
-        .notification-header {
+
+        /* Card Styles */
+        .premium-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
             padding: 20px;
-            background: var(--pak-green);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 20px 0 0 0;
+            transition: all 0.3s ease;
         }
-        .notification-header h3 {
-            font-size: 18px;
+        .premium-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
-        .close-notif {
-            background: none;
+
+        /* Balance Card */
+        .balance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 28px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        /* Button Styles */
+        .btn-premium {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
             color: white;
-            font-size: 24px;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .notification-list {
-            padding: 15px;
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
         }
-        .notification-item {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 12px;
-            border-left: 4px solid var(--accent);
+        .btn-premium:hover::before {
+            left: 100%;
         }
-        .notification-title {
-            font-weight: 900;
-            color: var(--pak-green);
-            margin-bottom: 5px;
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
-        .notification-msg {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 8px;
+
+        .btn-outline-premium {
+            background: transparent;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .notification-date {
-            font-size: 10px;
-            color: #999;
+        .btn-outline-premium:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
         }
-        .no-notifications {
+
+        /* Game Cards */
+        .game-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border-radius: 24px;
+            padding: 25px;
             text-align: center;
-            padding: 40px;
-            color: #999;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .overlay {
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: #667eea;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav-premium {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            z-index: 100;
+        }
+        .nav-item-premium {
+            text-align: center;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.3s ease;
+            color: #8b92a8;
+        }
+        .nav-item-premium i {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .nav-item-premium span {
+            font-size: 11px;
+        }
+        .nav-item-premium.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        /* Input Styles */
+        .premium-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .premium-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* Modal Styles */
+        .premium-modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 9999;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .premium-modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 32px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid rgba(102,126,234,0.3);
+        }
+
+        /* Toast */
+        .premium-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            animation: fadeInUp 0.3s ease-out;
             display: none;
         }
-        .overlay.show {
-            display: block;
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
         }
-        
-        .scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; background: var(--bg); padding: 20px; padding-bottom: 100px; }
-        .scroll-area::-webkit-scrollbar { display: none; }
-
-        .btn-main { width: 100%; padding: 14px; border: none; border-radius: 20px; font-weight: 900; font-size: 13px; cursor: pointer; transition: all 0.3s; }
-        .btn-red { background: linear-gradient(135deg, var(--accent), #d4a00e); color: var(--pak-green); box-shadow: 0 8px 20px var(--accent-glow); }
-        .btn-red:disabled { background: #ccc; color: #888; box-shadow: none; cursor: not-allowed; transform: none; }
-        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
-        
-        .input-box { margin-bottom: 12px; text-align: left; }
-        .input-box label { font-size: 9px; font-weight: 900; color: var(--muted); margin-left: 10px; margin-bottom: 4px; display: block; letter-spacing: 1px; }
-        .mota-input { width: 100%; background: #f8f9fa; border: 1.5px solid var(--border); padding: 12px; border-radius: 16px; font-weight: 800; color: var(--fg); font-size: 13px; transition: border 0.3s; }
-        .mota-input:focus { border-color: var(--accent); outline: none; }
-
-        .card-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 25px; padding: 18px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--pak-green); padding: 12px 30px; border-radius: 50px; font-size: 12px; font-weight: 800; display: none; z-index: 10000; box-shadow: 0 5px 20px var(--accent-glow); }
-
-        .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; height: 65px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 30px; display: flex; justify-content: space-around; align-items: center; border: 1px solid var(--border); z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        .nav-link { text-align: center; color: #adb5bd; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: color 0.2s; padding: 5px 10px; }
-        .nav-link i { font-size: 18px; } .nav-link span { font-size: 9px; font-weight: 800; text-transform: uppercase; margin-top: 2px; }
-        .nav-link.active { color: var(--accent); }
-
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0b0e11 0%, #1a1a2e 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 20000; transition: opacity 0.8s ease; }
-        .splash-logo { width: 120px; height: 120px; border-radius: 60px; background: var(--pak-white); display: flex; align-items: center; justify-content: center; color: #F0B90B; font-size: 55px; box-shadow: 0 0 60px rgba(240,185,11,0.5); animation: pulse-neon 2s infinite ease-in-out; }
-        .splash-logo i { font-size: 60px; }
-        @keyframes pulse-neon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .splash-text { color: var(--accent); font-size: 28px; margin-top: 20px; font-weight: 900; letter-spacing: 2px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-
-        .wallet-card { background: linear-gradient(135deg, var(--accent), #d4a00e); border-radius: 25px; padding: 25px; text-align: center; box-shadow: 0 15px 30px var(--accent-glow); margin-bottom: 20px; color: var(--pak-green); }
-        .bal-amount { font-size: 32px; font-weight: 900; margin: 5px 0; }
-        
-        .balance-split { display: flex; justify-content: space-around; margin-top: 10px; font-size: 12px; font-weight: 700; opacity: 0.9; }
-        .balance-split div { text-align: center; }
-
-        .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .plan-box { background: #fff; border-radius: 20px; padding: 18px 12px; text-align: center; color: #000; position: relative; transition: transform 0.2s; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 1px solid #e9ecef; }
-        .plan-box:active { transform: scale(0.98); }
-        .plan-badge { position: absolute; top: 0; left: 0; background: var(--accent); color: var(--pak-green); font-size: 8px; padding: 4px 10px; border-bottom-right-radius: 10px; font-weight: 900; }
-        .plan-price { font-size: 22px; font-weight: 900; margin: 8px 0; color: var(--pak-green); }
-        .plan-profit { font-size: 12px; font-weight: 800; color: var(--success); }
-        .plan-btn { background: var(--pak-green); color: #fff; border: none; padding: 10px; border-radius: 15px; font-weight: 900; font-size: 11px; width: 100%; margin-top: 10px; cursor: pointer; }
-
-        .history-card { background: #ffffff; border: 1px solid var(--border); padding: 15px; border-radius: 18px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-        .icon-circle { width: 40px; height: 40px; background: rgba(240, 185, 11, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--accent); }
-        .status-pill { padding: 5px 10px; border-radius: 8px; font-size: 9px; font-weight: 900; }
-        .status-pending { background: rgba(255, 165, 0, 0.1); color: var(--warning); }
-        .status-approved { background: rgba(46, 204, 113, 0.1); color: var(--success); }
-        .status-rejected { background: rgba(231, 76, 60, 0.1); color: var(--error); }
-
-        .auth-card { background: var(--bg-card); border: 1px solid var(--border); width: 100%; max-width: 400px; padding: 20px; border-radius: 25px; margin: 10px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        
-        #ad-window { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        
-        .upload-box { border: 1px dashed #ccc; border-radius: 18px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px; transition: border 0.3s; background: #f8f9fa; }
-        .upload-box:hover { border-color: var(--accent); }
-        
-        .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: #ffffff; border-radius: 15px; margin-bottom: 10px; cursor: pointer; border: 1px solid var(--border); transition: background 0.2s; }
-        .menu-item:active { background: #f8f9fa; }
-        
-        .selector-box { width: 100%; background: #f8f9fa; border: 2px dashed #F0B90B; padding: 15px; border-radius: 18px; color: #000; display: flex; justify-content: space-between; cursor: pointer; margin-bottom: 15px; }
-        #wallet-menu { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; z-index: 2000; padding: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px; transform: translateY(100%); transition: transform 0.3s; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); }
-        #wallet-menu.open { transform: translateY(0); }
-        .wallet-opt { background: #f0f0f0; padding: 15px; border-radius: 10px; text-align: center; font-weight: 800; margin-bottom: 10px; cursor: pointer; }
-        
-        .ref-box { background: rgba(46, 204, 113, 0.1); border: 1px solid var(--success); padding: 8px; border-radius: 10px; margin-bottom: 12px; text-align: center; }
-        .ref-box.error { background: rgba(231, 76, 60, 0.1); border-color: var(--error); }
-
-        .claim-btn { background: linear-gradient(135deg, var(--success), #27ae60); animation: pulse-claim 2s infinite; }
-        @keyframes pulse-claim { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        
-        .expire-box { background: rgba(255, 165, 0, 0.1); border: 1px solid var(--warning); padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center; }
-        
-        .task-plan-card { background: #ffffff; border: 1px solid var(--border); padding: 15px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .task-plan-header { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        .task-plan-name { font-weight: 900; font-size: 14px; color: var(--accent); }
-        .task-plan-profit { font-size: 18px; font-weight: 900; color: var(--success); }
-        
-        .lock-msg-box { background: rgba(231, 76, 60, 0.1); border: 1px solid var(--error); padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        .lock-icon { font-size: 40px; color: var(--error); margin-bottom: 10px; }
-
-        .countdown-timer { font-size: 12px; color: var(--warning); font-weight: 800; background: rgba(0,0,0,0.05); padding: 5px 10px; border-radius: 8px; display: inline-block; margin-top: 5px; }
-
-        #dialog-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: none; justify-content: center; align-items: center; }
-        .dialog-box { background: #fff; width: 85%; max-width: 350px; border-radius: 20px; padding: 25px; text-align: center; color: #000; animation: popIn 0.3s ease; }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .dialog-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; }
-        .dialog-msg { font-size: 13px; font-weight: 500; margin-bottom: 20px; color: #333; }
-        .dialog-btn { background: var(--accent); color: var(--pak-green); border: none; padding: 12px 30px; border-radius: 30px; font-weight: 900; width: 100%; cursor: pointer; }
-
-        #ref-link-code {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--accent);
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            word-break: break-all;
-            line-height: 1.3;
-        }
-
-        /* Binance QR Container */
-        .binance-container {
+        .stat-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 15px;
             text-align: center;
-            background: #ffffff;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Plans Grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .plan-card {
+            background: rgba(255,255,255,0.03);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #F0B90B;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
         }
-        .binance-label {
-            font-size: 18px;
-            font-weight: 900;
-            color: #F0B90B;
-            margin-bottom: 15px;
+        .plan-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* History Items */
+        .history-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 10px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .binance-label i {
-            font-size: 24px;
-        }
-        .binance-qr {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .binance-qr img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .binance-id {
-            margin-top: 15px;
-            font-size: 20px;
-            font-weight: 900;
-            color: #F0B90B;
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 15px;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .binance-note {
-            font-size: 12px;
-            color: #666;
-            margin-top: 10px;
-        }
-        .binance-warning {
-            background: rgba(240, 185, 11, 0.1);
-            border: 1px solid #F0B90B;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 11px;
-            color: #F0B90B;
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-premium, .btn-outline-premium {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Notification Sidebar -->
-    <div id="overlay" class="overlay" onclick="closeNotifications()"></div>
-    <div id="notificationSidebar" class="notification-sidebar">
-        <div class="notification-header">
-            <h3><i class="fa fa-bell"></i> Notifications</h3>
-            <button class="close-notif" onclick="closeNotifications()">×</button>
-        </div>
-        <div class="notification-list" id="notificationList">
-            <div class="no-notifications">No notifications yet</div>
-        </div>
-    </div>
-
-    <audio id="clickSound" src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAAAYYNBqHhAAAAAAD/+9DEAAAIAANIAAAAEw4A6IAAAAD8AAIA/AAAShJGgAAf/L0JIkiSM/0hxsC/B4Pw+D6P4IAgCAIAh8PwfB/y7lgGAdyg0CgkW/4fAUCAPwfB8HwABEGgQZBAHwfB8EAQBAEAQfB8H//yf//4f//8HwfB8HwfB8H/5f/8EAQBAEAQBAEAQBAEAQfB8H//8H//yf//////////yfB8HwfB8EAQfB8HwfB8Hwf/8H//yf/////////////yf/////////////8H//////////////////////////gAA/+tUVQAA"></audio>
-
-    <div id="dialog-overlay">
-        <div class="dialog-box">
-            <div class="dialog-title" id="d-title">Alert</div>
-            <div class="dialog-msg" id="d-msg">Message here</div>
-            <button class="dialog-btn" onclick="closeDialog()">OK</button>
-        </div>
-    </div>
-
-    <div id="splash">
-        <div class="splash-logo">
-            <i class="fab fa-bitcoin"></i>
-        </div>
-        <h1 class="splash-text">PAK EARN</h1>
-        <p style="color: white; margin-top: 10px; font-size: 12px; opacity: 0.8;">Earn with Binance</p>
-    </div>
-
-    <div id="ad-window">
-        <div style="width:120px; height:120px; border:4px solid #222; border-top-color:var(--accent); border-radius:50%; animation:spin 1s linear infinite;"></div>
-        <div id="ad-timer" style="position:absolute; font-size:40px; font-weight:900;">10</div>
-    </div>
-    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
-
-    <!-- Withdrawal Method Menu (Only EasyPaisa/JazzCash for withdrawal) -->
-    <div id="wallet-menu">
-        <div style="text-align:center; font-weight:900; margin-bottom:15px; color:#000;">Select Withdrawal Method</div>
-        <div onclick="setWallet('EasyPaisa')" class="wallet-opt">EasyPaisa</div>
-        <div onclick="setWallet('JazzCash')" class="wallet-opt">JazzCash</div>
-        <div onclick="toggleWalletMenu(false)" style="text-align:center; color:var(--error); margin-top:10px; font-weight:900;">Close</div>
-    </div>
-
-    <!-- PAGE: LOGIN -->
-    <div id="page-login" class="page" style="overflow-y: auto;">
-        <div style="min-height: 100%; display:flex; align-items:center; justify-content:center; padding:15px 0;">
-            <div class="auth-card" id="register-card">
-                <h2 style="text-align:center; margin-bottom:10px; font-size:20px; color: var(--pak-green);">Create Account</h2>
-                
-                <div class="input-box"><label>FULL NAME</label><input type="text" id="reg-name" class="mota-input" placeholder="Full Name"></div>
-                <div class="input-box"><label>GMAIL</label><input type="email" id="reg-email" class="mota-input" placeholder="example@gmail.com"></div>
-                <div class="input-box"><label>PHONE NUMBER</label><input type="tel" id="reg-phone" class="mota-input" placeholder="03XX-XXXXXXX"></div>
-                <div class="input-box"><label>REFERRAL CODE (OPTIONAL)</label><input type="text" id="reg-ref-input" class="mota-input" placeholder="Enter Referral Code (Optional)"></div>
-                <div class="input-box"><label>PASSWORD</label><input type="password" id="reg-pass" class="mota-input" placeholder="Min 6 characters"></div>
-                <div class="input-box"><label>CONFIRM PASSWORD</label><input type="password" id="reg-cpass" class="mota-input" placeholder="Repeat Password"></div>
-
-                <button class="btn-main btn-red" id="reg-btn" onclick="handleRegister()">REGISTER NOW</button>
-                <p style="text-align:center; margin-top:10px; font-size:11px; color:#777;">Already have account? <span style="color:var(--accent); cursor:pointer;" onclick="toggleAuth('login')">Login</span></p>
+<!-- Premium Header -->
+<div class="premium-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-star"></i>
             </div>
-
-            <div class="auth-card" id="login-card" style="display:none;">
-                <h2 style="text-align:center; margin-bottom:15px; color: var(--pak-green);">Welcome Back</h2>
-                <div class="input-box"><label>GMAIL</label><input type="email" id="log-email" class="mota-input" placeholder="Enter Gmail"></div>
-                <div class="input-box"><label>PASSWORD</label><input type="password" id="log-pass" class="mota-input" placeholder="Enter Password"></div>
-                <button class="btn-main btn-red" onclick="handleLogin()">LOGIN</button>
-                <p style="text-align:center; margin-top:10px; font-size:11px; color:#777;">New here? <span style="color:var(--accent); cursor:pointer;" onclick="toggleAuth('register')">Register</span></p>
+            <div>
+                <h2 style="font-size: 20px; font-weight: 800;">PAK EARN</h2>
+                <p style="font-size: 10px; opacity: 0.7;">Premium Earning Platform</p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <div class="notification-icon" onclick="toggleNotifications()" style="cursor: pointer; position: relative;">
+                <i class="fa fa-bell" style="font-size: 20px;"></i>
+                <span id="notifBadge" style="position: absolute; top: -8px; right: -8px; background: #f5576c; color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; display: none;">0</span>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- PAGE: HOME -->
-    <div id="page-home" class="page">
-        <div class="header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <img id="home-avatar" src="https://i.pravatar.cc/150?img=47" style="width:40px; height:40px; border-radius:12px; border:2px solid var(--accent); object-fit:cover;">
-                <div><div id="home-name" style="font-weight:900; font-size:13px; color: var(--pak-green);">LOADING...</div><div style="font-size:9px; color:var(--accent);"><i class="fa fa-circle"></i> ONLINE</div></div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div class="notification-icon" onclick="toggleNotifications()">
-                    <i class="fa fa-bell"></i>
-                    <span id="notifBadge" class="notification-badge" style="display: none;">0</span>
+<!-- Notification Sidebar -->
+<div id="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none;" onclick="closeNotifications()"></div>
+<div id="notificationSidebar" style="position: fixed; top: 0; right: -100%; width: 85%; max-width: 350px; height: 100%; background: #1a1a2e; z-index: 1000; transition: right 0.3s ease; overflow-y: auto;">
+    <div style="padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; justify-content: space-between; align-items: center;">
+        <h3 style="color: white;"><i class="fa fa-bell"></i> Notifications</h3>
+        <button onclick="closeNotifications()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+    </div>
+    <div id="notificationList" style="padding: 15px;">
+        <div style="text-align: center; padding: 40px; color: #8b92a8;">No notifications yet</div>
+    </div>
+</div>
+
+<!-- Auth Section -->
+<div id="authSection" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="max-width: 400px; width: 100%;">
+        <!-- Login Card -->
+        <div id="loginCard" class="premium-card animate-fadeInUp">
+            <h2 style="text-align: center; margin-bottom: 10px; font-size: 28px;">Welcome Back</h2>
+            <p style="text-align: center; color: #8b92a8; margin-bottom: 30px;">Login to your account</p>
+            <input type="email" id="loginEmail" class="premium-input" placeholder="Email Address" style="margin-bottom: 15px;">
+            <input type="password" id="loginPassword" class="premium-input" placeholder="Password" style="margin-bottom: 20px;">
+            <button class="btn-premium" style="width: 100%;" onclick="handleLogin()">Login Now</button>
+            <p style="text-align: center; margin-top: 20px; font-size: 13px; color: #8b92a8;">
+                Don't have an account? <span onclick="showRegister()" style="color: #667eea; cursor: pointer;">Create Account</span>
+            </p>
+        </div>
+
+        <!-- Register Card -->
+        <div id="registerCard" class="premium-card" style="display: none;">
+            <h2 style="text-align: center; margin-bottom: 10px; font-size: 28px;">Create Account</h2>
+            <p style="text-align: center; color: #8b92a8; margin-bottom: 30px;">Start earning today</p>
+            <input type="text" id="regName" class="premium-input" placeholder="Full Name" style="margin-bottom: 15px;">
+            <input type="email" id="regEmail" class="premium-input" placeholder="Email Address" style="margin-bottom: 15px;">
+            <input type="tel" id="regPhone" class="premium-input" placeholder="Phone Number" style="margin-bottom: 15px;">
+            <input type="text" id="regRef" class="premium-input" placeholder="Referral Code (Optional)" style="margin-bottom: 15px;">
+            <input type="password" id="regPass" class="premium-input" placeholder="Password" style="margin-bottom: 15px;">
+            <input type="password" id="regConfirm" class="premium-input" placeholder="Confirm Password" style="margin-bottom: 20px;">
+            <button class="btn-premium" style="width: 100%;" onclick="handleRegister()">Register Now</button>
+            <p style="text-align: center; margin-top: 20px; font-size: 13px; color: #8b92a8;">
+                Already have an account? <span onclick="showLogin()" style="color: #667eea; cursor: pointer;">Login</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Main App -->
+<div id="appSection" style="display: none; padding-bottom: 90px;">
+    <!-- Balance Card -->
+    <div style="padding: 20px;">
+        <div class="balance-card animate-fadeInUp">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <p style="opacity: 0.8; font-size: 12px;">Total Balance</p>
+                    <h2 style="font-size: 32px; font-weight: 800;">Rs <span id="mainBalance">0</span></h2>
                 </div>
-                <div style="font-weight:900; color:var(--pak-green);"><i class="fab fa-bitcoin"></i> PAK EARN</div>
-            </div>
-        </div>
-
-        <div class="scroll-area">
-            <div class="wallet-card">
-                <div style="font-size:11px; font-weight:800; opacity:0.8;">TOTAL BALANCE</div>
-                <div class="bal-amount">Rs <span id="home-bal">0.00</span></div>
-                
-                <div class="balance-split">
-                    <div>
-                        <div style="opacity:0.8;">Deposit Bal</div>
-                        <div id="home-dep-bal">0.00</div>
-                    </div>
-                    <div>
-                        <div style="opacity:0.8;">Profit Bal</div>
-                        <div id="home-earn-bal">0.00</div>
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:10px; margin-top:15px;">
-                    <button class="btn-main btn-outline" style="padding:12px; background: rgba(11,14,17,0.2); border-color: #0b0e11; color: #0b0e11;" onclick="navigateTo('deposit')">DEPOSIT</button>
-                    <button class="btn-main btn-outline" style="padding:12px; background: rgba(11,14,17,0.2); border-color: #0b0e11; color: #0b0e11;" onclick="navigateTo('withdraw')">WITHDRAW</button>
+                <div style="text-align: right;">
+                    <img id="userAvatar" src="https://i.pravatar.cc/150?img=47" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid white;">
+                    <p id="userName" style="font-weight: 600; margin-top: 5px;">User</p>
                 </div>
             </div>
-            <div style="font-size:16px; font-weight:900; margin-bottom:15px; color: var(--pak-green);">Investment Plans</div>
-            <div class="plan-grid" id="plan-list"></div>
-        </div>
-
-        <div class="bottom-nav">
-            <div class="nav-link active" onclick="navigateTo('home')"><i class="fa fa-house"></i><span>Home</span></div>
-            <div class="nav-link" onclick="navigateTo('tasks')"><i class="fa fa-play-circle"></i><span>Tasks</span></div>
-            <div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-link" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div>
-            <div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div>
-        </div>
-    </div>
-
-    <!-- PAGE: WALLET -->
-    <div id="page-wallet" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">My Wallet</div><div></div></div>
-        <div class="scroll-area">
-            <div class="wallet-card">
-                <div style="font-size:11px; font-weight:800; opacity:0.8;">AVAILABLE BALANCE</div>
-                <div class="bal-amount">Rs <span id="wallet-page-bal">0.00</span></div>
-            </div>
-            <div class="card-box">
-                <div style="font-weight:900; margin-bottom:10px; color: var(--pak-green);">Quick Actions</div>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-main btn-red" onclick="navigateTo('deposit')">Deposit</button>
-                    <button class="btn-main btn-outline" onclick="navigateTo('withdraw')">Withdraw</button>
+            <div style="display: flex; gap: 15px;">
+                <div style="flex: 1; background: rgba(255,255,255,0.1); border-radius: 16px; padding: 12px; text-align: center;">
+                    <p style="font-size: 11px; opacity: 0.8;">Deposit Balance</p>
+                    <p style="font-size: 18px; font-weight: 700;">Rs <span id="depositBalance">0</span></p>
+                </div>
+                <div style="flex: 1; background: rgba(255,255,255,0.1); border-radius: 16px; padding: 12px; text-align: center;">
+                    <p style="font-size: 11px; opacity: 0.8;">Profit Balance</p>
+                    <p style="font-size: 18px; font-weight: 700;">Rs <span id="profitBalance">0</span></p>
                 </div>
             </div>
         </div>
-        <div class="bottom-nav">
-            <div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-house"></i><span>Home</span></div>
-            <div class="nav-link" onclick="navigateTo('tasks')"><i class="fa fa-play-circle"></i><span>Tasks</span></div>
-            <div class="nav-link active" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-link" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div>
-            <div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div style="padding: 0 20px 20px 20px;">
+        <div style="display: flex; gap: 12px;">
+            <button class="btn-premium" style="flex: 1;" onclick="navigateTo('deposit')"><i class="fas fa-arrow-down"></i> Deposit</button>
+            <button class="btn-outline-premium" style="flex: 1;" onclick="navigateTo('withdraw')"><i class="fas fa-arrow-up"></i> Withdraw</button>
         </div>
     </div>
 
-    <!-- TASKS PAGE -->
-    <div id="page-tasks" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Daily Tasks</div><div></div></div>
-        <div class="scroll-area" id="tasks-container">
-            <div id="no-plan-msg" class="expire-box" style="display:none;">
-                <div style="font-weight:800;">No Active Plan</div>
-                <div style="font-size:11px; color:#888; margin-top:5px;">Buy a plan using Deposit Balance to start earning.</div>
-            </div>
-        </div>
-        <div class="bottom-nav">
-            <div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-house"></i><span>Home</span></div>
-            <div class="nav-link active" onclick="navigateTo('tasks')"><i class="fa fa-play-circle"></i><span>Tasks</span></div>
-            <div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-link" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div>
-            <div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div>
+    <!-- Investment Plans -->
+    <div style="padding: 0 20px 20px 20px;">
+        <h3 style="margin-bottom: 15px; font-size: 18px;"><i class="fas fa-chart-line"></i> Investment Plans</h3>
+        <div class="plans-grid" id="plansContainer">
+            <div style="text-align: center; padding: 40px;">Loading plans...</div>
         </div>
     </div>
 
-    <!-- DEPOSIT PAGE - BINANCE ONLY -->
-    <div id="page-deposit" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Deposit via Binance</div><div></div></div>
-        <div class="scroll-area">
-            <!-- Binance QR Code Section -->
-            <div class="binance-container">
-                <div class="binance-label">
-                    <i class="fab fa-bitcoin"></i>
-                    BINANCE PAY
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-premium">
+        <div class="nav-item-premium active" onclick="switchNav('home')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item-premium" onclick="switchNav('tasks')">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </div>
+        <div class="nav-item-premium" onclick="switchNav('wallet')">
+            <i class="fas fa-wallet"></i>
+            <span>Wallet</span>
+        </div>
+        <div class="nav-item-premium" onclick="switchNav('team')">
+            <i class="fas fa-users"></i>
+            <span>Team</span>
+        </div>
+        <div class="nav-item-premium" onclick="switchNav('profile')">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
+    </div>
+</div>
+
+<!-- Tasks Page (Hidden) -->
+<div id="tasksPage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="switchNav('home')"></i>
+        <h2 style="font-size: 20px;">Daily Tasks</h2>
+    </div>
+    <div id="tasksContainer">
+        <div style="text-align: center; padding: 40px;">No active plans</div>
+    </div>
+</div>
+
+<!-- Wallet Page (Hidden) -->
+<div id="walletPage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="switchNav('home')"></i>
+        <h2 style="font-size: 20px;">My Wallet</h2>
+    </div>
+    <div class="premium-card" style="margin-bottom: 20px;">
+        <div style="text-align: center;">
+            <p style="color: #8b92a8;">Available Balance</p>
+            <p style="font-size: 36px; font-weight: 800;">Rs <span id="walletBalance">0</span></p>
+        </div>
+    </div>
+    <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+        <button class="btn-premium" style="flex: 1;" onclick="showDepositForm()">Deposit</button>
+        <button class="btn-outline-premium" style="flex: 1;" onclick="showWithdrawForm()">Withdraw</button>
+    </div>
+    <div id="depositForm" style="display: none;">
+        <div class="premium-card">
+            <h3 style="margin-bottom: 15px;">Deposit via Binance</h3>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="https://i.postimg.cc/G2ssm1rv/IMG-20260418-WA0002.jpg" style="width: 200px; border-radius: 20px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; margin-top: 10px; display: inline-block; cursor: pointer;" onclick="copyText('1129708173')">
+                    <code style="font-size: 18px;">1129708173</code> <i class="fas fa-copy"></i>
                 </div>
-                <div class="binance-qr">
-                    <img src="https://i.postimg.cc/G2ssm1rv/IMG-20260418-WA0002.jpg" alt="Binance QR Code">
-                </div>
-                <div class="binance-id" onclick="copyText('1129708173')">
-                    1129708173 <i class="fa fa-copy"></i>
-                </div>
-                <p class="binance-note">Scan QR code or copy Binance ID to send payment</p>
-                <div class="binance-warning">
-                    <i class="fas fa-info-circle"></i> Send payment only through Binance Pay. After payment, upload screenshot below.
-                </div>
             </div>
-            
-            <div class="upload-box" onclick="document.getElementById('dep-file').click()">
-                <input type="file" id="dep-file" accept="image/*" hidden onchange="previewDeposit(this)">
-                <i class="fa fa-camera" style="font-size:30px; color:#F0B90B;"></i>
-                <div style="font-size:11px; color:var(--muted); margin-top:5px;">Upload Binance Payment Screenshot</div>
-                <img id="dep-preview" src="" style="width:100%; max-height:150px; border-radius:10px; display:none; margin-top:10px;">
+            <div class="upload-box" onclick="document.getElementById('depositFile').click()" style="border: 2px dashed #667eea; border-radius: 16px; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                <input type="file" id="depositFile" accept="image/*" hidden onchange="previewDeposit(this)">
+                <i class="fas fa-cloud-upload-alt" style="font-size: 30px; color: #667eea;"></i>
+                <p style="margin-top: 5px;">Upload Screenshot</p>
+                <img id="depositPreview" style="width: 100%; max-height: 100px; border-radius: 10px; display: none; margin-top: 10px;">
             </div>
-            <div class="input-box"><label>AMOUNT (Rs)</label><input type="number" id="dep-amt" class="mota-input" placeholder="Min 300"></div>
-            <div class="input-box"><label>BINANCE TRANSACTION ID</label><input type="text" id="dep-tid" class="mota-input" placeholder="Enter Binance Transaction ID"></div>
-            <button class="btn-main btn-red" id="dep-btn" onclick="submitDeposit()">SUBMIT REQUEST</button>
+            <input type="number" id="depositAmount" class="premium-input" placeholder="Amount (Min 300)" style="margin-bottom: 15px;">
+            <input type="text" id="depositTxn" class="premium-input" placeholder="Binance Transaction ID" style="margin-bottom: 15px;">
+            <button class="btn-premium" style="width: 100%;" onclick="submitDeposit()">Submit Request</button>
         </div>
     </div>
-
-    <!-- WITHDRAW PAGE -->
-    <div id="page-withdraw" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Withdraw</div><div></div></div>
-        <div class="scroll-area">
-            <div style="background: linear-gradient(135deg, #F0B90B, #d4a00e); padding:25px; border-radius:25px; text-align:center; color:#0b0e11; margin-bottom:20px;">
-                <div style="font-size:11px; opacity:0.8;">WITHDRAWABLE (Profit Balance)</div>
-                <div style="font-size:32px; font-weight:900;">Rs <span id="wd-bal">0.00</span></div>
+    <div id="withdrawForm" style="display: none;">
+        <div class="premium-card">
+            <h3 style="margin-bottom: 15px;">Withdraw Funds</h3>
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 16px; text-align: center; margin-bottom: 20px;">
+                <p style="color: #8b92a8;">Withdrawable Balance</p>
+                <p style="font-size: 24px; font-weight: 800;">Rs <span id="withdrawableBalance">0</span></p>
             </div>
-            
-            <div id="wd-lock-msg" class="lock-msg-box" style="display:none;">
-                <i class="fa fa-lock lock-icon"></i>
-                <div style="font-weight:900; font-size:16px; color:var(--error); margin-bottom:5px;">Withdrawal Locked</div>
-                <div style="font-size:12px; color:#555;" id="wd-lock-text">Minimum Rs 10,000 required for withdrawal</div>
-            </div>
-
-            <div id="wd-form-area">
-                <div class="selector-box" onclick="toggleWalletMenu(true)">
-                    <span id="wd-method" style="font-weight:800;">Select Method</span>
-                    <i class="fa fa-chevron-down"></i>
-                </div>
-                <div class="input-box"><label>EASYPAISA/JAZZCASH NUMBER</label><input type="text" id="wd-acc" class="mota-input" placeholder="03XXXXXXXXX"></div>
-                <div class="input-box"><label>ACCOUNT TITLE</label><input type="text" id="wd-name" class="mota-input" placeholder="Your Name"></div>
-                <div class="input-box"><label>AMOUNT (Min 10000)</label><input type="number" id="wd-amt" class="mota-input" placeholder="Amount (Minimum 10000)"></div>
-                <button class="btn-main btn-red" onclick="submitWithdraw()">SUBMIT</button>
-            </div>
+            <select id="withdrawMethod" class="premium-input" style="margin-bottom: 15px;">
+                <option value="">Select Method</option>
+                <option value="EasyPaisa">EasyPaisa</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Binance">Binance</option>
+                <option value="Sadapay">Sadapay</option>
+            </select>
+            <input type="text" id="withdrawAccount" class="premium-input" placeholder="Account Number / ID" style="margin-bottom: 15px;">
+            <input type="text" id="withdrawName" class="premium-input" placeholder="Account Holder Name" style="margin-bottom: 15px;">
+            <input type="number" id="withdrawAmount" class="premium-input" placeholder="Amount (Min 10000)" style="margin-bottom: 15px;">
+            <button class="btn-premium" style="width: 100%;" onclick="submitWithdraw()">Submit Request</button>
         </div>
     </div>
+    <div id="historyList" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 15px;">Transaction History</h3>
+        <div id="transactionsList"></div>
+    </div>
+</div>
 
-    <!-- PROFILE PAGE -->
-    <div id="page-profile" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Profile</div><i class="fa fa-sign-out-alt" style="color:#444; cursor:pointer;" onclick="logout()"></i></div>
-        <div class="scroll-area">
-            <div style="text-align:center; margin-bottom:20px;">
-                <img id="prof-avatar" src="https://i.pravatar.cc/150?img=47" style="width:80px; height:80px; border-radius:25px; border:2px solid var(--accent); object-fit:cover;">
-                <h2 id="prof-name" style="font-size:18px; font-weight:900; margin-top:10px; color: var(--pak-green);">NAME</h2>
-                <div id="prof-phone" style="font-size:11px; color:var(--muted);">PHONE</div>
-            </div>
-            
-            <div class="card-box" style="text-align:center; border:1px solid var(--border);">
-                <div style="font-size:11px; font-weight:800; color:var(--muted); margin-bottom:5px;">YOUR REFERRAL CODE</div>
-                <div id="ref-link-code" style="color: var(--accent);">LOADING</div>
-                
-                <button onclick="copyRef()" style="width:100%; background:linear-gradient(135deg, var(--success), #27ae60); border:none; padding:15px; border-radius:20px; color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);">
-                    <i class="fa fa-link"></i> COPY REFERRAL LINK
-                </button>
-            </div>
-
-            <div class="menu-item" onclick="navigateTo('dep-hist')"><span><i class="fa fa-history" style="color:var(--accent); margin-right:10px;"></i>Deposit History</span><i class="fa fa-chevron-right" style="color:#333;"></i></div>
-            <div class="menu-item" onclick="navigateTo('wd-hist')"><span><i class="fa fa-wallet" style="color:var(--accent); margin-right:10px;"></i>Withdraw History</span><i class="fa fa-chevron-right" style="color:#333;"></i></div>
-            <div class="menu-item" onclick="openWhatsApp()"><span><i class="fa fa-headset" style="color:var(--success); margin-right:10px;"></i>About / Support</span><i class="fa fa-chevron-right" style="color:#333;"></i></div>
+<!-- Team Page (Hidden) -->
+<div id="teamPage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="switchNav('home')"></i>
+        <h2 style="font-size: 20px;">My Team</h2>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <p style="color: #8b92a8; font-size: 12px;">Team Members</p>
+            <p class="stat-value" id="teamCount">0</p>
         </div>
-        <div class="bottom-nav">
-            <div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-house"></i><span>Home</span></div>
-            <div class="nav-link" onclick="navigateTo('tasks')"><i class="fa fa-play-circle"></i><span>Tasks</span></div>
-            <div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-link" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div>
-            <div class="nav-link active"><i class="fa fa-user"></i><span>Profile</span></div>
+        <div class="stat-card">
+            <p style="color: #8b92a8; font-size: 12px;">Team Earnings</p>
+            <p class="stat-value" id="teamEarnings">Rs 0</p>
         </div>
     </div>
-
-    <!-- HISTORY PAGES -->
-    <div id="page-dep-hist" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('profile')"></i><div class="header-title">Deposit History</div><div></div></div>
-        <div class="scroll-area" id="dep-hist-list"><div style="text-align:center; padding:20px;"><i class="fa fa-spinner fa-spin"></i></div></div>
+    <button id="claimBtn" class="btn-premium" style="width: 100%; margin-bottom: 20px; display: none;" onclick="claimCommission()">
+        <i class="fas fa-gift"></i> Claim Commission Rs <span id="claimAmount">0</span>
+    </button>
+    <div class="premium-card">
+        <h3 style="margin-bottom: 15px;">Commission History</h3>
+        <div id="commissionList"></div>
     </div>
-
-    <div id="page-wd-hist" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('profile')"></i><div class="header-title">Withdraw History</div><div></div></div>
-        <div class="scroll-area" id="wd-hist-list"><div style="text-align:center; padding:20px;"><i class="fa fa-spinner fa-spin"></i></div></div>
+    <div class="premium-card" style="margin-top: 20px;">
+        <h3 style="margin-bottom: 15px;">Team Members List</h3>
+        <div id="teamMembersList"></div>
     </div>
+</div>
 
-    <!-- TEAM PAGE -->
-    <div id="page-team" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">My Team</div><div></div></div>
-        <div class="scroll-area">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
-                <div class="card-box" style="text-align:center;"><div style="font-size:24px; font-weight:900; color:var(--accent);" id="team-count">0</div><div style="font-size:10px; color:var(--muted);">Members</div></div>
-                <div class="card-box" style="text-align:center;"><div style="font-size:24px; font-weight:900; color:var(--success);" id="team-earn">0.00</div><div style="font-size:10px; color:var(--muted);">Earnings</div></div>
-            </div>
-            
-            <button id="claim-btn" class="btn-main claim-btn" onclick="claimCommission()" style="margin-bottom:15px; display:none;">
-                <i class="fa fa-gift"></i> CLAIM NOW Rs <span id="claim-amt">0.00</span>
-            </button>
-
-            <div class="card-box">
-                <div style="font-weight:900; margin-bottom:10px; color: var(--pak-green);">Commission History</div>
-                <div id="comm-hist" style="font-size:12px;"><div style="color:#333; text-align:center;">No history</div></div>
-            </div>
-
-            <div class="card-box"><div style="font-weight:900; margin-bottom:10px; color: var(--pak-green);">Team Members</div><div id="team-list"><div style="color:#333; text-align:center;">No members yet</div></div></div>
+<!-- Profile Page (Hidden) -->
+<div id="profilePage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="switchNav('home')"></i>
+        <h2 style="font-size: 20px;">My Profile</h2>
+    </div>
+    <div class="premium-card" style="text-align: center;">
+        <img id="profileAvatar" src="https://i.pravatar.cc/150?img=47" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px;">
+        <h3 id="profileName">User</h3>
+        <p id="profilePhone" style="color: #8b92a8; font-size: 13px;">-</p>
+        <p id="profileEmail" style="color: #8b92a8; font-size: 13px;">-</p>
+        <p id="profileJoined" style="color: #8b92a8; font-size: 12px; margin-top: 10px;">-</p>
+    </div>
+    <div class="premium-card" style="margin-top: 20px; text-align: center;">
+        <p style="color: #8b92a8; font-size: 12px;">Your Referral Code</p>
+        <p id="referralCode" style="font-size: 20px; font-weight: 800; margin: 10px 0;">LOADING</p>
+        <button class="btn-outline-premium" style="width: 100%;" onclick="copyReferral()">Copy Referral Link</button>
+    </div>
+    <div class="premium-card" style="margin-top: 20px;">
+        <div class="history-item" onclick="navigateTo('deposit-history')" style="cursor: pointer;">
+            <span><i class="fas fa-history"></i> Deposit History</span>
+            <i class="fas fa-chevron-right"></i>
         </div>
-        <div class="bottom-nav">
-            <div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-house"></i><span>Home</span></div>
-            <div class="nav-link" onclick="navigateTo('tasks')"><i class="fa fa-play-circle"></i><span>Tasks</span></div>
-            <div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div>
-            <div class="nav-link active" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div>
-            <div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div>
+        <div class="history-item" onclick="navigateTo('withdraw-history')" style="cursor: pointer;">
+            <span><i class="fas fa-wallet"></i> Withdraw History</span>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="history-item" onclick="openSupport()" style="cursor: pointer;">
+            <span><i class="fas fa-headset"></i> Support Center</span>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="history-item" onclick="logout()" style="cursor: pointer;">
+            <span><i class="fas fa-sign-out-alt"></i> Logout</span>
+            <i class="fas fa-chevron-right"></i>
         </div>
     </div>
+</div>
 
-    <div id="toast"></div>
+<!-- History Pages -->
+<div id="depositHistoryPage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="goBack()"></i>
+        <h2 style="font-size: 20px;">Deposit History</h2>
+    </div>
+    <div id="depositHistoryList"></div>
+</div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94",
-            authDomain: "kharal-b47b6.firebaseapp.com",
-            databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com",
-            projectId: "kharal-b47b6",
-            storageBucket: "kharal-b47b6.appspot.com",
-            messagingSenderId: "528214841740",
-            appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9"
-        };
+<div id="withdrawHistoryPage" style="display: none; padding: 20px; padding-bottom: 90px;">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <i class="fas fa-arrow-left" style="font-size: 20px; cursor: pointer;" onclick="goBack()"></i>
+        <h2 style="font-size: 20px;">Withdraw History</h2>
+    </div>
+    <div id="withdrawHistoryList"></div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="premium-toast"></div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94",
+        authDomain: "kharal-b47b6.firebaseapp.com",
+        databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com",
+        projectId: "kharal-b47b6",
+        storageBucket: "kharal-b47b6.appspot.com",
+        messagingSenderId: "528214841740",
+        appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9"
+    };
+    
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    
+    const auth = firebase.auth();
+    const db = firebase.database();
+    
+    let currentUser = null;
+    let userData = null;
+    let depositFile = null;
+    let countdownIntervals = {};
+    
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerHTML = msg;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+    
+    function showLogin() {
+        document.getElementById('loginCard').style.display = 'block';
+        document.getElementById('registerCard').style.display = 'none';
+    }
+    
+    function showRegister() {
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('registerCard').style.display = 'block';
+    }
+    
+    async function handleRegister() {
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const phone = document.getElementById('regPhone').value;
+        const ref = document.getElementById('regRef').value;
+        const pass = document.getElementById('regPass').value;
+        const confirm = document.getElementById('regConfirm').value;
         
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        if(!name || !email || !phone || !pass) {
+            showToast("Please fill all fields");
+            return;
         }
-        const auth = firebase.auth();
-        const db = firebase.database();
-
-        let USER = null;
-        let DATA = null;
-        let depFile = null;
-        let countdownIntervals = {}; 
-        let notificationListener = null;
-
-        const avatars = [
-            "https://i.pravatar.cc/150?img=47", "https://i.pravatar.cc/150?img=32", "https://i.pravatar.cc/150?img=45",
-            "https://i.pravatar.cc/150?img=44", "https://i.pravatar.cc/150?img=9", "https://i.pravatar.cc/150?img=16"
-        ];
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const refParam = urlParams.get('ref');
-        
-        const regRefInput = document.getElementById('reg-ref-input');
-
-        function playSound() {
-            const sound = document.getElementById("clickSound");
-            if(sound) { sound.currentTime = 0; sound.play(); }
+        if(pass !== confirm) {
+            showToast("Passwords do not match");
+            return;
         }
-
-        function showDialog(title, msg) {
-            document.getElementById('d-title').innerText = title;
-            document.getElementById('d-msg').innerText = msg;
-            document.getElementById('dialog-overlay').style.display = 'flex';
-        }
-        function closeDialog() { document.getElementById('dialog-overlay').style.display = 'none'; }
-
-        if (refParam) {
-            localStorage.setItem('referredBy', refParam);
-            regRefInput.value = refParam;
-        }
-
-        // Notification Functions
-        function toggleNotifications() {
-            document.getElementById('notificationSidebar').classList.add('open');
-            document.getElementById('overlay').classList.add('show');
-        }
-        
-        function closeNotifications() {
-            document.getElementById('notificationSidebar').classList.remove('open');
-            document.getElementById('overlay').classList.remove('show');
+        if(pass.length < 6) {
+            showToast("Password must be at least 6 characters");
+            return;
         }
         
-        function loadNotifications() {
-            if (!USER) return;
-            
-            db.ref('notifications').orderByChild('timestamp').once('value', snap => {
-                const notifications = snap.val() || {};
-                const list = document.getElementById('notificationList');
-                const badge = document.getElementById('notifBadge');
-                
-                let unreadCount = 0;
-                list.innerHTML = '';
-                
-                const sorted = Object.values(notifications).reverse();
-                
-                if (sorted.length === 0) {
-                    list.innerHTML = '<div class="no-notifications">No notifications yet</div>';
-                    badge.style.display = 'none';
-                    return;
-                }
-                
-                sorted.forEach(notif => {
-                    const isRead = false;
-                    if (!isRead) unreadCount++;
-                    
-                    const div = document.createElement('div');
-                    div.className = 'notification-item';
-                    div.innerHTML = `
-                        <div class="notification-title">${notif.title || 'Announcement'}</div>
-                        <div class="notification-msg">${notif.message || ''}</div>
-                        <div class="notification-date">${notif.date || new Date().toLocaleString()}</div>
-                    `;
-                    list.appendChild(div);
-                });
-                
-                if (unreadCount > 0) {
-                    badge.style.display = 'flex';
-                    badge.innerText = unreadCount;
-                } else {
-                    badge.style.display = 'none';
-                }
+        try {
+            const userCred = await auth.createUserWithEmailAndPassword(email, pass);
+            await db.ref('users/' + userCred.user.uid).set({
+                username: name,
+                email: email,
+                phone: phone,
+                balance: 0,
+                depositBalance: 0,
+                uid: userCred.user.uid,
+                status: 'active',
+                joinedDate: new Date().toLocaleDateString(),
+                referredBy: ref || 'none',
+                pendingCommission: 0,
+                myPlans: {}
             });
+            showToast("Account created successfully!");
+            showLogin();
+        } catch(err) {
+            showToast(err.message);
         }
-
-        function navigateTo(id) {
-            playSound();
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + id).classList.add('active');
-            
-            if(id === 'dep-hist') loadDepHist();
-            if(id === 'wd-hist') loadWdHist();
-            if(id === 'team') loadTeam();
-            if(id === 'tasks') loadActivePlans();
-            if(id === 'withdraw') checkWithdrawLock();
-            if(id === 'wallet') updateWalletPage();
+    }
+    
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        if(!email || !password) {
+            showToast("Please enter email and password");
+            return;
         }
         
-        function updateWalletPage() {
-            if(DATA) document.getElementById('wallet-page-bal').innerText = parseFloat(DATA.balance || 0).toFixed(2);
+        try {
+            const userCred = await auth.signInWithEmailAndPassword(email, password);
+            currentUser = userCred.user;
+            loadUserData();
+        } catch(err) {
+            showToast("Login failed: " + err.message);
         }
-
-        function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
-
-        function toggleAuth(t) {
-            playSound();
-            document.getElementById('register-card').style.display = t === 'register' ? 'block' : 'none';
-            document.getElementById('login-card').style.display = t === 'login' ? 'block' : 'none';
-        }
-
-        function handleRegister() {
-            playSound();
-            const n = document.getElementById('reg-name').value;
-            const e = document.getElementById('reg-email').value;
-            const p = document.getElementById('reg-phone').value;
-            const ps = document.getElementById('reg-pass').value;
-            const cps = document.getElementById('reg-cpass').value;
-            let refCode = regRefInput.value;
-
-            if(!n || !e || !p || !ps) return showToast("Fill all fields");
-            if(ps !== cps) return showToast("Passwords do not match");
-            if(ps.length < 6) return showToast("Password min 6 chars");
-            
-            if(refCode && refCode.trim() !== "") {
-                db.ref('users').orderByChild('uid').equalTo(refCode).once('value', snap => {
-                    if(!snap.exists()) {
-                        showToast("Invalid Referral Code");
-                        return;
-                    }
-                    proceedWithRegistration(refCode);
-                });
-            } else {
-                proceedWithRegistration(null);
+    }
+    
+    async function loadUserData() {
+        db.ref('users/' + currentUser.uid).on('value', async (snap) => {
+            userData = snap.val();
+            if(userData) {
+                document.getElementById('mainBalance').innerText = ((userData.depositBalance || 0) + (userData.balance || 0)).toFixed(2);
+                document.getElementById('depositBalance').innerText = (userData.depositBalance || 0).toFixed(2);
+                document.getElementById('profitBalance').innerText = (userData.balance || 0).toFixed(2);
+                document.getElementById('walletBalance').innerText = (userData.balance || 0).toFixed(2);
+                document.getElementById('withdrawableBalance').innerText = (userData.balance || 0).toFixed(2);
+                document.getElementById('userName').innerText = userData.username;
+                document.getElementById('profileName').innerText = userData.username;
+                document.getElementById('profilePhone').innerText = userData.phone || '-';
+                document.getElementById('profileEmail').innerText = userData.email || '-';
+                document.getElementById('profileJoined').innerText = userData.joinedDate || '-';
+                document.getElementById('referralCode').innerText = currentUser.uid;
+                document.getElementById('userAvatar').src = `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`;
+                document.getElementById('profileAvatar').src = `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`;
             }
-        }
-
-        function proceedWithRegistration(refCode) {
-            const n = document.getElementById('reg-name').value;
-            const e = document.getElementById('reg-email').value;
-            const p = document.getElementById('reg-phone').value;
-            const ps = document.getElementById('reg-pass').value;
-            const defaultAvatar = avatars[Math.floor(Math.random() * avatars.length)];
-
-            auth.createUserWithEmailAndPassword(e, ps).then(res => {
-                db.ref('users/' + res.user.uid).set({
-                    username: n, email: e, phone: p, balance: 0, depositBalance: 0, uid: res.user.uid, status: 'active', joinedDate: new Date().toLocaleDateString(),
-                    referredBy: refCode || "none", pendingCommission: 0, teamEarnings: 0, myPlans: {}, withdrawalCount: 0,
-                    photoUrl: defaultAvatar, hasDeposited: false
-                }).then(() => { 
-                    localStorage.removeItem('referredBy'); 
-                    showToast("Account Created!"); 
-                });
-            }).catch(err => showToast(err.message));
-        }
-
-        function handleLogin() {
-            playSound();
-            const e = document.getElementById('log-email').value;
-            const p = document.getElementById('log-pass').value;
-            if(!e || !p) return showToast("Fill fields");
-            auth.signInWithEmailAndPassword(e, p).catch(err => showToast(err.message));
-        }
-
-        function logout() { auth.signOut(); }
-
-        auth.onAuthStateChanged(user => {
-            setTimeout(() => { const sp = document.getElementById('splash'); sp.style.opacity = '0'; setTimeout(() => sp.style.display = 'none', 500); }, 1500)
-
-            if (user) {
-                USER = user;
-                db.ref('users/' + user.uid).on('value', snap => {
-                    DATA = snap.val() || {};
-                    if (DATA.status === 'blocked') { auth.signOut(); return; }
-                    updateUI();
-                    loadActivePlans();
-                    loadNotifications();
-                });
-                loadPlans();
-                navigateTo('home');
-            } else { USER = null; DATA = null; navigateTo('login'); }
         });
-
-        function updateUI() {
-            if (!DATA) return;
-            const totalBal = (parseFloat(DATA.depositBalance || 0) + parseFloat(DATA.balance || 0)).toFixed(2);
-            const depBal = parseFloat(DATA.depositBalance || 0).toFixed(2);
-            const earnBal = parseFloat(DATA.balance || 0).toFixed(2);
-
-            document.getElementById('home-name').innerText = (DATA.username || "User").toUpperCase();
-            document.getElementById('home-bal').innerText = totalBal;
-            document.getElementById('home-dep-bal').innerText = depBal;
-            document.getElementById('home-earn-bal').innerText = earnBal;
-            
-            document.getElementById('wd-bal').innerText = earnBal;
-            
-            document.getElementById('prof-name').innerText = DATA.username || "User";
-            document.getElementById('prof-phone').innerText = DATA.phone || "---";
-            document.getElementById('ref-link-code').innerText = USER.uid;
-            
-            const avatarUrl = DATA.photoUrl || avatars[0];
-            document.getElementById('home-avatar').src = avatarUrl;
-            document.getElementById('prof-avatar').src = avatarUrl;
+        
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('appSection').style.display = 'block';
+        loadPlans();
+        loadTeamData();
+        loadNotifications();
+    }
+    
+    async function loadPlans() {
+        const plansSnap = await db.ref('plans').once('value');
+        const plans = plansSnap.val() || {};
+        const container = document.getElementById('plansContainer');
+        container.innerHTML = '';
+        
+        for(const [pid, plan] of Object.entries(plans)) {
+            container.innerHTML += `
+                <div class="plan-card">
+                    <h4 style="color: #667eea;">${plan.type}</h4>
+                    <p style="font-size: 24px; font-weight: 800;">Rs ${plan.investment}</p>
+                    <p style="color: #2ed573;">+Rs ${plan.dailyProfit}/day</p>
+                    <p style="font-size: 12px; color: #8b92a8;">${plan.days} days</p>
+                    <button class="btn-outline-premium" style="width: 100%; margin-top: 15px; padding: 10px;" onclick="buyPlan('${pid}', '${plan.type}', ${plan.investment})">Invest Now</button>
+                </div>
+            `;
         }
-
-        function loadPlans() {
-            db.ref('plans').on('value', snap => {
-                const list = document.getElementById('plan-list'); list.innerHTML = "";
-                if(!snap.exists()) { list.innerHTML = "<div style='grid-column:2; text-align:center;'>No plans</div>"; return; }
-                snap.forEach(c => {
-                    const p = c.val();
-                    const div = document.createElement('div'); div.className = 'plan-box';
-                    const days = p.days || 1;
-                    div.innerHTML = `<div class="plan-badge">${p.type || 'PLAN'}</div><div class="plan-price">Rs ${p.investment}</div><div class="plan-profit">+Rs ${p.dailyProfit}/Day</div><div style="font-size:10px; color:#666; margin-bottom:5px;">Duration: ${days} Days</div><button class="plan-btn" onclick="buyPlan('${c.key}', '${p.type || 'PLAN'}', ${p.investment}, ${p.dailyProfit}, '${p.videoLink}', ${days})">INVEST</button>`;
-                    list.appendChild(div);
-                });
-            });
+    }
+    
+    async function buyPlan(pid, name, amount) {
+        if(!userData) return;
+        if((userData.depositBalance || 0) < amount) {
+            showToast("Insufficient deposit balance!");
+            return;
         }
-
-        function buyPlan(id, name, cost, profit, videoLink, days) {
-            playSound();
-            if(!DATA) return; 
-            
-            if((DATA.depositBalance || 0) < cost) {
-                showDialog("Insufficient Funds", "You need to deposit funds to buy this plan. Profit balance cannot be used for investment.");
-                return;
+        
+        const newDepositBalance = (userData.depositBalance || 0) - amount;
+        const planKey = db.ref('users/' + currentUser.uid + '/myPlans').push().key;
+        const expires = Date.now() + (30 * 24 * 60 * 60 * 1000);
+        
+        await db.ref('users/' + currentUser.uid).update({
+            depositBalance: newDepositBalance,
+            [`myPlans/${planKey}`]: {
+                id: pid,
+                name: name,
+                amount: amount,
+                expires: expires,
+                lastAdDate: ''
             }
-            
-            if(!confirm("Buy plan for Rs "+cost+"?")) return;
-            
-            const daysNum = parseInt(days) || 1;
-            const expires = Date.now() + (daysNum * 24 * 60 * 60 * 1000);
-            
-            const planKey = db.ref('users/' + USER.uid + '/myPlans').push().key;
-
-            const planData = { id: id, name: name, profit: profit, video: videoLink, expires: expires, lastAdDate: "" };
-
-            const updates = {};
-            updates['depositBalance'] = (DATA.depositBalance || 0) - cost;
-            updates['myPlans/' + planKey] = planData;
-
-            db.ref('users/' + USER.uid).update(updates).then(() => showDialog("Success", "Plan Activated Successfully!"));
-        }
-
-        function loadActivePlans() {
-            const container = document.getElementById('tasks-container');
-            const noPlanMsg = document.getElementById('no-plan-msg');
-            
-            Object.values(countdownIntervals).forEach(clearInterval);
-            countdownIntervals = {};
-
-            const dynamicCards = container.querySelectorAll('.task-plan-card');
-            dynamicCards.forEach(c => c.remove());
-
-            const myPlans = DATA?.myPlans;
-            let hasActive = false;
-
-            if(myPlans) {
-                const now = Date.now();
-                Object.keys(myPlans).forEach(key => {
-                    const p = myPlans[key];
-                    if(p.expires > now) {
-                        hasActive = true;
-                        const isDone = p.lastAdDate === new Date().toLocaleDateString();
-
-                        const card = document.createElement('div');
-                        card.className = 'task-plan-card';
-                        card.id = `plan-${key}`;
-                        card.innerHTML = `
-                            <div class="task-plan-header">
-                                <div class="task-plan-name">${p.name}</div>
-                                <div id="countdown-${key}" class="countdown-timer">Loading...</div>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <div>
-                                    <div style="font-size:11px; color:var(--muted);">Profit</div>
-                                    <div class="task-plan-profit">Rs ${p.profit}</div>
-                                </div>
-                                ${isDone ? 
-                                    `<button class="btn-main" disabled style="background:#ccc; color:#666; padding:10px; width:auto; padding:10px 20px;">DONE</button>` : 
-                                    `<button class="btn-main btn-red" style="padding:10px; width:auto; padding:10px 20px;" onclick="startAd('${key}', '${p.video}', ${p.profit})">WATCH AD</button>`
-                                }
-                            </div>
-                        `;
-                        container.insertBefore(card, noPlanMsg);
-                        startCountdown(key, p.expires);
-                    }
-                });
+        });
+        showToast("Plan activated successfully!");
+        loadActivePlans();
+    }
+    
+    async function loadActivePlans() {
+        const myPlans = userData?.myPlans || {};
+        const container = document.getElementById('tasksContainer');
+        container.innerHTML = '';
+        
+        let hasActive = false;
+        const now = Date.now();
+        
+        for(const [key, plan] of Object.entries(myPlans)) {
+            if(plan.expires > now) {
+                hasActive = true;
+                const isDone = plan.lastAdDate === new Date().toLocaleDateString();
+                container.innerHTML += `
+                    <div class="premium-card" style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <h4>${plan.name}</h4>
+                            <span style="color: #2ed573;">+Rs ${plan.amount * 0.1}/day</span>
+                        </div>
+                        ${!isDone ? 
+                            `<button class="btn-premium" style="width: 100%;" onclick="completeTask('${key}', ${plan.amount * 0.1})">Complete Task</button>` :
+                            `<button class="btn-outline-premium" style="width: 100%;" disabled>Task Completed</button>`
+                        }
+                    </div>
+                `;
             }
-
-            if(!hasActive) { noPlanMsg.style.display = 'block'; } else { noPlanMsg.style.display = 'none'; }
         }
-
-        function startCountdown(key, expires) {
-            function updateTimer() {
-                const now = Date.now();
-                const diff = expires - now;
-                const elem = document.getElementById(`countdown-${key}`);
-                if(!elem) return;
-                
-                if (diff <= 0) { elem.innerHTML = "EXPIRED"; clearInterval(countdownIntervals[key]); return; }
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                elem.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-            updateTimer();
-            countdownIntervals[key] = setInterval(updateTimer, 1000);
+        
+        if(!hasActive) {
+            container.innerHTML = '<div class="premium-card" style="text-align: center;">No active plans. Invest to start earning!</div>';
         }
-
-        function startAd(planKey, videoLink, profit) {
-            playSound();
-            if(!videoLink || videoLink === "no-link") { showToast("No ad video for this plan."); return; }
-            
-            window.currentAdPlanKey = planKey;
-            window.currentAdProfit = profit;
-
-            window.open(videoLink, '_blank');
-            document.getElementById('ad-window').style.display = 'flex'; 
-            let t = 10;
-            document.getElementById('ad-timer').innerText = t;
-            const interval = setInterval(() => { 
-                t--; 
-                document.getElementById('ad-timer').innerText = t; 
-                if(t <= 0) { clearInterval(interval); finishAdTask(); } 
-            }, 1000);
+    }
+    
+    async function completeTask(planKey, profit) {
+        const newBalance = (userData.balance || 0) + profit;
+        await db.ref('users/' + currentUser.uid).update({
+            balance: newBalance,
+            [`myPlans/${planKey}/lastAdDate`]: new Date().toLocaleDateString()
+        });
+        showToast(`+Rs ${profit} added to your balance!`);
+        loadActivePlans();
+    }
+    
+    async function loadTeamData() {
+        const membersSnap = await db.ref('users').orderByChild('referredBy').equalTo(currentUser.uid).once('value');
+        const members = membersSnap.val() || {};
+        const memberCount = Object.keys(members).length;
+        document.getElementById('teamCount').innerText = memberCount;
+        document.getElementById('teamEarnings').innerText = `Rs ${(userData?.pendingCommission || 0).toFixed(2)}`;
+        
+        if((userData?.pendingCommission || 0) > 0) {
+            document.getElementById('claimBtn').style.display = 'block';
+            document.getElementById('claimAmount').innerText = (userData.pendingCommission || 0).toFixed(2);
         }
-
-        function finishAdTask() {
-            const planKey = window.currentAdPlanKey;
-            const profit = window.currentAdProfit || 0;
-
-            db.ref('users/' + USER.uid).once('value', snap => {
-                const currentBal = snap.val().balance || 0;
-                db.ref('users/' + USER.uid).update({ 
-                    balance: currentBal + profit, 
-                    ['myPlans/' + planKey + '/lastAdDate']: new Date().toLocaleDateString() 
-                }).then(() => { 
-                    document.getElementById('ad-window').style.display = 'none'; 
-                    showDialog("Profit Added!", `Rs ${profit} has been added to your Earning Balance.`); 
-                });
-            });
+        
+        const membersList = document.getElementById('teamMembersList');
+        membersList.innerHTML = '';
+        for(const [uid, member] of Object.entries(members)) {
+            membersList.innerHTML += `<div class="history-item"><span>${member.username}</span><span style="color: #2ed573;">Joined: ${member.joinedDate}</span></div>`;
         }
-
-        function previewDeposit(input) {
-            depFile = input.files[0];
-            if(depFile) { const reader = new FileReader(); reader.onload = e => { document.getElementById('dep-preview').src = e.target.result; document.getElementById('dep-preview').style.display = 'block'; }; reader.readAsDataURL(depFile); }
+        if(memberCount === 0) {
+            membersList.innerHTML = '<div style="text-align: center; padding: 20px;">No team members yet</div>';
         }
-
-        function compressImage(file, callback) {
+        
+        const commissionSnap = await db.ref('commissionHistory').orderByChild('referrerUID').equalTo(currentUser.uid).limitToLast(10).once('value');
+        const commissions = commissionSnap.val() || {};
+        const commissionList = document.getElementById('commissionList');
+        commissionList.innerHTML = '';
+        for(const [cid, comm] of Object.entries(commissions)) {
+            commissionList.innerHTML += `<div class="history-item"><span>${comm.fromUsername}</span><span style="color: #2ed573;">+Rs ${comm.amount}</span></div>`;
+        }
+        if(Object.keys(commissions).length === 0) {
+            commissionList.innerHTML = '<div style="text-align: center; padding: 20px;">No commissions yet</div>';
+        }
+    }
+    
+    async function claimCommission() {
+        const amount = userData?.pendingCommission || 0;
+        if(amount <= 0) return;
+        const newBalance = (userData.balance || 0) + amount;
+        await db.ref('users/' + currentUser.uid).update({
+            balance: newBalance,
+            pendingCommission: 0
+        });
+        showToast(`Rs ${amount} claimed successfully!`);
+        loadTeamData();
+    }
+    
+    function previewDeposit(input) {
+        depositFile = input.files[0];
+        if(depositFile) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxWidth = 600; 
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    if (width > maxWidth) {
-                        height = Math.round(height * maxWidth / width);
-                        width = maxWidth;
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
-                    callback(dataUrl);
-                };
-                img.onerror = function() {
-                    callback(null);
-                };
-                img.src = e.target.result;
+            reader.onload = e => {
+                document.getElementById('depositPreview').src = e.target.result;
+                document.getElementById('depositPreview').style.display = 'block';
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(depositFile);
+        }
+    }
+    
+    function compressImage(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const maxWidth = 600;
+                let width = img.width;
+                let height = img.height;
+                if(width > maxWidth) {
+                    height = Math.round(height * maxWidth / width);
+                    width = maxWidth;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.5));
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    async function submitDeposit() {
+        const amount = parseFloat(document.getElementById('depositAmount').value);
+        const txn = document.getElementById('depositTxn').value;
+        
+        if(!depositFile) { showToast("Upload screenshot"); return; }
+        if(amount < 300) { showToast("Minimum deposit is Rs 300"); return; }
+        if(!txn) { showToast("Enter transaction ID"); return; }
+        
+        compressImage(depositFile, async (compressed) => {
+            await db.ref('deposits').push({
+                uid: currentUser.uid,
+                username: userData.username,
+                amount: amount,
+                tid: txn,
+                screenshot: compressed,
+                status: 'pending',
+                date: new Date().toLocaleString(),
+                referredBy: userData.referredBy || 'none'
+            });
+            showToast("Deposit request submitted!");
+            document.getElementById('depositAmount').value = '';
+            document.getElementById('depositTxn').value = '';
+            document.getElementById('depositPreview').style.display = 'none';
+            depositFile = null;
+        });
+    }
+    
+    async function submitWithdraw() {
+        const method = document.getElementById('withdrawMethod').value;
+        const account = document.getElementById('withdrawAccount').value;
+        const name = document.getElementById('withdrawName').value;
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        
+        if(!method) { showToast("Select withdrawal method"); return; }
+        if(!account || !name) { showToast("Enter account details"); return; }
+        if(amount < 10000) { showToast("Minimum withdrawal is Rs 10000"); return; }
+        if(amount > (userData?.balance || 0)) { showToast("Insufficient balance"); return; }
+        
+        await db.ref('users/' + currentUser.uid).update({
+            balance: (userData.balance || 0) - amount
+        });
+        
+        await db.ref('withdrawals').push({
+            uid: currentUser.uid,
+            username: userData.username,
+            method: method,
+            account: account,
+            title: name,
+            amount: amount,
+            status: 'pending',
+            date: new Date().toLocaleString()
+        });
+        
+        showToast("Withdrawal request submitted!");
+        document.getElementById('withdrawAccount').value = '';
+        document.getElementById('withdrawName').value = '';
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawMethod').value = '';
+    }
+    
+    async function loadDepositHistory() {
+        const depositsSnap = await db.ref('deposits').orderByChild('uid').equalTo(currentUser.uid).once('value');
+        const deposits = depositsSnap.val() || {};
+        const container = document.getElementById('depositHistoryList');
+        container.innerHTML = '';
+        
+        const items = Object.values(deposits).reverse();
+        if(items.length === 0) {
+            container.innerHTML = '<div class="premium-card" style="text-align: center;">No deposit history</div>';
+            return;
         }
         
-        function submitDeposit() {
-            playSound();
-            const amt = document.getElementById('dep-amt').value; 
-            const tid = document.getElementById('dep-tid').value;
-            if(!depFile) return showToast("Upload screenshot"); 
-            if(amt < 300) return showToast("Min 300"); 
-            if(!tid) return showToast("Enter Binance Transaction ID"); 
-            if(!USER || !DATA) return;
-            
-            const btn = document.getElementById('dep-btn'); 
-            btn.disabled = true; 
-            btn.innerText = "PROCESSING...";
-
-            compressImage(depFile, function(compressedData) {
-                if(!compressedData) {
-                    showToast("Image processing failed. Try again.");
-                    btn.disabled = false; 
-                    btn.innerText = "SUBMIT REQUEST";
-                    return;
-                }
-
-                const depositData = { 
-                    uid: USER.uid, 
-                    username: DATA.username || "Unknown", 
-                    phone: DATA.phone || "Unknown", 
-                    amount: parseFloat(amt), 
-                    tid: tid, 
-                    screenshot: compressedData, 
-                    status: 'pending', 
-                    date: new Date().toLocaleString(), 
-                    referredBy: DATA.referredBy || "none",
-                    paymentMethod: "Binance"
-                };
-                
-                db.ref('deposits').push(depositData).then(() => {
-                    showToast("Request Sent!");
-                    btn.disabled = false; btn.innerText = "SUBMIT REQUEST"; 
-                    document.getElementById('dep-amt').value = ""; 
-                    document.getElementById('dep-tid').value = ""; 
-                    document.getElementById('dep-preview').style.display = 'none'; 
-                    depFile = null; 
-                    navigateTo('dep-hist');
-                }).catch(err => {
-                    console.error(err);
-                    showToast("Error sending request");
-                    btn.disabled = false; 
-                    btn.innerText = "SUBMIT REQUEST";
-                });
-            });
-        }
-
-        function loadDepHist() {
-            db.ref('deposits').orderByChild('uid').equalTo(USER.uid).once('value', snap => {
-                const list = document.getElementById('dep-hist-list'); const data = snap.val();
-                if(!data) { list.innerHTML = "<div style='text-align:center; padding:20px; color:#333;'>No History</div>"; return; }
-                const items = Object.values(data).sort((a,b) => new Date(b.date) - new Date(a.date)); list.innerHTML = "";
-                items.forEach(d => {
-                    const statusClass = d.status === 'approved' ? 'status-approved' : (d.status === 'rejected' ? 'status-rejected' : 'status-pending');
-                    list.innerHTML += `<div class="history-card"><div class="icon-circle"><i class="fab fa-bitcoin"></i></div><div style="flex:1;"><span style="font-weight:900;">Rs ${d.amount}</span><br><span style="font-size:10px; color:var(--muted);">Binance: ${d.tid}</span></div><div class="status-pill ${statusClass}">${d.status.toUpperCase()}</div></div>`;
-                });
-            });
-        }
-
-        function checkWithdrawLock() {
-            const profitBalance = parseFloat(DATA?.balance || 0);
-            const minWithdrawAmount = 10000;
-            
-            if (profitBalance >= minWithdrawAmount) {
-                document.getElementById('wd-lock-msg').style.display = 'none';
-                document.getElementById('wd-form-area').style.display = 'block';
-                document.getElementById('wd-amt').setAttribute('placeholder', `Amount (Min ${minWithdrawAmount})`);
-                document.getElementById('wd-amt').setAttribute('min', minWithdrawAmount);
-            } else {
-                document.getElementById('wd-lock-msg').style.display = 'block';
-                document.getElementById('wd-form-area').style.display = 'none';
-                document.getElementById('wd-lock-text').innerHTML = `Minimum Rs ${minWithdrawAmount} required for withdrawal<br>Your current balance: Rs ${profitBalance.toFixed(2)}`;
-            }
-        }
-
-        function toggleWalletMenu(show) { playSound(); document.getElementById('wallet-menu').style.transform = show ? 'translateY(0)' : 'translateY(100%)'; }
-        function setWallet(name) { playSound(); document.getElementById('wd-method').innerText = name; toggleWalletMenu(false); }
+        items.forEach(d => {
+            container.innerHTML += `
+                <div class="history-item">
+                    <div>
+                        <p><strong>Rs ${d.amount}</strong></p>
+                        <p style="font-size: 11px; color: #8b92a8;">${d.date}</p>
+                    </div>
+                    <span class="${d.status === 'approved' ? 'status-approved' : (d.status === 'rejected' ? 'status-rejected' : 'status-pending')}" style="padding: 4px 12px; border-radius: 20px; font-size: 11px;">${d.status.toUpperCase()}</span>
+                </div>
+            `;
+        });
+    }
+    
+    async function loadWithdrawHistory() {
+        const withdrawalsSnap = await db.ref('withdrawals').orderByChild('uid').equalTo(currentUser.uid).once('value');
+        const withdrawals = withdrawalsSnap.val() || {};
+        const container = document.getElementById('withdrawHistoryList');
+        container.innerHTML = '';
         
-        function submitWithdraw() {
-            playSound();
-            const method = document.getElementById('wd-method').innerText; 
-            const acc = document.getElementById('wd-acc').value; 
-            const name = document.getElementById('wd-name').value; 
-            const amt = parseFloat(document.getElementById('wd-amt').value);
-            const profitBalance = parseFloat(DATA?.balance || 0);
-            const minWithdrawAmount = 10000;
-            
-            if(method.includes("Select")) return showToast("Select Method"); 
-            if(!acc || !name) return showToast("Enter details"); 
-            if(amt < minWithdrawAmount) return showToast(`Min ${minWithdrawAmount} required`); 
-            if(amt > profitBalance) return showToast("Insufficient Earning Balance");
-            
-            db.ref('users/' + USER.uid).update({ balance: (DATA.balance || 0) - amt });
-            
-            const wdData = { 
-                uid: USER.uid, 
-                username: DATA.username, 
-                method: method, 
-                account: acc, 
-                title: name, 
-                amount: amt, 
-                status: 'pending', 
-                date: new Date().toLocaleString() 
-            };
-
-            db.ref('withdrawals').push(wdData).then(() => {
-                showDialog("Request Submitted", "Your withdrawal is pending. You will receive it within 12 hours.");
-                navigateTo('wd-hist');
-            });
+        const items = Object.values(withdrawals).reverse();
+        if(items.length === 0) {
+            container.innerHTML = '<div class="premium-card" style="text-align: center;">No withdrawal history</div>';
+            return;
         }
-
-        function loadWdHist() {
-            db.ref('withdrawals').orderByChild('uid').equalTo(USER.uid).once('value', snap => {
-                const list = document.getElementById('wd-hist-list'); const data = snap.val();
-                if(!data) { list.innerHTML = "<div style='text-align:center; padding:20px; color:#333;'>No History</div>"; return; }
-                const items = Object.values(data).sort((a,b) => new Date(b.date) - new Date(a.date)); list.innerHTML = "";
-                items.forEach(d => {
-                    const statusClass = d.status === 'approved' ? 'status-approved' : (d.status === 'rejected' ? 'status-rejected' : 'status-pending');
-                    list.innerHTML += `<div class="history-card"><div class="icon-circle"><i class="fa fa-arrow-up"></i></div><div style="flex:1;"><span style="font-weight:900;">Rs ${d.amount}</span><br><span style="font-size:10px; color:var(--muted);">${d.method}</span></div><div class="status-pill ${statusClass}">${d.status.toUpperCase()}</div></div>`;
-                });
-            });
+        
+        items.forEach(w => {
+            container.innerHTML += `
+                <div class="history-item">
+                    <div>
+                        <p><strong>Rs ${w.amount}</strong></p>
+                        <p style="font-size: 11px; color: #8b92a8;">${w.method}</p>
+                        <p style="font-size: 10px; color: #8b92a8;">${w.date}</p>
+                    </div>
+                    <span class="${w.status === 'approved' ? 'status-approved' : (w.status === 'rejected' ? 'status-rejected' : 'status-pending')}" style="padding: 4px 12px; border-radius: 20px; font-size: 11px;">${w.status.toUpperCase()}</span>
+                </div>
+            `;
+        });
+    }
+    
+    function navigateTo(page) {
+        document.getElementById('depositHistoryPage').style.display = 'none';
+        document.getElementById('withdrawHistoryPage').style.display = 'none';
+        if(page === 'deposit-history') {
+            document.getElementById('depositHistoryPage').style.display = 'block';
+            loadDepositHistory();
+        } else if(page === 'withdraw-history') {
+            document.getElementById('withdrawHistoryPage').style.display = 'block';
+            loadWithdrawHistory();
         }
-
-        function loadTeam() {
-            db.ref('users').orderByChild('referredBy').equalTo(USER.uid).once('value', snap => {
-                const members = snap.val(); 
-                const list = document.getElementById('team-list'); 
-                let count = 0; 
-                list.innerHTML = "";
-                
-                if(!members) { list.innerHTML = "<div style='color:#333; text-align:center;'>No members</div>"; }
-                else { 
-                    Object.values(members).forEach(m => { 
-                        count++; 
-                        list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee;">${m.username}</div>`; 
-                    }); 
-                }
-                document.getElementById('team-count').innerText = count;
-            });
-
-            const pending = parseFloat(DATA?.pendingCommission || 0).toFixed(2);
-            document.getElementById('team-earn').innerText = pending;
-            
-            const claimBtn = document.getElementById('claim-btn');
-            if(pending > 0) {
-                claimBtn.style.display = 'block';
-                document.getElementById('claim-amt').innerText = pending;
-            } else { claimBtn.style.display = 'none'; }
-
-            db.ref('commissionHistory').orderByChild('referrerUID').equalTo(USER.uid).limitToLast(10).once('value', snap => {
-                const histList = document.getElementById('comm-hist');
-                const data = snap.val();
-                if(!data) { histList.innerHTML = "<div style='color:#333; text-align:center;'>No earnings yet</div>"; return; }
-                const items = Object.values(data).reverse();
-                histList.innerHTML = "";
-                items.forEach(h => {
-                    histList.innerHTML += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;">
-                        <div><i class="fa fa-user" style="color:var(--accent); margin-right:5px;"></i>${h.fromUsername}</div>
-                        <div style="color:var(--success); font-weight:700;">+Rs ${h.amount.toFixed(2)}</div>
-                    </div>`;
-                });
-            });
+    }
+    
+    function goBack() {
+        document.getElementById('depositHistoryPage').style.display = 'none';
+        document.getElementById('withdrawHistoryPage').style.display = 'none';
+        switchNav('profile');
+    }
+    
+    function showDepositForm() {
+        document.getElementById('depositForm').style.display = 'block';
+        document.getElementById('withdrawForm').style.display = 'none';
+    }
+    
+    function showWithdrawForm() {
+        document.getElementById('depositForm').style.display = 'none';
+        document.getElementById('withdrawForm').style.display = 'block';
+    }
+    
+    function switchNav(nav) {
+        document.querySelectorAll('.nav-item-premium').forEach(n => n.classList.remove('active'));
+        event.target.closest('.nav-item-premium').classList.add('active');
+        
+        document.getElementById('appSection').style.display = 'none';
+        document.getElementById('tasksPage').style.display = 'none';
+        document.getElementById('walletPage').style.display = 'none';
+        document.getElementById('teamPage').style.display = 'none';
+        document.getElementById('profilePage').style.display = 'none';
+        
+        if(nav === 'home') {
+            document.getElementById('appSection').style.display = 'block';
+        } else if(nav === 'tasks') {
+            document.getElementById('tasksPage').style.display = 'block';
+            loadActivePlans();
+        } else if(nav === 'wallet') {
+            document.getElementById('walletPage').style.display = 'block';
+        } else if(nav === 'team') {
+            document.getElementById('teamPage').style.display = 'block';
+            loadTeamData();
+        } else if(nav === 'profile') {
+            document.getElementById('profilePage').style.display = 'block';
         }
-
-        function claimCommission() {
-            playSound();
-            const amount = parseFloat(DATA.pendingCommission || 0);
-            if(amount <= 0) return showToast("Nothing to claim");
-            const newBal = parseFloat(DATA.balance || 0) + amount;
-            db.ref('users/' + USER.uid).update({ balance: newBal, pendingCommission: 0 }).then(() => {
-                showDialog("Claimed!", `Rs ${amount.toFixed(2)} added to your wallet.`);
-            });
+    }
+    
+    function toggleNotifications() {
+        document.getElementById('notificationSidebar').style.right = '0';
+        document.getElementById('overlay').style.display = 'block';
+    }
+    
+    function closeNotifications() {
+        document.getElementById('notificationSidebar').style.right = '-100%';
+        document.getElementById('overlay').style.display = 'none';
+    }
+    
+    async function loadNotifications() {
+        const notifSnap = await db.ref('notifications').once('value');
+        const notifications = notifSnap.val() || {};
+        const container = document.getElementById('notificationList');
+        container.innerHTML = '';
+        
+        const items = Object.values(notifications).reverse();
+        if(items.length === 0) {
+            container.innerHTML = '<div style="text-align: center; padding: 40px; color: #8b92a8;">No notifications yet</div>';
+            return;
         }
-
-        function openWhatsApp() {
-            playSound();
-            window.open("https://chat.whatsapp.com/EBHZJaJsGqaKN009GQdNHA", "_blank");
+        
+        items.forEach(n => {
+            container.innerHTML += `
+                <div style="background: rgba(255,255,255,0.03); border-radius: 16px; padding: 15px; margin-bottom: 12px; border-left: 3px solid #667eea;">
+                    <h4 style="margin-bottom: 5px;">${n.title}</h4>
+                    <p style="font-size: 13px; color: #cbd5e0;">${n.message}</p>
+                    <p style="font-size: 10px; color: #8b92a8; margin-top: 8px;">${n.date}</p>
+                </div>
+            `;
+        });
+    }
+    
+    function copyReferral() {
+        const link = window.location.origin + window.location.pathname + "?ref=" + currentUser.uid;
+        navigator.clipboard.writeText(link);
+        showToast("Referral link copied!");
+    }
+    
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        showToast("Copied: " + text);
+    }
+    
+    function openSupport() {
+        window.open("https://wa.me/923292359957", "_blank");
+    }
+    
+    function logout() {
+        auth.signOut();
+        document.getElementById('authSection').style.display = 'flex';
+        document.getElementById('appSection').style.display = 'none';
+        document.getElementById('tasksPage').style.display = 'none';
+        document.getElementById('walletPage').style.display = 'none';
+        document.getElementById('teamPage').style.display = 'none';
+        document.getElementById('profilePage').style.display = 'none';
+        showLogin();
+    }
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    if(refCode) {
+        document.getElementById('regRef').value = refCode;
+    }
+    
+    auth.onAuthStateChanged(user => {
+        if(user) {
+            currentUser = user;
+            loadUserData();
         }
-
-        function copyText(t) { playSound(); navigator.clipboard.writeText(t); showToast("Copied! Binance ID: " + t); }
-        function copyRef() { 
-            playSound();
-            const link = window.location.origin + window.location.pathname + "?ref=" + USER.uid;
-            navigator.clipboard.writeText(link); 
-            showDialog("Link Copied!", "Share this link to invite friends.");
-        }
-    </script>
+    });
+</script>
 </body>
 </html>
