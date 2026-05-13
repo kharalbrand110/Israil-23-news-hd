@@ -234,67 +234,6 @@
             word-break: break-all;
             line-height: 1.3;
         }
-
-        /* Binance QR Container */
-        .binance-container {
-            text-align: center;
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #00a859;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .binance-label {
-            font-size: 18px;
-            font-weight: 900;
-            color: #00a859;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .binance-label i {
-            font-size: 24px;
-        }
-        .binance-qr {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .binance-qr img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .binance-id {
-            margin-top: 15px;
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--pak-green);
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 15px;
-            display: inline-block;
-            cursor: pointer;
-        }
-        .binance-note {
-            font-size: 12px;
-            color: #666;
-            margin-top: 10px;
-        }
-        .binance-warning {
-            background: rgba(0, 168, 89, 0.1);
-            border: 1px solid #00a859;
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 11px;
-            color: #00a859;
-        }
     </style>
 </head>
 <body>
@@ -341,7 +280,6 @@
         <div onclick="setWallet('EasyPaisa')" class="wallet-opt"><i class="fas fa-mobile-alt"></i> EasyPaisa</div>
         <div onclick="setWallet('JazzCash')" class="wallet-opt"><i class="fas fa-mobile-alt"></i> JazzCash</div>
         <div onclick="setWallet('Bank Transfer')" class="wallet-opt"><i class="fas fa-university"></i> Bank Transfer</div>
-        <div onclick="setWallet('Binance')" class="wallet-opt"><i class="fab fa-bitcoin"></i> Binance</div>
         <div onclick="setWallet('Sadapay')" class="wallet-opt"><i class="fas fa-credit-card"></i> Sadapay</div>
         <div onclick="toggleWalletMenu(false)" style="text-align:center; color:var(--error); margin-top:10px; font-weight:900;">Close</div>
     </div>
@@ -466,40 +404,39 @@
         </div>
     </div>
 
-    <!-- DEPOSIT PAGE - BINANCE ONLY -->
+    <!-- DEPOSIT PAGE - OFFLINE -->
     <div id="page-deposit" class="page">
-        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Deposit via Binance</div><div></div></div>
+        <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Deposit</div><div></div></div>
         <div class="scroll-area">
-            <div class="binance-container">
-                <div class="binance-label">
-                    <i class="fab fa-bitcoin"></i>
-                    BINANCE PAY
+            <div class="binance-container" style="background: #f8f9fa; border: 2px solid #ffa500;">
+                <div class="binance-label" style="color: #ffa500;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    SYSTEM UPDATE
                 </div>
-                <div class="binance-qr">
-                    <img src="https://i.postimg.cc/G2ssm1rv/IMG-20260418-WA0002.jpg" alt="Binance QR Code">
+                <div class="binance-note" style="color: #333; font-size: 14px; font-weight: 800; margin: 20px 0;">
+                    Deposit system is currently offline.
                 </div>
-                <div class="binance-id" onclick="copyText('1129708173')">
-                    1129708173 <i class="fa fa-copy"></i>
-                </div>
-                <p class="binance-note">Scan QR code or copy Binance ID to send payment</p>
-                <div class="binance-warning">
-                    <i class="fas fa-info-circle"></i> Send payment only through Binance Pay. After payment, upload screenshot below.
+                <div class="binance-warning" style="background: rgba(255,165,0,0.1); border-color: #ffa500; color: #333;">
+                    <i class="fas fa-clock"></i> Please check back later. For urgent support, contact admin.
                 </div>
             </div>
             
-            <div class="upload-box" onclick="document.getElementById('dep-file').click()">
-                <input type="file" id="dep-file" accept="image/*" hidden onchange="previewDeposit(this)">
-                <i class="fa fa-camera" style="font-size:30px; color:#00a859;"></i>
-                <div style="font-size:11px; color:var(--muted); margin-top:5px;">Upload Binance Payment Screenshot</div>
-                <img id="dep-preview" src="" style="width:100%; max-height:150px; border-radius:10px; display:none; margin-top:10px;">
+            <!-- Hidden upload fields (disabled) -->
+            <div style="display:none;">
+                <div class="upload-box" onclick="document.getElementById('dep-file').click()">
+                    <input type="file" id="dep-file" accept="image/*" hidden onchange="previewDeposit(this)">
+                    <i class="fa fa-camera" style="font-size:30px; color:#00a859;"></i>
+                    <div style="font-size:11px; color:var(--muted); margin-top:5px;">Upload Binance Payment Screenshot</div>
+                    <img id="dep-preview" src="" style="width:100%; max-height:150px; border-radius:10px; display:none; margin-top:10px;">
+                </div>
+                <div class="input-box"><label>AMOUNT ($)</label><input type="number" id="dep-amt" class="mota-input" placeholder="Min 5"></div>
+                <div class="input-box"><label>BINANCE TRANSACTION ID</label><input type="text" id="dep-tid" class="mota-input" placeholder="Enter Binance Transaction ID"></div>
+                <button class="btn-main btn-red" id="dep-btn" onclick="submitDeposit()">SUBMIT REQUEST</button>
             </div>
-            <div class="input-box"><label>AMOUNT ($)</label><input type="number" id="dep-amt" class="mota-input" placeholder="Min 5"></div>
-            <div class="input-box"><label>BINANCE TRANSACTION ID</label><input type="text" id="dep-tid" class="mota-input" placeholder="Enter Binance Transaction ID"></div>
-            <button class="btn-main btn-red" id="dep-btn" onclick="submitDeposit()">SUBMIT REQUEST</button>
         </div>
     </div>
 
-    <!-- WITHDRAW PAGE - Multiple Methods -->
+    <!-- WITHDRAW PAGE - Sadapay Added -->
     <div id="page-withdraw" class="page">
         <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Withdraw</div><div></div></div>
         <div class="scroll-area">
@@ -643,7 +580,7 @@
 
         function showDialog(title, msg) {
             document.getElementById('d-title').innerText = title;
-            document.getElementById('d-msg').innerText = msg;
+            document.getElementById('d-msg').innerHTML = msg;
             document.getElementById('dialog-overlay').style.display = 'flex';
         }
         function closeDialog() { document.getElementById('dialog-overlay').style.display = 'none'; }
@@ -1006,57 +943,9 @@
             reader.readAsDataURL(file);
         }
         
+        // Deposit is now OFFLINE
         function submitDeposit() {
-            playSound();
-            let amt = document.getElementById('dep-amt').value; 
-            const tid = document.getElementById('dep-tid').value;
-            const amtInRs = parseFloat(amt) * 280;
-            
-            if(!depFile) return showToast("Upload screenshot"); 
-            if(amt < 5) return showToast("Min $5"); 
-            if(!tid) return showToast("Enter Binance Transaction ID"); 
-            if(!USER || !DATA) return;
-            
-            const btn = document.getElementById('dep-btn'); 
-            btn.disabled = true; 
-            btn.innerText = "PROCESSING...";
-
-            compressImage(depFile, function(compressedData) {
-                if(!compressedData) {
-                    showToast("Image processing failed. Try again.");
-                    btn.disabled = false; 
-                    btn.innerText = "SUBMIT REQUEST";
-                    return;
-                }
-
-                const depositData = { 
-                    uid: USER.uid, 
-                    username: DATA.username || "Unknown", 
-                    phone: DATA.phone || "Unknown", 
-                    amount: amtInRs, 
-                    tid: tid, 
-                    screenshot: compressedData, 
-                    status: 'pending', 
-                    date: new Date().toLocaleString(), 
-                    referredBy: DATA.referredBy || "none",
-                    paymentMethod: "Binance"
-                };
-                
-                db.ref('deposits').push(depositData).then(() => {
-                    showToast("Request Sent!");
-                    btn.disabled = false; btn.innerText = "SUBMIT REQUEST"; 
-                    document.getElementById('dep-amt').value = ""; 
-                    document.getElementById('dep-tid').value = ""; 
-                    document.getElementById('dep-preview').style.display = 'none'; 
-                    depFile = null; 
-                    navigateTo('dep-hist');
-                }).catch(err => {
-                    console.error(err);
-                    showToast("Error sending request");
-                    btn.disabled = false; 
-                    btn.innerText = "SUBMIT REQUEST";
-                });
-            });
+            showDialog("System Offline", "Deposit system is currently offline. Please check back later.");
         }
 
         function loadDepHist() {
