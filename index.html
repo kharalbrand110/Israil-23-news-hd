@@ -24,7 +24,7 @@
         
         .scroll-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
         
-        .btn-main { width: 100%; padding: 14px; border: none; border-radius: 20px; font-weight: 900; font-size: 13px; cursor: pointer; transition: all 0.3s; }
+        .btn-main { width: 100%; padding: 14px; border: none; border-radius: 20px; font-weight: 900; font-size: 13px; cursor: pointer; }
         .btn-green { background: linear-gradient(135deg, #00a859, #008040); color: white; }
         .btn-outline { background: transparent; border: 2px solid #00a859; color: #00a859; }
         
@@ -80,11 +80,6 @@
         .status-approved { background: rgba(46,204,113,0.1); color: #2ecc71; }
         .status-rejected { background: rgba(231,76,60,0.1); color: #e74c3c; }
         
-        .admin-panel { background: #1a1a2e; color: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; }
-        .admin-panel h4 { margin-bottom: 10px; color: #00a859; }
-        .admin-input { width: 100%; padding: 10px; border-radius: 12px; border: none; margin-bottom: 8px; }
-        .admin-btn { background: #00a859; border: none; padding: 10px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; color: white; }
-        
         #dialog-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: none; justify-content: center; align-items: center; }
         .dialog-box { background: white; width: 85%; max-width: 350px; border-radius: 20px; padding: 25px; text-align: center; }
         .dialog-btn { background: #00a859; color: white; border: none; padding: 12px; border-radius: 30px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 15px; }
@@ -105,6 +100,11 @@
         .avatar-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #00a859; }
         .profile-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #00a859; margin-bottom: 10px; }
         
+        .admin-panel { background: #1a1a2e; color: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; }
+        .admin-panel h4 { margin-bottom: 10px; color: #00a859; }
+        .admin-input { width: 100%; padding: 10px; border-radius: 12px; border: none; margin-bottom: 8px; }
+        .admin-btn { background: #00a859; border: none; padding: 10px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; color: white; }
+        
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -116,7 +116,7 @@
     <p style="color:white; margin-top:10px;">Earn in Pakistan</p>
 </div>
 
-<div id="dialog-overlay"><div class="dialog-box"><div class="dialog-title" id="d-title" style="font-weight:900;">Alert</div><div class="dialog-msg" id="d-msg" style="margin:15px 0;">Message</div><button class="dialog-btn" onclick="closeDialog()">OK</button></div></div>
+<div id="dialog-overlay"><div class="dialog-box"><div class="dialog-title" id="d-title">Alert</div><div class="dialog-msg" id="d-msg">Message</div><button class="dialog-btn" onclick="closeDialog()">OK</button></div></div>
 <div id="ad-window"><div style="width:80px; height:80px; border:4px solid #00a859; border-top-color:white; border-radius:50%; animation:spin 1s linear infinite;"></div><div id="ad-timer">10</div></div>
 <div id="toast"></div>
 <div id="wallet-menu"><div style="text-align:center; font-weight:900; margin-bottom:15px;">Select Method</div><div onclick="setWallet('EasyPaisa')" class="wallet-opt">EasyPaisa</div><div onclick="setWallet('JazzCash')" class="wallet-opt">JazzCash</div><div onclick="setWallet('Bank Transfer')" class="wallet-opt">Bank Transfer</div><div onclick="toggleWalletMenu(false)" style="text-align:center; color:#e74c3c; margin-top:10px; cursor:pointer;">Close</div></div>
@@ -125,22 +125,22 @@
 <div id="page-login" class="page active">
     <div style="min-height:100%; display:flex; align-items:center; justify-content:center; padding:20px;">
         <div class="auth-card" id="register-card">
-            <h2 style="text-align:center; color:#01411c; margin-bottom:15px;">Create Account</h2>
+            <h2 style="text-align:center; color:#01411c;">Create Account</h2>
             <div class="input-box"><label>FULL NAME</label><input type="text" id="reg-name" class="mota-input" placeholder="Full Name"></div>
             <div class="input-box"><label>EMAIL</label><input type="email" id="reg-email" class="mota-input" placeholder="Email"></div>
             <div class="input-box"><label>PHONE</label><input type="tel" id="reg-phone" class="mota-input" placeholder="Phone Number"></div>
-            <div class="input-box"><label>REFERRAL CODE (GET 50RS BONUS)</label><input type="text" id="reg-ref-input" class="mota-input" placeholder="Enter Referral Code"></div>
-            <div class="input-box"><label>PASSWORD</label><input type="password" id="reg-pass" class="mota-input" placeholder="Min 6 characters"></div>
-            <div class="input-box"><label>CONFIRM PASSWORD</label><input type="password" id="reg-cpass" class="mota-input" placeholder="Confirm Password"></div>
+            <div class="input-box"><label>REFERRAL CODE (GET 50RS)</label><input type="text" id="reg-ref-input" class="mota-input" placeholder="Referral Code"></div>
+            <div class="input-box"><label>PASSWORD</label><input type="password" id="reg-pass" class="mota-input" placeholder="Min 6 chars"></div>
+            <div class="input-box"><label>CONFIRM</label><input type="password" id="reg-cpass" class="mota-input" placeholder="Confirm"></div>
             <button class="btn-main btn-green" onclick="handleRegister()">REGISTER (GET 50RS BONUS)</button>
-            <p style="text-align:center; margin-top:15px; font-size:12px;">Already have account? <span style="color:#00a859; cursor:pointer;" onclick="toggleAuth('login')">Login</span></p>
+            <p style="text-align:center; margin-top:15px;">Already have account? <span style="color:#00a859; cursor:pointer;" onclick="toggleAuth('login')">Login</span></p>
         </div>
         <div class="auth-card" id="login-card" style="display:none;">
-            <h2 style="text-align:center; color:#01411c; margin-bottom:15px;">Welcome Back</h2>
+            <h2 style="text-align:center; color:#01411c;">Welcome Back</h2>
             <div class="input-box"><label>EMAIL</label><input type="email" id="log-email" class="mota-input" placeholder="Email"></div>
             <div class="input-box"><label>PASSWORD</label><input type="password" id="log-pass" class="mota-input" placeholder="Password"></div>
             <button class="btn-main btn-green" onclick="handleLogin()">LOGIN</button>
-            <p style="text-align:center; margin-top:15px; font-size:12px;">New user? <span style="color:#00a859; cursor:pointer;" onclick="toggleAuth('register')">Register for 50Rs Bonus</span></p>
+            <p style="text-align:center; margin-top:15px;">New? <span style="color:#00a859; cursor:pointer;" onclick="toggleAuth('register')">Register for 50Rs</span></p>
         </div>
     </div>
 </div>
@@ -149,7 +149,7 @@
 <div id="page-home" class="page">
     <div class="header">
         <div style="display:flex; align-items:center; gap:10px;">
-            <img id="home-avatar" class="avatar-img" src="https://i.pravatar.cc/150?img=47" alt="avatar">
+            <img id="home-avatar" class="avatar-img" src="https://i.pravatar.cc/150?img=47">
             <div><div id="home-name" style="font-weight:900;">HARRY LINES</div><div style="font-size:9px; color:#00a859;"><i class="fa fa-circle"></i> ONLINE</div></div>
         </div>
         <div class="header-title">HARRY LINES</div>
@@ -177,7 +177,7 @@
     </div>
 </div>
 
-<!-- DEPOSIT PAGE -->
+<!-- DEPOSIT PAGE with Dual Options -->
 <div id="page-deposit" class="page">
     <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Deposit Funds</div><div></div></div>
     <div class="scroll-area">
@@ -185,22 +185,23 @@
             <button id="opt-sadapay" class="deposit-method-btn active" onclick="selectMethod('sadapay')"><i class="fas fa-building"></i> Sadapay</button>
             <button id="opt-jazzcash" class="deposit-method-btn" onclick="selectMethod('jazzcash')"><i class="fas fa-mobile"></i> JazzCash</button>
         </div>
+        
+        <!-- Sadapay Details -->
         <div id="sadapay-details" class="detail-card">
             <div class="detail-row"><span class="detail-label">Account Title:</span><span class="detail-value">NAZIR AHMAD</span></div>
+            <div class="detail-row"><span class="detail-label">Bank/App:</span><span class="detail-value">Sadapay</span></div>
             <div class="detail-row"><span class="detail-label">Sadapay Number:</span><span class="detail-value">03064987237 <button class="copy-btn" onclick="copyText('03064987237')">Copy</button></span></div>
-            <div class="detail-row"><span class="detail-label">IBAN:</span><span class="detail-value">PK09SADA0000003064987237 <button class="copy-btn" onclick="copyText('PK09SADA0000003064987237')">Copy</button></span></div>
+            <div class="detail-row"><span class="detail-label">IBAN Number:</span><span class="detail-value">PK09SADA0000003064987237 <button class="copy-btn" onclick="copyText('PK09SADA0000003064987237')">Copy</button></span></div>
         </div>
+        
+        <!-- JazzCash Details -->
         <div id="jazzcash-details" class="detail-card" style="display:none;">
             <div class="detail-row"><span class="detail-label">Account Title:</span><span class="detail-value">MUHAMMAD SHAKEEL</span></div>
             <div class="detail-row"><span class="detail-label">JazzCash Number:</span><span class="detail-value">03278879792 <button class="copy-btn" onclick="copyText('03278879792')">Copy</button></span></div>
         </div>
-        <div id="adminPanel" class="admin-panel" style="display:none;">
-            <h4><i class="fa fa-cog"></i> Admin Panel</h4>
-            <input type="text" id="adminSadapayNumber" class="admin-input" placeholder="New Sadapay Number">
-            <input type="text" id="adminSadapayIban" class="admin-input" placeholder="New Sadapay IBAN">
-            <input type="text" id="adminJazzNumber" class="admin-input" placeholder="New JazzCash Number">
-            <button class="admin-btn" onclick="updateAdminSettings()">Update Settings</button>
-        </div>
+        
+        <p style="font-size:12px; color:#666; margin-bottom:15px;">Send exact amount to above account. After payment, upload screenshot below.</p>
+        
         <div class="upload-box" onclick="document.getElementById('dep-file').click()">
             <input type="file" id="dep-file" accept="image/*" hidden onchange="previewDeposit(this)">
             <i class="fa fa-camera" style="font-size:30px; color:#00a859;"></i>
@@ -209,28 +210,29 @@
         </div>
         <div class="input-box"><label>AMOUNT (Min Rs 300)</label><input type="number" id="dep-amt" class="mota-input" placeholder="Enter Amount"></div>
         <div class="input-box"><label>TRANSACTION ID</label><input type="text" id="dep-tid" class="mota-input" placeholder="Transaction ID"></div>
+        <input type="hidden" id="dep-method" value="Sadapay">
         <button class="btn-main btn-green" id="dep-btn" onclick="submitDeposit()">SUBMIT REQUEST</button>
     </div>
 </div>
 
-<!-- WITHDRAW PAGE -->
+<!-- WITHDRAW PAGE - Locked at 1000 -->
 <div id="page-withdraw" class="page">
-    <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Withdraw Funds</div><div></div></div>
+    <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Withdraw</div><div></div></div>
     <div class="scroll-area">
         <div style="background:linear-gradient(135deg,#00a859,#01411c); padding:25px; border-radius:25px; text-align:center; color:white; margin-bottom:20px;">
-            <div style="font-size:12px;">Withdrawable (Profit Balance)</div>
+            <div style="font-size:12px;">WITHDRAWABLE (Profit Balance)</div>
             <div style="font-size:32px; font-weight:900;">Rs <span id="wd-bal">0</span></div>
         </div>
         <div id="wd-lock-msg" class="lock-msg-box">
             <i class="fa fa-lock lock-icon"></i>
             <div style="font-weight:900; font-size:16px;">Withdrawal Locked</div>
-            <div id="wd-lock-text" style="font-size:13px; margin-top:5px;">Minimum Rs 1000 required</div>
+            <div id="wd-lock-text" style="font-size:13px; margin-top:5px;">Minimum Rs 1000 required for withdrawal</div>
         </div>
         <div id="wd-form-area" style="display:none;">
             <div class="selector-box" onclick="toggleWalletMenu(true)"><span id="wd-method">Select Method</span><i class="fa fa-chevron-down"></i></div>
             <div class="input-box"><label>ACCOUNT NUMBER</label><input type="text" id="wd-acc" class="mota-input" placeholder="03XXXXXXXXX"></div>
-            <div class="input-box"><label>ACCOUNT TITLE</label><input type="text" id="wd-name" class="mota-input" placeholder="Your Full Name"></div>
-            <div class="input-box"><label>AMOUNT (Min Rs 1000)</label><input type="number" id="wd-amt" class="mota-input" placeholder="Amount"></div>
+            <div class="input-box"><label>ACCOUNT TITLE</label><input type="text" id="wd-name" class="mota-input" placeholder="Your Name"></div>
+            <div class="input-box"><label>AMOUNT (Min 1000)</label><input type="number" id="wd-amt" class="mota-input" placeholder="Amount (Minimum 1000)"></div>
             <button class="btn-main btn-green" onclick="submitWithdraw()">SUBMIT REQUEST</button>
         </div>
     </div>
@@ -239,7 +241,7 @@
 <!-- TASKS PAGE -->
 <div id="page-tasks" class="page">
     <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Daily Tasks</div><div></div></div>
-    <div class="scroll-area" id="tasks-container"><div id="no-plan-msg" class="card-box" style="text-align:center;">No active plan. Buy a plan to start earning.</div></div>
+    <div class="scroll-area" id="tasks-container"><div class="card-box" style="text-align:center;">No active plan. Buy a plan to start earning.</div></div>
     <div class="bottom-nav"><div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-home"></i><span>Home</span></div><div class="nav-link active" onclick="navigateTo('tasks')"><i class="fa fa-play"></i><span>Tasks</span></div><div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div><div class="nav-link" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div><div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div></div>
 </div>
 
@@ -252,12 +254,12 @@
 
 <!-- PROFILE PAGE -->
 <div id="page-profile" class="page">
-    <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">My Profile</div><i class="fa fa-sign-out-alt" style="color:#e74c3c; cursor:pointer;" onclick="logout()"></i></div>
+    <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">Profile</div><i class="fa fa-sign-out-alt" style="color:#e74c3c; cursor:pointer;" onclick="logout()"></i></div>
     <div class="scroll-area" style="text-align:center;">
-        <img id="profile-avatar" class="profile-avatar" src="https://i.pravatar.cc/150?img=47" alt="avatar">
+        <img id="profile-avatar" class="profile-avatar" src="https://i.pravatar.cc/150?img=47">
         <h2 id="profile-name" style="color:#01411c;">HARRY LINES</h2>
         <div id="profile-phone" style="color:#6c757d; font-size:12px; margin-bottom:20px;">+92XXXXXXXXX</div>
-        <div class="card-box"><div style="font-weight:900;">Your Referral Code</div><div id="ref-code" style="font-size:18px; font-weight:900; color:#00a859; word-break:break-all;">LOADING</div><button class="btn-main btn-green" onclick="copyRef()" style="margin-top:15px;">COPY REFERRAL LINK</button></div>
+        <div class="card-box"><div style="font-weight:900;">Your Referral Code</div><div id="ref-code" style="font-size:18px; font-weight:900; color:#00a859;">LOADING</div><button class="btn-main btn-green" onclick="copyRef()" style="margin-top:15px;">COPY REFERRAL LINK</button></div>
         <div class="menu-item" onclick="navigateTo('dep-hist')"><span><i class="fa fa-history" style="color:#00a859;"></i> Deposit History</span><i class="fa fa-chevron-right"></i></div>
         <div class="menu-item" onclick="navigateTo('wd-hist')"><span><i class="fa fa-wallet" style="color:#00a859;"></i> Withdraw History</span><i class="fa fa-chevron-right"></i></div>
     </div>
@@ -269,11 +271,11 @@
     <div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('home')"></i><div class="header-title">My Team</div><div></div></div>
     <div class="scroll-area">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
-            <div class="card-box" style="text-align:center;"><div style="font-size:30px; font-weight:900; color:#00a859;" id="team-count">0</div><div>Total Referrals</div></div>
+            <div class="card-box" style="text-align:center;"><div style="font-size:30px; font-weight:900; color:#00a859;" id="team-count">0</div><div>Referrals</div></div>
             <div class="card-box" style="text-align:center;"><div style="font-size:30px; font-weight:900; color:#2ecc71;" id="team-earn">0</div><div>Pending Commission</div></div>
         </div>
         <button id="claim-btn" class="btn-main btn-green" onclick="claimCommission()" style="display:none; margin-bottom:15px;"><i class="fa fa-gift"></i> CLAIM COMMISSION</button>
-        <div class="card-box"><div style="font-weight:900; margin-bottom:10px;">👥 Team Members</div><div id="team-list">No members yet</div></div>
+        <div class="card-box"><div style="font-weight:900;">Team Members</div><div id="team-list">No members yet</div></div>
     </div>
     <div class="bottom-nav"><div class="nav-link" onclick="navigateTo('home')"><i class="fa fa-home"></i><span>Home</span></div><div class="nav-link" onclick="navigateTo('tasks')"><i class="fa fa-play"></i><span>Tasks</span></div><div class="nav-link" onclick="navigateTo('wallet')"><i class="fa fa-wallet"></i><span>Wallet</span></div><div class="nav-link active" onclick="navigateTo('team')"><i class="fa fa-users"></i><span>Team</span></div><div class="nav-link" onclick="navigateTo('profile')"><i class="fa fa-user"></i><span>Profile</span></div></div>
 </div>
@@ -283,7 +285,15 @@
 <div id="page-wd-hist" class="page"><div class="header"><i class="fa fa-arrow-left back-btn" onclick="navigateTo('profile')"></i><div class="header-title">Withdraw History</div><div></div></div><div class="scroll-area" id="wd-hist-list">Loading...</div></div>
 
 <script>
-const firebaseConfig = { apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94", authDomain: "kharal-b47b6.firebaseapp.com", databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com", projectId: "kharal-b47b6", storageBucket: "kharal-b47b6.appspot.com", messagingSenderId: "528214841740", appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9" };
+const firebaseConfig = {
+    apiKey: "AIzaSyBIwUsxyeQmoeT2ctH2LxqRU__dhqp9s94",
+    authDomain: "kharal-b47b6.firebaseapp.com",
+    databaseURL: "https://kharal-b47b6-default-rtdb.firebaseio.com",
+    projectId: "kharal-b47b6",
+    storageBucket: "kharal-b47b6.appspot.com",
+    messagingSenderId: "528214841740",
+    appId: "1:528214841740:web:e394a574ef2ba2c16e9ea9"
+};
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
@@ -327,7 +337,6 @@ auth.onAuthStateChanged(async user=>{
         USER=user;
         db.ref('users/'+user.uid).on('value',snap=>{ DATA=snap.val()||{}; if(DATA.status==='blocked') auth.signOut(); updateUI(); loadActivePlans(); });
         loadPlans();
-        if(user.email==='harrylines@admin.com') document.getElementById('adminPanel').style.display='block';
         navigateTo('home');
     } else { USER=null; DATA=null; navigateTo('login'); }
 });
@@ -381,7 +390,6 @@ function submitWithdraw(){ let m=document.getElementById('wd-method').innerText,
 async function loadTeam(){ let snap=await db.ref('users').orderByChild('referredBy').equalTo(USER.uid).once('value'); let members=snap.val(); let count=0; let listDiv=document.getElementById('team-list'); listDiv.innerHTML=''; if(members){ Object.values(members).forEach(m=>{ count++; listDiv.innerHTML+=`<div style="padding:8px 0; border-bottom:1px solid #eee;">${m.username}</div>`; }); } else { listDiv.innerHTML='No referrals yet'; } document.getElementById('team-count').innerText=count; let pending=DATA?.pendingCommission||0; document.getElementById('team-earn').innerText=pending; document.getElementById('claim-btn').style.display=pending>0?'block':'none'; }
 function claimCommission(){ let amt=DATA?.pendingCommission||0; if(amt<=0) return; db.ref('users/'+USER.uid).update({balance:(DATA.balance||0)+amt, pendingCommission:0}).then(()=>{ showDialog("Claimed!",`Rs ${amt} added to wallet`); loadTeam(); }); }
 function copyRef(){ let link=window.location.origin+window.location.pathname+"?ref="+USER.uid; navigator.clipboard.writeText(link); showDialog("Link Copied!","Share to invite friends and earn Rs 50 per referral!"); }
-function updateAdminSettings(){ let sn=document.getElementById('adminSadapayNumber').value, si=document.getElementById('adminSadapayIban').value, jn=document.getElementById('adminJazzNumber').value; if(sn){ let span=document.querySelector('#sadapay-details .detail-value:first-child'); if(span) span.innerHTML=sn+' <button class="copy-btn" onclick="copyText(\''+sn+'\')">Copy</button>'; } if(si){ let span=document.querySelectorAll('#sadapay-details .detail-value')[1]; if(span) span.innerHTML=si+' <button class="copy-btn" onclick="copyText(\''+si+'\')">Copy</button>'; } if(jn){ let span=document.querySelector('#jazzcash-details .detail-value'); if(span) span.innerHTML=jn+' <button class="copy-btn" onclick="copyText(\''+jn+'\')">Copy</button>'; } showToast("Settings updated!"); }
 selectMethod('sadapay');
 </script>
 </body>
